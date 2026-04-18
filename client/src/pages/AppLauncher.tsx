@@ -3,20 +3,6 @@ import { CHINAIMPORTS_AUTH_KEY } from "./chinaimports/constants";
 
 const APPS = [
   {
-    id: "flock",
-    name: "Flock",
-    tagline: "Freight Forwarding App",
-    description:
-      "A modern logistics platform that simplifies freight forwarding — from shipment tracking and document management to real-time activity feeds and partner notifications.",
-    color: "#F34147",
-    colorLight: "#FEF0F0",
-    gradient: "from-rose-50 to-red-50",
-    accentGlow: "rgba(243,65,71,0.18)",
-    path: "/splash",
-    iframePath: "/splash",
-    features: ["Shipment Tracking", "Document Hub", "Live Notifications"],
-  },
-  {
     id: "chinaimports",
     name: "China Imports",
     tagline: "Sourcing App",
@@ -205,12 +191,12 @@ export default function AppLauncher() {
           style={{ color: "rgba(255,255,255,0.45)" }}
           data-testid="text-subtitle"
         >
-          Two purpose-built mobile apps designed for modern logistics and B2B
-          supply chain operations. Tap any app to explore it in full.
+          A purpose-built mobile app for Indian businesses sourcing from China.
+          More Suprans-family apps coming soon.
         </p>
       </section>
 
-      <section className="relative z-10 flex flex-col lg:flex-row items-stretch justify-center gap-8 px-6 pb-20 max-w-5xl mx-auto w-full">
+      <section className="relative z-10 flex flex-col lg:flex-row items-stretch justify-center gap-8 px-6 pb-20 max-w-2xl mx-auto w-full">
         {APPS.map((app) => (
           <div
             key={app.id}

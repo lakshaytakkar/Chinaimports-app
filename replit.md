@@ -1,13 +1,9 @@
 # Mobile App Showcase — Replit Project
 
 ## Overview
-A web application that showcases two mobile apps in 375×812px frames centered in the browser. Both apps are built with React + TypeScript + Tailwind and mimic native mobile experiences.
+A web application that showcases Suprans-family mobile apps in 375×812px frames centered in the browser. Each app is built with React + TypeScript + Tailwind and mimics a native mobile experience.
 
 ## Apps
-
-### Flock (Freight Forwarding App)
-Imported from Figma. 6 static screens rendered pixel-perfect using Figma asset URLs.
-- Routes: `/splash`, `/get-started`, `/home`, `/activity`, `/notifications`, `/successful`
 
 ### China Imports (Sourcing App)
 A chat-first mobile app for Indian businesses sourcing from China. 4 tabs (Chat, Explore, Projects, Account) with full onboarding flow.
@@ -16,7 +12,7 @@ A chat-first mobile app for Indian businesses sourcing from China. 4 tabs (Chat,
 - Tabs: `/chinaimports/chat`, `/chinaimports/explore`, `/chinaimports/projects`, `/chinaimports/account`
 
 ## App Launcher
-The root `/` route shows an App Launcher page that lists both apps with links to their entry points.
+The root `/` route shows an App Launcher page that lists all Suprans-family apps with links to their entry points.
 
 ## Tech Stack
 - **Frontend**: React 18, TypeScript, Vite, Wouter (routing)
@@ -26,10 +22,6 @@ The root `/` route shows an App Launcher page that lists both apps with links to
 - **Icons**: Lucide React
 
 ## Design Systems
-
-### Flock Design Tokens
-- Font: Plus Jakarta Sans
-- Primary: #F34147
 
 ### China Imports Design Tokens (`--chinaimports-*` CSS variables)
 - Canvas/Background: `#FAF7F2` (warm cream)
@@ -48,17 +40,10 @@ The root `/` route shows an App Launcher page that lists both apps with links to
 client/src/
 ├── pages/
 │   ├── AppLauncher.tsx          ← Root "/" landing page
-│   ├── ElementLoginEmptyState.tsx  ← Flock login screen
-│   ├── SplashScreen.tsx         ← Flock splash
-│   ├── GetStarted.tsx           ← Flock onboarding
-│   ├── HomeV2.tsx               ← Flock home
-│   ├── Activity.tsx             ← Flock activity
-│   ├── Notifications.tsx        ← Flock notifications
-│   ├── Successful.tsx           ← Flock success
 │   └── chinaimports/
 │       ├── ChinaImportsOnboarding.tsx  ← 3 slides + sign-in + OTP
 │       └── ChinaImportsApp.tsx        ← Tab shell + ChinaImportsTabBar (exported)
-└── index.css                    ← Design tokens for both apps
+└── index.css                    ← Design tokens
 ```
 
 ## Key Patterns
