@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   X,
   Headphones,
-  Sparkles,
   FileText,
-  Gift,
   ArrowRight,
   Check,
   ArrowLeft,
@@ -12,7 +10,7 @@ import {
 } from "lucide-react";
 import { PRODUCTS } from "./constants";
 
-export type ConciergeAction = "advisor" | "ai" | "quote" | "refer";
+export type ConciergeAction = "advisor" | "quote";
 
 const ACTIONS: {
   id: ConciergeAction;
@@ -31,28 +29,12 @@ const ACTIONS: {
     fg: "#8C6A2C",
   },
   {
-    id: "ai",
-    label: "Ask Suprans AI",
-    blurb: "Tell us your goal, get matched to a product.",
-    Icon: Sparkles,
-    bg: "#FEF0F0",
-    fg: "#F03B3B",
-  },
-  {
     id: "quote",
     label: "Custom Quote",
     blurb: "Bundle services across products.",
     Icon: FileText,
     bg: "#E8EFF8",
     fg: "#1F4E8C",
-  },
-  {
-    id: "refer",
-    label: "Refer a Business",
-    blurb: "Earn ₹5,000 per successful referral.",
-    Icon: Gift,
-    bg: "#E1F2EC",
-    fg: "#0E7A5C",
   },
 ];
 
@@ -147,13 +129,6 @@ const SLOTS = [
   { day: "Mon, Apr 27", time: "12:00 PM" },
 ];
 
-const AI_SUGGESTIONS = [
-  "I want to start selling in the US",
-  "Open a US LLC for my Indian company",
-  "Source 500 units from China",
-  "Open a retail store with low investment",
-];
-
 const PRODUCT_OPTIONS = PRODUCTS.filter(
   (p) => !["events", "account-billing"].includes(p.id)
 );
@@ -161,54 +136,36 @@ const PRODUCT_OPTIONS = PRODUCTS.filter(
 export function SupransConciergeFlow({
   action,
   onClose,
+  initialContext,
 }: {
   action: ConciergeAction;
   onClose: () => void;
+  initialContext?: string;
 }) {
   const [submitted, setSubmitted] = useState(false);
   const [refId, setRefId] = useState<string>("");
   const [slot, setSlot] = useState<number | null>(null);
-  const [aiPrompt, setAiPrompt] = useState("");
-  const [aiAsked, setAiAsked] = useState(false);
-  const [productCtx, setProductCtx] = useState<string>("");
+  const [productCtx, setProductCtx] = useState<string>(initialContext ?? "");
   const [quoteProducts, setQuoteProducts] = useState<string[]>([]);
   const [quoteBrief, setQuoteBrief] = useState("");
-  const [referName, setReferName] = useState("");
-  const [referContact, setReferContact] = useState("");
-  const [referNote, setReferNote] = useState("");
 
   useEffect(() => {
     setSubmitted(false);
     setRefId("");
     setSlot(null);
-    setAiPrompt("");
-    setAiAsked(false);
-    setProductCtx("");
+    setProductCtx(initialContext ?? "");
     setQuoteProducts([]);
     setQuoteBrief("");
-    setReferName("");
-    setReferContact("");
-    setReferNote("");
-  }, [action]);
+  }, [action, initialContext]);
 
   const meta = ACTIONS.find((a) => a.id === action)!;
   const canSubmit =
     action === "advisor"
       ? slot !== null
-      : action === "ai"
-      ? aiAsked
-      : action === "quote"
-      ? quoteProducts.length > 0 && quoteBrief.trim().length > 4
-      : referName.trim().length > 1 && referContact.trim().length > 4;
+      : quoteProducts.length > 0 && quoteBrief.trim().length > 4;
 
   const submitLabel =
-    action === "advisor"
-      ? "Confirm slot"
-      : action === "ai"
-      ? "Send to a human advisor"
-      : action === "quote"
-      ? "Request quote"
-      : "Send referral";
+    action === "advisor" ? "Confirm slot" : "Request quote";
 
   const successCopy =
     action === "advisor"
@@ -216,19 +173,9 @@ export function SupransConciergeFlow({
           title: "Slot confirmed",
           body: "Your Suprans advisor will join the call. We've sent a calendar invite to your registered email.",
         }
-      : action === "ai"
-      ? {
-          title: "Handed off to a human",
-          body: "An advisor will follow up on your question within 4 working hours.",
-        }
-      : action === "quote"
-      ? {
+      : {
           title: "Quote request received",
           body: "We'll prepare a bundled quote across the selected products and share it within 24 hours.",
-        }
-      : {
-          title: "Referral submitted",
-          body: "We'll reach out to your contact and credit ₹5,000 to your account once they sign up.",
         };
 
   return (
@@ -282,29 +229,14 @@ export function SupransConciergeFlow({
             setSlot={setSlot}
             productCtx={productCtx}
             setProductCtx={setProductCtx}
+            initialContext={initialContext}
           />
-        ) : action === "ai" ? (
-          <AskAIForm
-            prompt={aiPrompt}
-            setPrompt={setAiPrompt}
-            asked={aiAsked}
-            setAsked={setAiAsked}
-          />
-        ) : action === "quote" ? (
+        ) : (
           <QuoteForm
             picked={quoteProducts}
             setPicked={setQuoteProducts}
             brief={quoteBrief}
             setBrief={setQuoteBrief}
-          />
-        ) : (
-          <ReferForm
-            name={referName}
-            setName={setReferName}
-            contact={referContact}
-            setContact={setReferContact}
-            note={referNote}
-            setNote={setReferNote}
           />
         )}
       </div>
@@ -386,12 +318,22 @@ function AdvisorForm({
   setSlot,
   productCtx,
   setProductCtx,
+  initialContext,
 }: {
   slot: number | null;
   setSlot: (i: number) => void;
   productCtx: string;
   setProductCtx: (v: string) => void;
+  initialContext?: string;
 }) {
+  const chips = useMemo(() => {
+    const base = ["General", ...PRODUCT_OPTIONS.slice(0, 5).map((p) => p.name)];
+    if (initialContext && !base.includes(initialContext)) {
+      return [initialContext, ...base];
+    }
+    return base;
+  }, [initialContext]);
+
   return (
     <div className="flex flex-col gap-5">
       <div>
@@ -399,7 +341,7 @@ function AdvisorForm({
           What's it about? (optional)
         </p>
         <div className="flex gap-2 flex-wrap">
-          {["General", ...PRODUCT_OPTIONS.slice(0, 5).map((p) => p.name)].map((p) => (
+          {chips.map((p) => (
             <button
               key={p}
               data-testid={`chip-advisor-${p}`}
@@ -458,133 +400,6 @@ function AdvisorForm({
       </div>
     </div>
   );
-}
-
-function AskAIForm({
-  prompt,
-  setPrompt,
-  asked,
-  setAsked,
-}: {
-  prompt: string;
-  setPrompt: (v: string) => void;
-  asked: boolean;
-  setAsked: (v: boolean) => void;
-}) {
-  const matches = asked
-    ? scoreProducts(prompt).slice(0, 3)
-    : [];
-
-  return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <p className="text-[12px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
-          Describe your goal
-        </p>
-        <div className="bg-white rounded-2xl border border-supranshub-border p-3 focus-within:border-supranshub-red transition-colors">
-          <textarea
-            data-testid="input-ai-prompt"
-            value={prompt}
-            onChange={(e) => {
-              setPrompt(e.target.value);
-              if (asked) setAsked(false);
-            }}
-            placeholder="e.g. I want to launch my D2C brand in the US within 60 days..."
-            className="w-full h-[88px] resize-none outline-none text-[13.5px] text-supranshub-ink placeholder:text-supranshub-ink-tertiary leading-snug"
-          />
-        </div>
-        <button
-          data-testid="btn-ai-ask"
-          onClick={() => prompt.trim().length > 4 && setAsked(true)}
-          disabled={prompt.trim().length < 5}
-          className="mt-3 w-full h-11 rounded-xl bg-supranshub-red text-white font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-40"
-        >
-          <Sparkles size={15} />
-          Match me to a product
-        </button>
-      </div>
-
-      {!asked && (
-        <div>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
-            Try one of these
-          </p>
-          <div className="flex gap-2 flex-wrap">
-            {AI_SUGGESTIONS.map((s) => (
-              <button
-                key={s}
-                data-testid={`chip-ai-${s.slice(0, 8)}`}
-                onClick={() => setPrompt(s)}
-                className="px-3 py-1.5 rounded-full text-[12px] font-medium bg-white text-supranshub-ink-secondary border border-supranshub-border"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {asked && (
-        <div className="supranshub-fade-in">
-          <p className="text-[12px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
-            Top matches
-          </p>
-          <div className="flex flex-col gap-2">
-            {matches.map((p) => (
-              <div
-                key={p.id}
-                data-testid={`match-${p.id}`}
-                className="bg-white rounded-2xl border border-supranshub-border p-3 flex items-start gap-3"
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-[16px] shrink-0"
-                  style={{ background: p.tileBg, color: p.tileColor }}
-                >
-                  {p.monogram}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13.5px] font-bold text-supranshub-ink leading-tight">
-                    {p.name}
-                  </p>
-                  <p className="text-[11px] text-supranshub-ink-tertiary leading-tight mt-0.5">
-                    {p.subtitle}
-                  </p>
-                  <p className="text-[12px] text-supranshub-ink-secondary leading-snug mt-1.5">
-                    {p.oneLiner}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="text-[11.5px] text-supranshub-ink-tertiary leading-snug mt-3">
-            Want a human to walk you through it? Tap below to hand off to an
-            advisor.
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function scoreProducts(prompt: string) {
-  const q = prompt.toLowerCase();
-  const keywords: Record<string, string[]> = {
-    "legal-nations": ["llc", "us company", "incorporate", "ein", "uk", "uae", "stripe", "register"],
-    "usdrop-ai": ["dropship", "shopify", "us store", "selling in us", "ecommerce", "d2c"],
-    "china-imports": ["source", "factory", "rfq", "import", "freight", "custom", "bulk", "manufacturer"],
-    "china-products": ["catalog", "wholesale", "ready", "moq", "amazon", "gifting"],
-    "eazytosell": ["franchise", "retail store", "store", "low investment"],
-    "keeraft": ["furniture", "interior", "designer", "villa"],
-    "la-bella-monte": ["watch", "watches", "gift"],
-    "goyotours": ["tour", "travel", "trip", "visit china", "guangzhou", "yiwu"],
-  };
-  return PRODUCT_OPTIONS.map((p) => {
-    const kws = keywords[p.id] || [];
-    const score = kws.reduce((acc, k) => acc + (q.includes(k) ? 1 : 0), 0);
-    return { ...p, score };
-  })
-    .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))
-    .filter((p, i) => p.score > 0 || i < 3);
 }
 
 function QuoteForm({
@@ -654,96 +469,3 @@ function QuoteForm({
     </div>
   );
 }
-
-function ReferForm({
-  name,
-  setName,
-  contact,
-  setContact,
-  note,
-  setNote,
-}: {
-  name: string;
-  setName: (v: string) => void;
-  contact: string;
-  setContact: (v: string) => void;
-  note: string;
-  setNote: (v: string) => void;
-}) {
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="bg-white rounded-2xl border border-supranshub-border p-4 flex items-center gap-3">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ background: "#E1F2EC" }}
-        >
-          <Gift size={18} color="#0E7A5C" strokeWidth={2.2} />
-        </div>
-        <div className="flex-1">
-          <p className="text-[13px] font-bold text-supranshub-ink leading-tight">
-            Earn ₹5,000 per signup
-          </p>
-          <p className="text-[11.5px] text-supranshub-ink-tertiary leading-tight mt-0.5">
-            Credited to your Suprans Hub wallet within 7 days of activation.
-          </p>
-        </div>
-      </div>
-
-      <Field label="Their name" testId="input-refer-name" value={name} onChange={setName} placeholder="e.g. Priya Verma" />
-      <Field
-        label="Phone or email"
-        testId="input-refer-contact"
-        value={contact}
-        onChange={setContact}
-        placeholder="+91 98XXX XXXXX or name@company.com"
-      />
-
-      <div>
-        <p className="text-[12px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
-          What do they need? (optional)
-        </p>
-        <div className="bg-white rounded-2xl border border-supranshub-border p-3 focus-within:border-supranshub-red transition-colors">
-          <textarea
-            data-testid="input-refer-note"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="A line about their business or what they're looking for."
-            className="w-full h-[88px] resize-none outline-none text-[13.5px] text-supranshub-ink placeholder:text-supranshub-ink-tertiary leading-snug"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  testId,
-  value,
-  onChange,
-  placeholder,
-}: {
-  label: string;
-  testId: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-}) {
-  return (
-    <div>
-      <p className="text-[12px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
-        {label}
-      </p>
-      <div className="bg-white rounded-2xl border border-supranshub-border focus-within:border-supranshub-red transition-colors">
-        <input
-          data-testid={testId}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="w-full h-[48px] px-4 outline-none bg-transparent text-[13.5px] text-supranshub-ink placeholder:text-supranshub-ink-tertiary"
-        />
-      </div>
-    </div>
-  );
-}
-

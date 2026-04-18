@@ -2,13 +2,16 @@ import { useLocation } from "wouter";
 import { ArrowLeft, Check, ExternalLink, ArrowRight } from "lucide-react";
 import { PRODUCTS } from "./constants";
 import { CHINAIMPORTS_AUTH_KEY } from "../chinaimports/constants";
+import { ServiceContactButtons } from "@/components/ServiceContactButtons";
 
 export default function SupransHubProductDetail({
   productId,
   onBack,
+  onBookDemo,
 }: {
   productId: string;
   onBack: () => void;
+  onBookDemo: (productName: string) => void;
 }) {
   const [, navigate] = useLocation();
   const product = PRODUCTS.find((p) => p.id === productId);
@@ -82,7 +85,7 @@ export default function SupransHubProductDetail({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5 pt-5 pb-28">
+      <div className="flex-1 overflow-y-auto px-5 pt-5 pb-44">
         <div
           className="rounded-2xl p-4 border-l-4"
           style={{
@@ -120,7 +123,12 @@ export default function SupransHubProductDetail({
         </ul>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 pt-3 bg-supranshub-canvas border-t border-supranshub-border">
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 pt-3 bg-supranshub-canvas border-t border-supranshub-border flex flex-col gap-2">
+        <ServiceContactButtons
+          onBookDemo={() => onBookDemo(product.name)}
+          primaryColor={product.tileColor}
+          testIdPrefix={`product-${product.id}`}
+        />
         <button
           data-testid="btn-product-cta"
           onClick={handleCta}

@@ -23,6 +23,8 @@ import {
   Banknote,
   BookOpen,
 } from "lucide-react";
+import { ServiceContactButtons } from "@/components/ServiceContactButtons";
+import { SupransConciergeFlow } from "@/pages/supranshub/SupransHubConcierge";
 
 interface HeroSlide {
   id: string;
@@ -565,6 +567,7 @@ function UpdateItem({ card }: { card: UpdateCard }) {
 
 function ServiceDetail({ service, onBack }: { service: Service; onBack: () => void }) {
   const [, navigate] = useLocation();
+  const [demoOpen, setDemoOpen] = useState(false);
   const { Icon, color, bgLight } = service;
 
   return (
@@ -586,7 +589,7 @@ function ServiceDetail({ service, onBack }: { service: Service; onBack: () => vo
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5 py-5 pb-24">
+      <div className="flex-1 overflow-y-auto px-5 py-5 pb-40">
         <p className="text-[14px] text-chinaimports-ink-secondary leading-[1.6] mb-6">{service.detailDescription}</p>
 
         <div className="mb-6">
@@ -624,7 +627,12 @@ function ServiceDetail({ service, onBack }: { service: Service; onBack: () => vo
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-chinaimports-border px-5 py-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-chinaimports-border px-5 py-4 flex flex-col gap-2">
+        <ServiceContactButtons
+          onBookDemo={() => setDemoOpen(true)}
+          primaryColor={color}
+          testIdPrefix={`service-${service.id}`}
+        />
         <button
           data-testid="btn-chat-cta"
           onClick={() => navigate(`/chinaimports/chat?service=${encodeURIComponent(service.name)}`)}
@@ -635,6 +643,13 @@ function ServiceDetail({ service, onBack }: { service: Service; onBack: () => vo
           Chat with us about this
         </button>
       </div>
+      {demoOpen && (
+        <SupransConciergeFlow
+          action="advisor"
+          onClose={() => setDemoOpen(false)}
+          initialContext={service.name}
+        />
+      )}
     </div>
   );
 }

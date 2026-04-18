@@ -41,6 +41,7 @@ export default function SupransHubApp() {
   const activeTab = getActiveTab(location);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [activeAction, setActiveAction] = useState<ConciergeAction | null>(null);
+  const [bookDemoContext, setBookDemoContext] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const authed = localStorage.getItem(SUPRANSHUB_AUTH_KEY) === "true";
@@ -53,7 +54,19 @@ export default function SupransHubApp() {
 
   const handlePick = (a: ConciergeAction) => {
     setSheetOpen(false);
+    setBookDemoContext(undefined);
     setActiveAction(a);
+  };
+
+  const handleBookDemo = (ctx: string) => {
+    setSheetOpen(false);
+    setBookDemoContext(ctx);
+    setActiveAction("advisor");
+  };
+
+  const handleCloseAction = () => {
+    setActiveAction(null);
+    setBookDemoContext(undefined);
   };
 
   return (
@@ -64,7 +77,11 @@ export default function SupransHubApp() {
       >
         {productId ? (
           <div key={productId} className="supranshub-fade-in absolute inset-0">
-            <SupransHubProductDetail productId={productId} onBack={() => navigate("/supranshub/home")} />
+            <SupransHubProductDetail
+              productId={productId}
+              onBack={() => navigate("/supranshub/home")}
+              onBookDemo={handleBookDemo}
+            />
           </div>
         ) : (
           <div key={activeTab} className="supranshub-fade-in absolute inset-0">
@@ -97,7 +114,8 @@ export default function SupransHubApp() {
       {activeAction && (
         <SupransConciergeFlow
           action={activeAction}
-          onClose={() => setActiveAction(null)}
+          onClose={handleCloseAction}
+          initialContext={bookDemoContext}
         />
       )}
     </SupransHubMobileShell>
