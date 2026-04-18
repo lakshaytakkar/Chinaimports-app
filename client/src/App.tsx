@@ -6,13 +6,23 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 
 import { ElementLoginEmptyState } from "@/pages/ElementLoginEmptyState";
+import SplashScreen from "@/pages/SplashScreen";
+import GetStarted from "@/pages/GetStarted";
+import Activity from "@/pages/Activity";
+import Notifications from "@/pages/Notifications";
+import HomeV2 from "@/pages/HomeV2";
+import Successful from "@/pages/Successful";
 
 function Router() {
   return (
     <Switch>
-      {/* Add pages below */}
       <Route path="/" component={ElementLoginEmptyState} />
-      {/* Fallback to 404 */}
+      <Route path="/splash" component={SplashScreen} />
+      <Route path="/get-started" component={GetStarted} />
+      <Route path="/home" component={HomeV2} />
+      <Route path="/activity" component={Activity} />
+      <Route path="/notifications" component={Notifications} />
+      <Route path="/successful" component={Successful} />
       <Route component={NotFound} />
     </Switch>
   );
