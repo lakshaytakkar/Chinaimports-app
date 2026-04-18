@@ -148,7 +148,7 @@ export default function SupransAccountTab() {
         <div className="flex items-center gap-4">
           <img
             src={avatarPriya}
-            alt={USER_PROFILE.companyName}
+            alt="Profile photo"
             data-testid="img-profile-avatar"
             className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-suprans-red/20"
           />
