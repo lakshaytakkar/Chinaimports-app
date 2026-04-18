@@ -280,7 +280,7 @@ function RequestDetail({
           </div>
         )}
 
-        <div className="bg-white rounded-2xl p-4 border border-suprans-border">
+        <div ref={timelineRef} className="bg-white rounded-2xl p-4 border border-suprans-border scroll-mt-4">
           <p className="text-[13px] font-bold text-suprans-ink mb-3">Status timeline</p>
           <StatusTimeline status={req.status} />
         </div>

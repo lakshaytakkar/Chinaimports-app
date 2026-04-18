@@ -21,10 +21,11 @@ import {
   BookOpen,
   ExternalLink,
   Shield,
+  Package,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-type AccountView = "home" | "business-details" | "invoices" | "notifications" | "help" | "about";
+type AccountView = "home" | "business-details" | "my-requests" | "invoices" | "notifications" | "help" | "about";
 
 interface Invoice {
   id: string;
@@ -77,6 +78,7 @@ const INITIAL_NOTIFS: NotifPref[] = [
 
 const MENU_ITEMS = [
   { id: "business-details", label: "Business Details", Icon: Building2, view: "business-details" as AccountView },
+  { id: "my-requests", label: "My Sourcing Requests", Icon: Package, view: "my-requests" as AccountView },
   { id: "invoices", label: "Invoices", Icon: FileText, view: "invoices" as AccountView },
   { id: "notifications", label: "Notifications", Icon: Bell, view: "notifications" as AccountView },
   { id: "help", label: "Help & Support", Icon: HelpCircle, view: "help" as AccountView },
@@ -94,6 +96,10 @@ export default function SupransAccountTab() {
   const [, navigate] = useLocation();
 
   const handleMenu = (item: typeof MENU_ITEMS[0]) => {
+    if (item.view === "my-requests") {
+      navigate("/suprans/requests");
+      return;
+    }
     if (item.view) {
       setView(item.view);
     }
