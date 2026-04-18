@@ -95,6 +95,7 @@ const ACTIVE_PROJECTS: Project[] = [
     amountTotalRaw: 160000,
     documents: [
       { name: "Tech Spec Sheet.pdf", size: "522 KB" },
+      { name: "Purchase Order.pdf", size: "188 KB" },
     ],
   },
   {
@@ -174,6 +175,7 @@ const COMPLETED_PROJECTS: Project[] = [
     amountTotalRaw: 88000,
     documents: [
       { name: "Commercial Invoice.pdf", size: "155 KB" },
+      { name: "Delivery Receipt.pdf", size: "72 KB" },
     ],
   },
 ];

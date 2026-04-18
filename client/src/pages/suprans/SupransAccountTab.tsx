@@ -48,8 +48,8 @@ const USER_PROFILE = {
 };
 
 const USER_STATS = [
-  { label: "Active Shipments", value: "4" },
-  { label: "Completed Orders", value: "14" },
+  { label: "Active Shipments", value: "3" },
+  { label: "Completed Orders", value: "12" },
   { label: "Member since", value: "Feb 2024" },
 ];
 
@@ -118,7 +118,7 @@ export default function SupransAccountTab() {
       <div className="bg-white mx-4 mt-4 rounded-2xl p-4 border border-suprans-border">
         <div className="flex items-center gap-4">
           <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center text-[22px] font-black text-white shrink-0"
+            className="w-16 h-16 rounded-full flex items-center justify-center text-[22px] font-black text-white shrink-0"
             style={{ background: "var(--suprans-red)" }}
           >
             {USER_PROFILE.initials}
