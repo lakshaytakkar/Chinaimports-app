@@ -17,7 +17,7 @@ function getActiveTab(pathname: string): TabId {
   return "chat";
 }
 
-export default function SupransApp({ tabContent }: { tabContent?: React.ReactNode }) {
+export default function SupransApp() {
   const [location, navigate] = useLocation();
   const activeTab = getActiveTab(location);
 
@@ -31,7 +31,7 @@ export default function SupransApp({ tabContent }: { tabContent?: React.ReactNod
           className="absolute inset-0 bottom-[72px] overflow-y-auto"
           style={{ background: "var(--suprans-canvas)" }}
         >
-          {tabContent ?? <PlaceholderScreen tab={activeTab} />}
+          <PlaceholderScreen tab={activeTab} />
         </div>
         <SupransTabBar activeTab={activeTab} onNavigate={navigate} />
       </div>
