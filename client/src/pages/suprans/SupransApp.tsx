@@ -2,6 +2,7 @@ import { useLocation } from "wouter";
 import { MessageCircle, Compass, FolderOpen, User } from "lucide-react";
 import SupransMobileShell from "./SupransMobileShell";
 import SupransChatTab from "./SupransChatTab";
+import SupransExploreTab from "./SupransExploreTab";
 
 const TABS = [
   { id: "chat", label: "Chat", Icon: MessageCircle, path: "/suprans/chat" },
@@ -31,6 +32,8 @@ export default function SupransApp() {
       >
         {activeTab === "chat" ? (
           <SupransChatTab />
+        ) : activeTab === "explore" ? (
+          <SupransExploreTab />
         ) : (
           <PlaceholderScreen tab={activeTab} />
         )}
