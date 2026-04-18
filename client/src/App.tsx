@@ -36,6 +36,8 @@ function Router() {
       <Route path="/suprans/explore" component={SupransApp} />
       <Route path="/suprans/projects" component={SupransApp} />
       <Route path="/suprans/account" component={SupransApp} />
+      <Route path="/suprans/requests" component={SupransApp} />
+      <Route path="/suprans/requests/:id" component={SupransApp} />
 
       <Route component={NotFound} />
     </Switch>
