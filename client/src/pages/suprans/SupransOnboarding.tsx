@@ -3,25 +3,28 @@ import { useLocation } from "wouter";
 import { ChevronRight } from "lucide-react";
 import SupransMobileShell from "./SupransMobileShell";
 import { SUPRANS_AUTH_KEY } from "./constants";
+import heroSourcing from "@assets/suprans/hero/hero-sourcing.png";
+import heroCustoms from "@assets/suprans/hero/hero-customs.png";
+import heroLogistics from "@assets/suprans/hero/hero-logistics.png";
 
 const SLIDES = [
   {
     gradient: "from-[#F03B3B] to-[#FF8C42]",
-    icon: "🌏",
+    image: heroSourcing,
     title: "Welcome to Suprans",
     description:
       "Your China sourcing and import partner, all in one app. From factory to your doorstep.",
   },
   {
     gradient: "from-[#2C5F9E] to-[#4A9FD4]",
-    icon: "💬",
+    image: heroCustoms,
     title: "Talk to your team, anytime",
     description:
       "Stay connected with your dedicated Suprans team through built-in messaging, documents, and voice notes.",
   },
   {
     gradient: "from-[#2D9D78] to-[#6BCB9F]",
-    icon: "📦",
+    image: heroLogistics,
     title: "Sourcing, imports, and more",
     description:
       "Track every order, manage documents, handle payments — everything you need is right here.",
@@ -128,12 +131,15 @@ function OnboardingSlides({
   return (
     <div className="relative w-full h-full bg-suprans-canvas flex flex-col">
       <div
-        className={`bg-gradient-to-br ${s.gradient} flex-1 flex flex-col items-center justify-center`}
+        className={`relative bg-gradient-to-br ${s.gradient} flex-1 overflow-hidden`}
         style={{ minHeight: 0 }}
       >
-        <div className="text-[96px] mb-4 drop-shadow-lg" role="img">
-          {s.icon}
-        </div>
+        <img
+          src={s.image}
+          alt={s.title}
+          className="absolute inset-0 w-full h-full object-cover"
+          data-testid={`img-onboarding-slide-${slide}`}
+        />
         <div className="absolute top-6 right-6">
           <button
             data-testid="btn-skip"

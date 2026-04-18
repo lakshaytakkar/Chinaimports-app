@@ -26,6 +26,7 @@ import {
   Package,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import avatarPriya from "@assets/suprans/avatars/priya-sharma.png";
 
 type AccountView = "home" | "business-details" | "my-requests" | "invoices" | "notifications" | "help" | "about";
 
@@ -145,12 +146,12 @@ export default function SupransAccountTab() {
 
       <div className="bg-white mx-4 mt-4 rounded-2xl p-4 border border-suprans-border">
         <div className="flex items-center gap-4">
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center text-[22px] font-black text-white shrink-0"
-            style={{ background: "var(--suprans-red)" }}
-          >
-            {USER_PROFILE.initials}
-          </div>
+          <img
+            src={avatarPriya}
+            alt={USER_PROFILE.companyName}
+            data-testid="img-profile-avatar"
+            className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-suprans-red/20"
+          />
           <div className="flex-1 min-w-0">
             <p className="text-[16px] font-bold text-suprans-ink leading-tight">{USER_PROFILE.companyName}</p>
             <p className="text-[11px] text-suprans-ink-tertiary mt-0.5 font-mono">{USER_PROFILE.gstin}</p>
