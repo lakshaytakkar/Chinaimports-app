@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import thumbMerinoWool from "@assets/suprans/products/merino-wool-sweaters.png";
 import thumbCeramicMugs from "@assets/suprans/products/ceramic-coffee-mugs.png";
-import thumbLedLights from "@assets/suprans/products/strip-lights.png";
+import thumbLedLights from "@assets/suprans/products/led-strip-lights.png";
 import thumbCookware from "@assets/suprans/products/stainless-steel-cookware.png";
 import thumbCottonTotes from "@assets/suprans/products/cotton-tote-bags.png";
 import thumbGloves from "@assets/suprans/products/industrial-gloves.png";
