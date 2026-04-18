@@ -1,0 +1,400 @@
+# Replit Build Guide — China Imports App + Suprans Hub App
+
+> **Goal of this document:** Give the Replit AI agent a clear, non-technical plan to rebuild our mobile app project as **two separate apps with two separate identities**, using the design system and codebase we already have in the Chinaimports-app repo as the foundation.
+>
+> **Repo reference:** `github.com/lakshaytakkar/Chinaimports-app` (current state has Flock + a mobile app currently named "Suprans" which is actually a sourcing app).
+
+---
+
+## 1. The Big Picture — What We Are Doing and Why
+
+Right now, the mobile app in the current repo is labeled "Suprans" but it behaves like a sourcing app for Indian businesses importing from China. This is a branding mismatch. Suprans is our parent company — it is **not** a sourcing product. Suprans owns many businesses, and sourcing is just one of them.
+
+We need to split the app into two clearly separated products:
+
+### App 1 — **China Imports** (the sourcing app)
+- This is what the current "Suprans" mobile app inside the repo actually is.
+- We are **renaming and rebranding** it end-to-end as "China Imports."
+- It stays in the current repo (Chinaimports-app) and keeps its 4-tab structure (Chat, Explore, Projects, Account).
+- **No mention of Suprans anywhere inside this app.** It stands on its own as an independent sourcing product.
+- Tagline: *"All-in-one one-stop solution for all your sourcing needs from China."*
+
+### App 2 — **Suprans Hub** (the directory / parent app)
+- This is a **brand new app** that we will build by duplicating the current codebase into a new Replit project and new GitHub repo.
+- It uses the same tech stack, same design system, same mobile frame — but the purpose is completely different.
+- Suprans Hub is a **directory app** that links out to all the products Suprans owns (Legal Nations, USDrop, China Imports, China Products, EazyToSell, Keeraft, GoyoTours, Events, etc.).
+- Users do not source products inside Suprans Hub. They browse what Suprans offers, tap a tile, and either get redirected to that product's own landing page or opened into its own app/web experience.
+- Suprans Hub is also where we centralize billing across all Suprans products and show upcoming events/tours.
+
+### Why this split matters
+
+Currently the single app is confusing: it talks about Suprans while actually doing sourcing. By splitting:
+- **China Imports** becomes a focused, standalone product that can rank on its own, market itself, and not be diluted by unrelated things like company formation or franchises.
+- **Suprans Hub** becomes the umbrella where existing clients see the full ecosystem, discover new services, manage billing in one place, and find upcoming events.
+- Design system, components, layout, and code are shared — we are not starting from zero on either side.
+
+---
+
+## 2. App 1 — Rebuild the Current "Suprans" Mobile App as "China Imports"
+
+### 2.1 What changes
+Everywhere the word "Suprans" appears inside the current mobile app (the one at `/suprans/*` routes, in design tokens prefixed `--suprans-*`, in file paths like `pages/suprans/`, in component names like `SupransApp`, `SupransTabBar`, `SupransOnboarding`) — we replace it with "China Imports" or "ChinaImports."
+
+### 2.2 Rename plan (non-technical)
+Tell Replit to do these renames systematically:
+
+1. **Route paths**
+   - `/suprans` → `/chinaimports`
+   - `/suprans/onboarding` → `/chinaimports/onboarding`
+   - `/suprans/chat` → `/chinaimports/chat`
+   - `/suprans/explore` → `/chinaimports/explore`
+   - `/suprans/projects` → `/chinaimports/projects`
+   - `/suprans/account` → `/chinaimports/account`
+
+2. **File and folder names**
+   - `pages/suprans/` → `pages/chinaimports/`
+   - `SupransApp.tsx` → `ChinaImportsApp.tsx`
+   - `SupransTabBar.tsx` → `ChinaImportsTabBar.tsx`
+   - `SupransOnboarding.tsx` → `ChinaImportsOnboarding.tsx`
+
+3. **CSS variable names**
+   - Every token prefixed `--suprans-` → `--chinaimports-` (keep the exact same color values — the palette is great and stays identical)
+
+4. **Display text everywhere inside this app**
+   - App name shown to the user → "China Imports"
+   - Tagline → "Your one-stop sourcing partner in China"
+   - Onboarding slide 1 headline → something like: *"Source anything from China — without the chaos."*
+   - Onboarding slide 2 headline → *"From factory to your doorstep. We handle it all."*
+   - Onboarding slide 3 headline → *"Real humans, real factories, real delivery."*
+   - Any copy that says "Suprans" inside the app → remove or replace with "China Imports" or our team name generically
+
+5. **App Launcher landing page (`AppLauncher.tsx`)**
+   - The tile that currently says "Suprans (B2B Import Partner App)" → update to "China Imports (Sourcing App)"
+   - The entry link to `/suprans` → change to `/chinaimports`
+
+### 2.3 What stays the same
+- The full 4-tab structure (Chat, Explore, Projects, Account)
+- The design tokens (colors, fonts, spacing) — just renamed
+- The mobile frame (375 × 812)
+- All existing components, layouts, and flows
+- The chat-first architecture
+- The onboarding flow (3-slide carousel → phone OTP sign-in)
+
+### 2.4 The Chat tab — this is the most important part
+
+The Chat tab is not just a feature — it is the **core reason this app exists**. It solves a specific operational problem: today, every import client ends up in a separate WhatsApp group with the sourcing partner and the freight forwarder. This creates dozens of parallel chats, no admin visibility, no audit trail, and impossible follow-up at scale.
+
+The Chat tab inside China Imports **replaces that WhatsApp group workflow**:
+- Every sourcing request (RFQ) the client submits gets its own chat thread inside the app.
+- Client messages, ops team messages, buying agent messages, and file attachments (quotes, invoices, QC reports, shipping docs) all live inside one thread, attached to one RFQ.
+- Our admin side has full visibility — every conversation across every client is readable, searchable, and assignable from a single ops dashboard.
+- WhatsApp stays only as a nudge channel ("new update — open app"), not as the conversation.
+
+Make sure Replit understands: the Chat tab is not a generic chat — it is a client ↔ ops team conversation space **scoped per sourcing order/RFQ**, with full admin visibility on our side.
+
+### 2.5 Tabs — what each one does inside China Imports
+
+| Tab | Purpose |
+|---|---|
+| **Chat** | Per-RFQ conversation threads. Client ↔ ops ↔ buying agent. File attachments, quote cards, status updates. The system of record for every sourcing conversation. |
+| **Explore** | "Mini China" — city-wise product discovery. Foshan (furniture, ceramics), Yiwu (toys, small goods, seasonal), Guangzhou (gifts, accessories), Shenzhen (electronics, watches), Dongguan (hardware, outdoor). Tap a city → see product categories → submit RFQ from the category. |
+| **Projects** | Active and past sourcing orders. Each order shows its 9-stage progress bar (RFQ received → Sourcing → Quote → Sample → Approval → Bulk → QC → In Transit → Delivered). Documents downloadable per order. |
+| **Account** | Client profile, GST, company details, documents, payment history, notifications, logout. |
+
+---
+
+## 3. App 2 — Build a New "Suprans Hub" App by Duplicating the Current Codebase
+
+### 3.1 How to create it
+1. Duplicate the entire current repo (Chinaimports-app) into a new Replit project.
+2. Push it to a new GitHub repo named something like `suprans-hub-app`.
+3. Keep the Flock app in the new repo too if desired (or strip it — your choice, not critical).
+4. The **China Imports app stays only in the original repo** (after the rename from section 2).
+5. In the new duplicated repo, we now transform the routes, tabs, and content into the Suprans Hub directory app described below.
+
+### 3.2 What Suprans Hub actually is
+Suprans Hub is a **mobile directory app** for all Suprans ecosystem products. Think of it like a mini app store for our own services. A user (existing client, new prospect, or team member) logs in, sees everything Suprans offers, taps what interests them, and either:
+- Gets redirected to that product's dedicated website/app, OR
+- Sees the details, pricing, and CTAs for that product inside Suprans Hub itself.
+
+### 3.3 Tab structure for Suprans Hub (replaces the 4 tabs from the source app)
+
+| Tab | Purpose |
+|---|---|
+| **Home** | Directory grid of all Suprans products (tiles). This is where users spend 80% of their time. Each tile opens a product detail page with the product's pitch, features, pricing snippet, and CTA. |
+| **Events** | Upcoming events, webinars, China sourcing tours, workshops, product launches. A calendar view + upcoming event cards. |
+| **My Services** | What the logged-in user is already using or subscribed to across Suprans products. Their active LLC formation, their USDrop subscription, their active sourcing orders in China Imports, their franchise store, etc. One unified "what am I paying for across Suprans" view. |
+| **Account** | Profile, billing history across all Suprans products, saved payment methods, documents, notifications, support, logout. |
+
+### 3.4 Onboarding for Suprans Hub
+Keep the same 3-slide carousel → phone OTP structure. New copy:
+- **Slide 1:** *"One Suprans account. Every Suprans product."*
+- **Slide 2:** *"From US company formation to China sourcing — all your growth tools in one place."*
+- **Slide 3:** *"Sign in once. Manage everything."*
+
+---
+
+## 4. The Full Suprans Hub Product Directory (Home Tab)
+
+This section is the most important content deliverable. Each product below becomes a **tile on the Home tab** and a **detail page** inside Suprans Hub.
+
+Each tile needs:
+- **Icon / logo**
+- **Primary name** (the trading brand)
+- **Subtitle** (what the name actually stands for — so a new user instantly understands)
+- **Confident one-liner** (the pitch)
+- **Key features / bullet points** (3–5)
+- **CTA** (redirect link OR open in-app experience)
+
+---
+
+### Product 1 — Legal Nations
+- **Name:** Legal Nations
+- **Subtitle:** Global Company Formation Services
+- **One-liner:** *"Your US business, incorporated in 48 hours — from ₹15,000 end-to-end."*
+- **Key features:**
+  - Wyoming LLC formation at $149 (cheaper than Stripe Atlas)
+  - Multi-country formation (US, UK, UAE, Singapore)
+  - EIN, registered agent, operating agreement included
+  - US bank account setup guidance
+  - Annual compliance packages
+- **CTA:** "Start My Formation →" redirects to `legalnations.com`
+
+---
+
+### Product 2 — USDrop AI
+- **Name:** USDrop AI
+- **Subtitle:** USA Dropshipping Enablement Programme
+- **One-liner:** *"Launch your US Shopify store in 7 days — AI-powered product research, supplier network, and mentorship built in."*
+- **Key features:**
+  - AI-based winning product discovery
+  - Pre-vetted US and China supplier directory
+  - Store setup automation (Shopify + Stripe + apps)
+  - 1:1 mentorship and community
+  - Ad creative and campaign templates
+- **CTA:** "Join the Programme →" redirects to `usdrop.ai`
+
+---
+
+### Product 3 — China Imports
+- **Name:** China Imports
+- **Subtitle:** Custom Sourcing + Freight from China
+- **One-liner:** *"One-stop solution for all your sourcing needs from China."*
+- **Key features:**
+  - Submit RFQ, get quotes from 3 factories in 48–72 hours
+  - Sample → Bulk → Delivery fully managed
+  - Freight forwarding, customs clearance, GST invoicing
+  - Live order tracking through 9 stages
+  - City-wise product explorer
+- **CTA:** "Open China Imports →" deep-links into the China Imports app (the one we built in section 2)
+
+---
+
+### Product 4 — China Products
+- **Name:** China Products
+- **Subtitle:** Ready Catalog Wholesale from China
+- **One-liner:** *"Pre-curated SKUs at China wholesale prices, landed in India in 21 days."*
+- **Key features:**
+  - 500+ curated products across home, gifting, toys, accessories
+  - MOQ 100 units per SKU — no custom manufacturing needed
+  - Fixed pricing, fixed lead times, no negotiation required
+  - Perfect for D2C sellers, Amazon sellers, gifting companies
+  - GST-compliant invoicing
+- **CTA:** "Browse Catalog →" redirects to `chinaproducts.in`
+
+---
+
+### Product 5 — EazyToSell
+- **Name:** EazyToSell
+- **Subtitle:** Franchise Retail Store Model
+- **One-liner:** *"Open your own retail store without owning inventory — powered by our China supply chain."*
+- **Key features:**
+  - Franchise kit from ~₹2–5L setup
+  - Products supplied at ₹80–100, sell at ₹199–299 (50–60% gross margin)
+  - No warehousing on your side — we refill from China via sea LCL
+  - POS, barcoding, reorder automation included
+  - Store design + signage + staff training
+- **CTA:** "Apply for Franchise →" redirects to `eazytosell.in` (or contact form)
+
+---
+
+### Product 6 — Keeraft
+- **Name:** Keeraft
+- **Subtitle:** Luxury Furniture Import
+- **One-liner:** *"Designer furniture from Foshan, delivered to your home or project in India and Dubai."*
+- **Key features:**
+  - Direct import from Foshan factories
+  - 50%+ gross margin, luxury-tier finish
+  - White-glove delivery and installation (India + Dubai)
+  - Trade pricing for interior designers and hospitality projects
+  - Custom orders and full villa furnishing
+- **CTA:** "Explore Keeraft →" redirects to Keeraft landing page
+
+---
+
+### Product 7 — La Bella Monte
+- **Name:** La Bella Monte
+- **Subtitle:** Premium Watches
+- **One-liner:** *"Curated imported watches at a fraction of premium brand pricing."*
+- **Key features:**
+  - Direct import from Shenzhen manufacturers
+  - Premium-grade movements and finishes
+  - Gifting and corporate bulk orders
+  - Authentic warranty and service support
+- **CTA:** "Shop Watches →" redirects to the La Bella Monte site
+
+---
+
+### Product 8 — GoyoTours
+- **Name:** GoyoTours
+- **Subtitle:** Business & Leisure Travel to China + Southeast Asia
+- **One-liner:** *"Sourcing trips to China, corporate tours, and curated group packages — all handled end-to-end."*
+- **Key features:**
+  - Business sourcing trips (Guangzhou, Yiwu, Foshan, Dongguan, Shenzhen)
+  - Leisure group tours (China, Thailand, Vietnam)
+  - Visa support, flights, hotels, interpreters
+  - Corporate off-sites
+  - One point of contact through the whole trip
+- **CTA:** "Plan a Trip →" redirects to `goyotours.com` or opens the travel booking flow
+
+---
+
+### Product 9 — Upcoming Events (tile on Home, also full Events tab)
+- **Name:** Events
+- **Subtitle:** Workshops, Webinars, Sourcing Tours, Launches
+- **One-liner:** *"Every upcoming Suprans event — in one calendar."*
+- **Key features:**
+  - Free and paid events
+  - Sourcing tours with dates and seats remaining
+  - Webinars on US formation, dropshipping, imports
+  - Franchise meetups and product showcases
+- **CTA:** Tap opens the Events tab
+
+---
+
+### Product 10 — Account & Billing (tile on Home, also full Account tab)
+- **Name:** Account & Billing
+- **Subtitle:** Unified Billing Across All Suprans Products
+- **One-liner:** *"One login, one invoice, one payment method — across every Suprans service."*
+- **Key features:**
+  - See active subscriptions (USDrop, Legal Nations renewals, etc.)
+  - View all past invoices in one list (filter by product)
+  - Centralized payment methods (card, UPI, bank)
+  - GST invoices downloadable per transaction
+  - Support tickets visible across products
+- **CTA:** Tap opens the Account tab
+
+---
+
+### Future / optional tiles (add as placeholders if easy)
+- **Faire Brands Portfolio** — for US retail buyers browsing our Faire wholesale brands (Holiday Farm, Buddha Yoga, Toyarina, Buddha Ayurveda, Gullee Gadgets, Super Santa)
+- **Suprans Content / Community** — Lakshay's content hub, AI-native builder journey blog, YouTube/Instagram
+- **Suprans Careers** — current openings across verticals
+
+These can be added as "Coming Soon" cards until built.
+
+---
+
+## 5. Design System — Keep What Works
+
+The current design system in the Chinaimports-app repo is excellent and should be kept as-is for both apps. Only the CSS variable prefix changes per app.
+
+### Shared across both apps
+- **Font:** Inter Tight (loaded from Google Fonts)
+- **Mobile frame:** 375 × 812
+- **Tab bar:** 72px tall, 4 tabs, active state in brand red
+- **Cards, spacing, border radius:** same as current Suprans mobile app
+
+### China Imports palette (rename current `--suprans-*` tokens to `--chinaimports-*`)
+- Canvas background: `#FAF7F2` (warm cream)
+- Brand red: `#F03B3B`
+- Ink primary: `#1A1612`
+- Ink secondary: `#4A443E`
+- Ink tertiary: `#8C857D`
+- Border: `#E8E1D2`
+- Card: `#FFFFFF`
+- Red light: `#FEF0F0`
+
+### Suprans Hub palette (new tokens `--suprans-*` — keep same values but add a slight differentiator)
+Keep the **same palette** as a starting point so development is fast. If we want Suprans Hub to feel slightly more premium/corporate later, we can add:
+- Accent gold: `#C8A25A` (for Suprans parent brand, used sparingly on the logo and premium product tiles)
+- Everything else stays identical to China Imports palette
+
+This keeps both apps visually related (since they share a codebase and a parent brand) without feeling identical.
+
+---
+
+## 6. Build Sequence — What to Do First
+
+Tell Replit to execute in this order:
+
+### Phase A — Rename current Suprans app to China Imports (in existing repo)
+1. Do a global rename of `suprans` → `chinaimports` (routes, files, folders, component names, CSS variables).
+2. Update `AppLauncher.tsx` tile and link.
+3. Update onboarding slide copy to be sourcing-focused, no Suprans mention.
+4. Rename any "powered by Suprans" footers to either remove entirely or generic "© 2026 China Imports."
+5. Verify every screen end-to-end on the 375×812 mobile frame.
+6. Update `replit.md` — the second app in the repo is now called "China Imports," not "Suprans."
+7. Commit to `main` and push.
+
+### Phase B — Create the new Suprans Hub app
+1. Duplicate the repo (download ZIP or fork) into a new Replit project called `suprans-hub-app`.
+2. Push to a new GitHub repo `suprans-hub-app`.
+3. In the new repo, remove the Flock app if not needed (optional).
+4. Rename the (now China Imports) app routes back to `/suprans/*` — or better, build a fresh `/hub/*` route structure and delete the sourcing-specific screens.
+5. Build the 4 new tabs (Home, Events, My Services, Account) using the shared design system.
+6. Build the Home tab tile grid first — 10 product tiles based on section 4 of this doc.
+7. Build each product detail page (tap a tile → scroll view with subtitle, one-liner, key features, CTA).
+8. Wire up the CTAs (most are external redirects to landing pages; a few open in-app flows).
+9. Build Events tab — placeholder event cards for now.
+10. Build My Services tab — placeholder cards for now (full data wiring comes later).
+11. Build Account tab — profile + billing placeholder.
+12. Update the `AppLauncher.tsx` (if kept) to list the new Suprans Hub app as an entry point.
+
+### Phase C — Wire the two apps together (post-MVP)
+- From Suprans Hub → "Open China Imports" CTA deep-links to the China Imports app (either opens the mobile web URL or the actual app).
+- From China Imports → "Powered by Suprans Ecosystem" footer (tiny, not prominent) links back to Suprans Hub. *(Optional — only if you want cross-linking; if you want China Imports to feel fully standalone, skip this entirely.)*
+
+---
+
+## 7. What Replit Needs to Understand (One-Paragraph Summary)
+
+> We have one repo today that contains a mobile app mis-labeled as "Suprans" but actually doing sourcing. We are renaming that app to "China Imports" (strip every Suprans mention, keep the same 4-tab chat-first design) so it becomes a standalone sourcing product. Separately, we are duplicating the codebase into a new repo called `suprans-hub-app` where we build a proper Suprans parent-brand directory app — a tile grid of all our verticals (Legal Nations, USDrop AI, China Imports, China Products, EazyToSell, Keeraft, La Bella Monte, GoyoTours) plus Events and unified Account/Billing. Both apps share the same tech stack, design system, and mobile frame. China Imports lives in the original repo; Suprans Hub lives in a new repo. The design system is excellent and stays — only the names, routes, tabs, and content change.
+
+---
+
+## 8. Content Rules for Every Tile and Page
+
+- **Primary name is always the trading brand** (e.g., "USDrop AI"), never the internal description.
+- **Subtitle immediately explains what the name stands for** (e.g., "USA Dropshipping Enablement Programme") so a first-time visitor instantly knows what it is.
+- **One-liner is a confident, specific, benefit-led sentence** — not marketing fluff. It says what the user gets, not what we do.
+- **No emojis** in any of the copy or inside the app UI (per our brand standard).
+- **Professional tone throughout** — no AI-generated feel, no excessive exclamation, no Gen-Z slang.
+- **All redirects open in the same tab for mobile web, or external browser for native.** Never break the user's session flow unexpectedly.
+
+---
+
+## 9. Out of Scope for This Build (Do Not Do Yet)
+
+These will come later — do not let them block this phase:
+- Full billing integration across products (placeholder for now)
+- Real-time active-services data fetching (placeholder cards for now)
+- Deep linking between China Imports app and Suprans Hub app (Phase C only)
+- Full event calendar with ticketing (static event cards for now)
+- Auth SSO across Legal Nations / USDrop / Suprans (use separate logins per product for MVP)
+- Multi-language support
+
+---
+
+## 10. Done Means
+
+The Replit agent can consider this build done when:
+1. The original Chinaimports-app repo has a fully renamed China Imports mobile app with zero Suprans mentions.
+2. The new suprans-hub-app repo has a working 4-tab directory app with the 10 product tiles, each with a subtitle, one-liner, feature list, and working CTA (redirect or placeholder).
+3. Both apps run via `npm run dev`, render cleanly on 375×812 mobile frame, and use the shared design tokens.
+4. `replit.md` in both repos is updated to describe the new purpose of each app.
+5. Onboarding copy is rewritten for both apps to match their new identities.
+
+---
+
+**End of guide. Paste this entire document into the new Replit project's initial prompt, or drop it in as `replit.md` in the root of the duplicated repo. The AI agent should plan the build from this document.**
