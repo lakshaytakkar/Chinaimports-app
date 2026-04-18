@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import heroSourcingImg from "@assets/suprans/hero/hero-sourcing.png";
+import heroLogisticsImg from "@assets/suprans/hero/hero-logistics.png";
+import heroCustomsImg from "@assets/suprans/hero/hero-customs.png";
 import { useLocation } from "wouter";
 import {
   Search,
@@ -24,8 +27,7 @@ interface HeroSlide {
   id: string;
   headline: string;
   subCopy: string;
-  gradientFrom: string;
-  gradientTo: string;
+  image: string;
   cta: string;
 }
 
@@ -62,24 +64,21 @@ const HERO_SLIDES: HeroSlide[] = [
     id: "h1",
     headline: "Source Quality Products from China",
     subCopy: "Access 10,000+ verified suppliers. We handle negotiation, sampling & QC.",
-    gradientFrom: "#4F46E5",
-    gradientTo: "#7C3AED",
+    image: heroSourcingImg,
     cta: "Learn more",
   },
   {
     id: "h2",
     headline: "End-to-End Logistics, Zero Hassle",
     subCopy: "From factory door to your warehouse — sea, air, and express options.",
-    gradientFrom: "#0891B2",
-    gradientTo: "#059669",
+    image: heroLogisticsImg,
     cta: "Learn more",
   },
   {
     id: "h3",
     headline: "Customs Clearance in 48 Hours",
     subCopy: "Our experts file, follow up, and clear your goods — fast and compliant.",
-    gradientFrom: "#D97706",
-    gradientTo: "#F03B3B",
+    image: heroCustomsImg,
     cta: "Learn more",
   },
 ];
@@ -413,14 +412,17 @@ function HeroBannerCarousel() {
     <div className="px-4 pt-4 pb-2 shrink-0">
       <div
         data-testid="hero-carousel"
-        className="relative w-full h-[168px] rounded-2xl overflow-hidden cursor-pointer select-none"
-        style={{
-          background: `linear-gradient(135deg, ${slide.gradientFrom} 0%, ${slide.gradientTo} 100%)`,
-          transition: "background 0.4s ease",
-        }}
+        className="relative w-full h-[168px] rounded-2xl overflow-hidden cursor-pointer select-none bg-gray-800"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
       >
+        <img
+          key={slide.id}
+          src={slide.image}
+          alt={slide.headline}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/45" />
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div>
             <h2 className="text-[17px] font-bold text-white leading-tight max-w-[72%]">{slide.headline}</h2>

@@ -1,4 +1,11 @@
 import { useState } from "react";
+import thumbMerinoWool from "@assets/suprans/products/merino-wool-sweaters.png";
+import thumbCeramicMugs from "@assets/suprans/products/ceramic-coffee-mugs.png";
+import thumbLedLights from "@assets/suprans/products/led-strip-lights.png";
+import thumbCookware from "@assets/suprans/products/stainless-steel-cookware.png";
+import thumbCottonTotes from "@assets/suprans/products/cotton-tote-bags.png";
+import thumbGloves from "@assets/suprans/products/industrial-gloves.png";
+import thumbBamboo from "@assets/suprans/products/bamboo-kitchenware-set.png";
 import { useLocation } from "wouter";
 import {
   ArrowLeft,
@@ -33,6 +40,7 @@ interface Project {
   amountPaidRaw: number;
   amountTotalRaw: number;
   documents: { name: string; size: string }[];
+  thumbnail: string;
 }
 
 const STAGE_LABELS = ["Sourcing", "Quality Check", "Customs", "Shipping", "Delivered"];
@@ -54,6 +62,7 @@ const ACTIVE_PROJECTS: Project[] = [
     amountPaid: "₹1,26,000",
     amountPaidRaw: 126000,
     amountTotalRaw: 420000,
+    thumbnail: thumbMerinoWool,
     documents: [
       { name: "Purchase Order.pdf", size: "212 KB" },
       { name: "Supplier Agreement.pdf", size: "344 KB" },
@@ -73,6 +82,7 @@ const ACTIVE_PROJECTS: Project[] = [
     amountPaid: "₹2,24,000",
     amountPaidRaw: 224000,
     amountTotalRaw: 280000,
+    thumbnail: thumbCeramicMugs,
     documents: [
       { name: "Commercial Invoice.pdf", size: "189 KB" },
       { name: "Bill of Lading.pdf", size: "276 KB" },
@@ -93,6 +103,7 @@ const ACTIVE_PROJECTS: Project[] = [
     amountPaid: "₹48,000",
     amountPaidRaw: 48000,
     amountTotalRaw: 160000,
+    thumbnail: thumbLedLights,
     documents: [
       { name: "Tech Spec Sheet.pdf", size: "522 KB" },
       { name: "Purchase Order.pdf", size: "188 KB" },
@@ -112,6 +123,7 @@ const ACTIVE_PROJECTS: Project[] = [
     amountPaid: "₹2,88,000",
     amountPaidRaw: 288000,
     amountTotalRaw: 360000,
+    thumbnail: thumbCookware,
     documents: [
       { name: "Commercial Invoice.pdf", size: "201 KB" },
       { name: "Certificate of Origin.pdf", size: "148 KB" },
@@ -134,6 +146,7 @@ const COMPLETED_PROJECTS: Project[] = [
     amountPaid: "₹1,20,000",
     amountPaidRaw: 120000,
     amountTotalRaw: 120000,
+    thumbnail: thumbCottonTotes,
     documents: [
       { name: "Delivery Receipt.pdf", size: "88 KB" },
       { name: "Commercial Invoice.pdf", size: "176 KB" },
@@ -153,6 +166,7 @@ const COMPLETED_PROJECTS: Project[] = [
     amountPaid: "₹2,40,000",
     amountPaidRaw: 240000,
     amountTotalRaw: 240000,
+    thumbnail: thumbGloves,
     documents: [
       { name: "Packing List.xlsx", size: "112 KB" },
       { name: "Bill of Lading.pdf", size: "231 KB" },
@@ -173,6 +187,7 @@ const COMPLETED_PROJECTS: Project[] = [
     amountPaid: "₹88,000",
     amountPaidRaw: 88000,
     amountTotalRaw: 88000,
+    thumbnail: thumbBamboo,
     documents: [
       { name: "Commercial Invoice.pdf", size: "155 KB" },
       { name: "Delivery Receipt.pdf", size: "72 KB" },
@@ -258,7 +273,14 @@ function ProjectCard({ project, onTap }: { project: Project; onTap: () => void }
             </span>
           )}
         </div>
-        <ChevronRight size={16} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
+        <div className="flex items-center gap-2">
+          <img
+            src={project.thumbnail}
+            alt={project.productName}
+            className="w-14 h-14 rounded-xl object-cover border border-suprans-border"
+          />
+          <ChevronRight size={16} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
+        </div>
       </div>
 
       <p className="text-[14px] font-bold text-suprans-ink mb-1">{project.productName}</p>
@@ -319,7 +341,12 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
         <button data-testid="btn-back-project" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-suprans-canvas">
           <ArrowLeft size={20} color="var(--suprans-ink)" strokeWidth={2} />
         </button>
-        <div className="flex-1">
+        <img
+          src={project.thumbnail}
+          alt={project.productName}
+          className="w-12 h-12 rounded-xl object-cover border border-suprans-border shrink-0"
+        />
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-[15px] font-bold text-suprans-ink">{project.id}</span>
             <span
@@ -333,7 +360,7 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
               {project.currentStage}
             </span>
           </div>
-          <p className="text-[12px] text-suprans-ink-secondary mt-0.5">{project.productName}</p>
+          <p className="text-[12px] text-suprans-ink-secondary mt-0.5 truncate">{project.productName}</p>
         </div>
       </div>
 

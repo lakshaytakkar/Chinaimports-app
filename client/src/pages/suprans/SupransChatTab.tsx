@@ -1,4 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import avatarPriya from "@assets/suprans/avatars/priya-sharma.png";
+import avatarRaj from "@assets/suprans/avatars/raj-patel.png";
+import avatarMeera from "@assets/suprans/avatars/meera-iyer.png";
+import avatarArjun from "@assets/suprans/avatars/arjun-singh.png";
+import avatarSupransTeam from "@assets/suprans/avatars/suprans-team.png";
+import avatarDivya from "@assets/suprans/avatars/divya-nair.png";
+import avatarVikram from "@assets/suprans/avatars/vikram-gupta.png";
+import avatarAnanya from "@assets/suprans/avatars/ananya-krishnan.png";
 import {
   Bell,
   Search,
@@ -22,6 +30,7 @@ interface Conversation {
   role: string;
   initials: string;
   avatarColor: string;
+  avatar?: string;
   lastMessage: string;
   lastMessageType: "text" | "voice" | "file";
   timestamp: string;
@@ -49,6 +58,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "Sourcing Manager",
     initials: "PS",
     avatarColor: "#7C3AED",
+    avatar: avatarPriya,
     lastMessage: "I've sent the updated quotation for review",
     lastMessageType: "text",
     timestamp: "11:42 AM",
@@ -62,6 +72,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "Logistics Coordinator",
     initials: "RP",
     avatarColor: "#0891B2",
+    avatar: avatarRaj,
     lastMessage: "Voice note · 0:38",
     lastMessageType: "voice",
     timestamp: "10:15 AM",
@@ -75,6 +86,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "Customs Officer",
     initials: "MI",
     avatarColor: "#D97706",
+    avatar: avatarMeera,
     lastMessage: "Commercial Invoice - Final.pdf",
     lastMessageType: "file",
     timestamp: "9:03 AM",
@@ -88,6 +100,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "Account Manager",
     initials: "AS",
     avatarColor: "#059669",
+    avatar: avatarArjun,
     lastMessage: "Your shipment has been cleared at customs",
     lastMessageType: "text",
     timestamp: "Yesterday",
@@ -101,6 +114,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "General Support",
     initials: "ST",
     avatarColor: "#F03B3B",
+    avatar: avatarSupransTeam,
     lastMessage: "Welcome to Suprans! How can we help today?",
     lastMessageType: "text",
     timestamp: "Mon",
@@ -114,6 +128,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "Quality Inspector",
     initials: "DN",
     avatarColor: "#BE185D",
+    avatar: avatarDivya,
     lastMessage: "Inspection report has been attached",
     lastMessageType: "file",
     timestamp: "Mon",
@@ -127,6 +142,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "Payments Team",
     initials: "VG",
     avatarColor: "#2563EB",
+    avatar: avatarVikram,
     lastMessage: "Your payment of ₹2,40,000 was confirmed",
     lastMessageType: "text",
     timestamp: "Sun",
@@ -140,6 +156,7 @@ const CONVERSATIONS: Conversation[] = [
     role: "Storage Coordinator",
     initials: "AK",
     avatarColor: "#0F766E",
+    avatar: avatarAnanya,
     lastMessage: "Warehouse slot confirmed for next Tuesday",
     lastMessageType: "text",
     timestamp: "Sat",
@@ -372,12 +389,20 @@ function ConversationRow({
       className="w-full flex items-center gap-3 px-5 py-3 hover:bg-white/60 active:bg-white/80 text-left"
     >
       <div className="relative shrink-0">
-        <div
-          className="w-12 h-12 rounded-full flex items-center justify-center text-[15px] font-bold text-white"
-          style={{ background: conv.avatarColor }}
-        >
-          {conv.initials}
-        </div>
+        {conv.avatar ? (
+          <img
+            src={conv.avatar}
+            alt={conv.name}
+            className="w-12 h-12 rounded-full object-cover"
+          />
+        ) : (
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center text-[15px] font-bold text-white"
+            style={{ background: conv.avatarColor }}
+          >
+            {conv.initials}
+          </div>
+        )}
         {conv.online && (
           <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-white" />
         )}
@@ -444,12 +469,20 @@ function ChatDetail({
         <button data-testid="btn-back" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-suprans-canvas">
           <ArrowLeft size={20} color="var(--suprans-ink)" strokeWidth={2} />
         </button>
-        <div
-          className="w-10 h-10 rounded-full flex items-center justify-center text-[13px] font-bold text-white shrink-0"
-          style={{ background: conv.avatarColor }}
-        >
-          {conv.initials}
-        </div>
+        {conv.avatar ? (
+          <img
+            src={conv.avatar}
+            alt={conv.name}
+            className="w-10 h-10 rounded-full object-cover shrink-0"
+          />
+        ) : (
+          <div
+            className="w-10 h-10 rounded-full flex items-center justify-center text-[13px] font-bold text-white shrink-0"
+            style={{ background: conv.avatarColor }}
+          >
+            {conv.initials}
+          </div>
+        )}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
             <span className="text-[15px] font-semibold text-suprans-ink truncate">{conv.name}</span>

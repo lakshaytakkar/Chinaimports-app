@@ -1,0 +1,110 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "DTgS6PpjaQ9obXnGMXBiO"
+uri = "file://attached_assets/suprans/hero/hero-sourcing.png"
+type = "image"
+title = "china factory sourcing hero"
+
+[[generated]]
+id = "8ibfUQFIimLhNj2A419GR"
+uri = "file://attached_assets/suprans/hero/hero-logistics.png"
+type = "image"
+title = "container ship logistics hero"
+
+[[generated]]
+id = "hAAOAh9DOCezN8CpcFsHZ"
+uri = "file://attached_assets/suprans/hero/hero-customs.png"
+type = "image"
+title = "customs clearance hero"
+
+[[generated]]
+id = "mEh8wmLGGJ3klnpuyA1qU"
+uri = "file://attached_assets/suprans/products/merino-wool-sweaters.png"
+type = "image"
+title = "merino wool sweaters product"
+
+[[generated]]
+id = "2xTV9bKfFLEUdXfLFq0RB"
+uri = "file://attached_assets/suprans/products/ceramic-coffee-mugs.png"
+type = "image"
+title = "ceramic coffee mugs product"
+
+[[generated]]
+id = "fP6gzuUa11pDOOjD9yYX6"
+uri = "file://attached_assets/suprans/products/led-strip-lights.png"
+type = "image"
+title = "led strip lights product"
+
+[[generated]]
+id = "hwELCZNQApi6JAorSd8gj"
+uri = "file://attached_assets/suprans/products/stainless-steel-cookware.png"
+type = "image"
+title = "stainless steel cookware product"
+
+[[generated]]
+id = "9vXqetwGkxYPneCpEQi7R"
+uri = "file://attached_assets/suprans/products/cotton-tote-bags.png"
+type = "image"
+title = "cotton tote bags product"
+
+[[generated]]
+id = "3bZIyjyMVqd_0XhjFvIoB"
+uri = "file://attached_assets/suprans/products/industrial-gloves.png"
+type = "image"
+title = "industrial gloves product"
+
+[[generated]]
+id = "mJiYKHiKkGhrQEq2Q28gi"
+uri = "file://attached_assets/suprans/products/bamboo-kitchenware-set.png"
+type = "image"
+title = "bamboo kitchenware set product"
+
+[[generated]]
+id = "RDVrt0SFQeHlwzNe9Lrms"
+uri = "file://attached_assets/suprans/avatars/priya-sharma.png"
+type = "image"
+title = "priya sharma headshot"
+
+[[generated]]
+id = "sgQOZtAPYOWOkUBNPrGei"
+uri = "file://attached_assets/suprans/avatars/raj-patel.png"
+type = "image"
+title = "raj patel headshot"
+
+[[generated]]
+id = "8c1XQtH3MV9cj9LPjrhoj"
+uri = "file://attached_assets/suprans/avatars/meera-iyer.png"
+type = "image"
+title = "meera iyer headshot"
+
+[[generated]]
+id = "cJZeguWFw1L9QvJLws-oj"
+uri = "file://attached_assets/suprans/avatars/arjun-singh.png"
+type = "image"
+title = "arjun singh headshot"
+
+[[generated]]
+id = "MRRSKjIgZYDevZA9wwDI_"
+uri = "file://attached_assets/suprans/avatars/divya-nair.png"
+type = "image"
+title = "divya nair headshot"
+
+[[generated]]
+id = "6M3s8tTq9BfVeoXqm7hAr"
+uri = "file://attached_assets/suprans/avatars/vikram-gupta.png"
+type = "image"
+title = "vikram gupta headshot"
+
+[[generated]]
+id = "x64TdaGvZ9050EYF74V16"
+uri = "file://attached_assets/suprans/avatars/suprans-team.png"
+type = "image"
+title = "suprans team logo tile"
+
+[[generated]]
+id = "-Z61dh-Fzk-wMVFueURZx"
+uri = "file://attached_assets/suprans/avatars/ananya-krishnan.png"
+type = "image"
+title = "ananya krishnan headshot"
