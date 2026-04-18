@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import { MessageCircle, Compass, FolderOpen, User } from "lucide-react";
+import SupransMobileShell from "./SupransMobileShell";
 
 const TABS = [
   { id: "chat", label: "Chat", Icon: MessageCircle, path: "/suprans/chat" },
@@ -22,20 +23,15 @@ export default function SupransApp() {
   const activeTab = getActiveTab(location);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <SupransMobileShell>
       <div
-        className="relative w-[375px] h-[812px] overflow-hidden shadow-2xl"
-        style={{ fontFamily: "var(--suprans-font)" }}
+        className="absolute inset-0 bottom-[72px] overflow-y-auto"
+        style={{ background: "var(--suprans-canvas)" }}
       >
-        <div
-          className="absolute inset-0 bottom-[72px] overflow-y-auto"
-          style={{ background: "var(--suprans-canvas)" }}
-        >
-          <PlaceholderScreen tab={activeTab} />
-        </div>
-        <SupransTabBar activeTab={activeTab} onNavigate={navigate} />
+        <PlaceholderScreen tab={activeTab} />
       </div>
-    </div>
+      <SupransTabBar activeTab={activeTab} onNavigate={navigate} />
+    </SupransMobileShell>
   );
 }
 
@@ -114,13 +110,13 @@ export function SupransTabBar({
               />
             )}
             <Icon
-              size={22}
+              size={28}
               strokeWidth={isActive ? 2.2 : 1.6}
               color={isActive ? "var(--suprans-red)" : "var(--suprans-ink-tertiary)"}
               className="relative z-10"
             />
             <span
-              className="text-[10px] font-semibold relative z-10 leading-none mt-0.5"
+              className="text-[11px] font-semibold relative z-10 leading-none mt-0.5"
               style={{
                 color: isActive ? "var(--suprans-red)" : "var(--suprans-ink-tertiary)",
               }}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { ChevronRight } from "lucide-react";
+import SupransMobileShell from "./SupransMobileShell";
 
 const SLIDES = [
   {
@@ -69,12 +70,8 @@ export default function SupransOnboarding() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div
-        className="relative w-[375px] h-[812px] overflow-hidden shadow-2xl"
-        style={{ fontFamily: "var(--suprans-font)" }}
-      >
-        {step === "onboarding" && (
+    <SupransMobileShell>
+      {step === "onboarding" && (
           <OnboardingSlides
             slide={slide}
             setSlide={setSlide}
@@ -106,8 +103,7 @@ export default function SupransOnboarding() {
             onResend={() => setTimer(30)}
           />
         )}
-      </div>
-    </div>
+    </SupransMobileShell>
   );
 }
 
