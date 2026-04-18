@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { ChevronRight } from "lucide-react";
 import SupransMobileShell from "./SupransMobileShell";
+import { SUPRANS_AUTH_KEY } from "./constants";
 
 const SLIDES = [
   {
@@ -99,7 +100,10 @@ export default function SupransOnboarding() {
             otpRefs={otpRefs}
             onChange={handleOtpChange}
             onKeyDown={handleOtpKeyDown}
-            onVerify={() => navigate("/suprans/chat")}
+            onVerify={() => {
+              localStorage.setItem(SUPRANS_AUTH_KEY, "true");
+              navigate("/suprans/chat");
+            }}
             onResend={() => setTimer(30)}
           />
         )}

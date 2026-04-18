@@ -1,4 +1,5 @@
 import { useLocation } from "wouter";
+import { SUPRANS_AUTH_KEY } from "./suprans/constants";
 
 const APPS = [
   {
@@ -42,7 +43,14 @@ export default function AppLauncher() {
           <button
             key={app.id}
             data-testid={`btn-launch-${app.id}`}
-            onClick={() => navigate(app.path)}
+            onClick={() => {
+              if (app.id === "suprans") {
+                const authed = localStorage.getItem(SUPRANS_AUTH_KEY) === "true";
+                navigate(authed ? "/suprans/chat" : "/suprans/onboarding");
+              } else {
+                navigate(app.path);
+              }
+            }}
             className="w-full rounded-3xl p-5 flex items-center gap-4 text-left shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
             style={{ background: app.bg, border: `1.5px solid ${app.color}20` }}
           >

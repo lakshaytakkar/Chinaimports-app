@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { SLIDE_DURATION_MS } from "./transitions";
 import { useLocation } from "wouter";
+import { SUPRANS_AUTH_KEY } from "./constants";
 import {
   ArrowLeft,
   ChevronRight,
@@ -120,6 +121,7 @@ export default function SupransAccountTab() {
   };
 
   const handleSignOut = () => {
+    localStorage.removeItem(SUPRANS_AUTH_KEY);
     navigate("/suprans/onboarding");
   };
 
