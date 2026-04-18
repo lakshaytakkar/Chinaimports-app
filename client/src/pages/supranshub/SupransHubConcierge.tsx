@@ -7,8 +7,11 @@ import {
   Check,
   ArrowLeft,
   Calendar,
+  AlertCircle,
+  Loader2,
 } from "lucide-react";
 import { PRODUCTS } from "./constants";
+import { apiRequest } from "@/lib/queryClient";
 
 export type ConciergeAction = "advisor" | "quote";
 
@@ -144,25 +147,89 @@ export function SupransConciergeFlow({
 }) {
   const [submitted, setSubmitted] = useState(false);
   const [refId, setRefId] = useState<string>("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string>("");
   const [slot, setSlot] = useState<number | null>(null);
   const [productCtx, setProductCtx] = useState<string>(initialContext ?? "");
+  const [advisorName, setAdvisorName] = useState("");
+  const [advisorContact, setAdvisorContact] = useState("");
   const [quoteProducts, setQuoteProducts] = useState<string[]>([]);
   const [quoteBrief, setQuoteBrief] = useState("");
+  const [quoteName, setQuoteName] = useState("");
+  const [quoteContact, setQuoteContact] = useState("");
 
   useEffect(() => {
     setSubmitted(false);
     setRefId("");
+    setSubmitting(false);
+    setSubmitError("");
     setSlot(null);
     setProductCtx(initialContext ?? "");
+    setAdvisorName("");
+    setAdvisorContact("");
     setQuoteProducts([]);
     setQuoteBrief("");
+    setQuoteName("");
+    setQuoteContact("");
   }, [action, initialContext]);
 
   const meta = ACTIONS.find((a) => a.id === action)!;
   const canSubmit =
     action === "advisor"
-      ? slot !== null
-      : quoteProducts.length > 0 && quoteBrief.trim().length > 4;
+      ? slot !== null &&
+        advisorName.trim().length > 1 &&
+        advisorContact.trim().length > 4
+      : quoteProducts.length > 0 &&
+        quoteBrief.trim().length > 4 &&
+        quoteName.trim().length > 1 &&
+        quoteContact.trim().length > 4;
+
+  const buildPayload = () => {
+    if (action === "advisor") {
+      return {
+        kind: "advisor" as const,
+        contactName: advisorName.trim(),
+        contactInfo: advisorContact.trim(),
+        payload: {
+          slot: SLOTS[slot!],
+          productContext: productCtx || undefined,
+        },
+      };
+    }
+    return {
+      kind: "quote" as const,
+      contactName: quoteName.trim(),
+      contactInfo: quoteContact.trim(),
+      payload: {
+        productIds: quoteProducts,
+        brief: quoteBrief.trim(),
+      },
+    };
+  };
+
+  const handleSubmit = async () => {
+    if (!canSubmit || submitting) return;
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await apiRequest(
+        "POST",
+        "/api/concierge/submissions",
+        buildPayload(),
+      );
+      const data = (await res.json()) as { id: string };
+      setRefId(data.id);
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? "We couldn't reach the concierge team. Please try again."
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const submitLabel =
     action === "advisor" ? "Confirm slot" : "Request quote";
@@ -230,6 +297,10 @@ export function SupransConciergeFlow({
             productCtx={productCtx}
             setProductCtx={setProductCtx}
             initialContext={initialContext}
+            name={advisorName}
+            setName={setAdvisorName}
+            contact={advisorContact}
+            setContact={setAdvisorContact}
           />
         ) : (
           <QuoteForm
@@ -237,24 +308,49 @@ export function SupransConciergeFlow({
             setPicked={setQuoteProducts}
             brief={quoteBrief}
             setBrief={setQuoteBrief}
+            name={quoteName}
+            setName={setQuoteName}
+            contact={quoteContact}
+            setContact={setQuoteContact}
           />
         )}
       </div>
 
       {!submitted && (
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 pt-3 bg-supranshub-canvas border-t border-supranshub-border">
+          {submitError && (
+            <div
+              data-testid="text-concierge-error"
+              className="mb-3 flex items-start gap-2 px-3 py-2 rounded-xl bg-supranshub-red/10 border border-supranshub-red/30"
+            >
+              <AlertCircle
+                size={15}
+                color="var(--supranshub-red)"
+                className="mt-0.5 shrink-0"
+              />
+              <p className="text-[12.5px] text-supranshub-red leading-snug">
+                {submitError}
+              </p>
+            </div>
+          )}
           <button
             data-testid="btn-concierge-submit"
-            onClick={() => {
-              setRefId(`SH-${Math.floor(100000 + Math.random() * 900000)}`);
-              setSubmitted(true);
-            }}
-            disabled={!canSubmit}
+            onClick={handleSubmit}
+            disabled={!canSubmit || submitting}
             className="w-full h-[52px] rounded-2xl font-semibold text-[15px] flex items-center justify-center gap-2 text-white disabled:opacity-40 active:opacity-90 transition-opacity"
             style={{ background: meta.fg }}
           >
-            {submitLabel}
-            <ArrowRight size={16} />
+            {submitting ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                Sending…
+              </>
+            ) : (
+              <>
+                {submitError ? "Try again" : submitLabel}
+                <ArrowRight size={16} />
+              </>
+            )}
           </button>
         </div>
       )}
@@ -319,12 +415,20 @@ function AdvisorForm({
   productCtx,
   setProductCtx,
   initialContext,
+  name,
+  setName,
+  contact,
+  setContact,
 }: {
   slot: number | null;
   setSlot: (i: number) => void;
   productCtx: string;
   setProductCtx: (v: string) => void;
   initialContext?: string;
+  name: string;
+  setName: (v: string) => void;
+  contact: string;
+  setContact: (v: string) => void;
 }) {
   const chips = useMemo(() => {
     const base = ["General", ...PRODUCT_OPTIONS.slice(0, 5).map((p) => p.name)];
@@ -336,6 +440,20 @@ function AdvisorForm({
 
   return (
     <div className="flex flex-col gap-5">
+      <Field
+        label="Your name"
+        testId="input-advisor-name"
+        value={name}
+        onChange={setName}
+        placeholder="e.g. Aarav Mehta"
+      />
+      <Field
+        label="Phone or email"
+        testId="input-advisor-contact"
+        value={contact}
+        onChange={setContact}
+        placeholder="+91 98XXX XXXXX or you@company.com"
+      />
       <div>
         <p className="text-[12px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
           What's it about? (optional)
@@ -407,17 +525,39 @@ function QuoteForm({
   setPicked,
   brief,
   setBrief,
+  name,
+  setName,
+  contact,
+  setContact,
 }: {
   picked: string[];
   setPicked: (ids: string[]) => void;
   brief: string;
   setBrief: (v: string) => void;
+  name: string;
+  setName: (v: string) => void;
+  contact: string;
+  setContact: (v: string) => void;
 }) {
   const toggle = (id: string) =>
     setPicked(picked.includes(id) ? picked.filter((p) => p !== id) : [...picked, id]);
 
   return (
     <div className="flex flex-col gap-5">
+      <Field
+        label="Your name"
+        testId="input-quote-name"
+        value={name}
+        onChange={setName}
+        placeholder="e.g. Aarav Mehta"
+      />
+      <Field
+        label="Phone or email"
+        testId="input-quote-contact"
+        value={contact}
+        onChange={setContact}
+        placeholder="+91 98XXX XXXXX or you@company.com"
+      />
       <div>
         <p className="text-[12px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
           Which products?
@@ -465,6 +605,37 @@ function QuoteForm({
             className="w-full h-[120px] resize-none outline-none text-[13.5px] text-supranshub-ink placeholder:text-supranshub-ink-tertiary leading-snug"
           />
         </div>
+      </div>
+    </div>
+  );
+}
+
+function Field({
+  label,
+  testId,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  testId: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+}) {
+  return (
+    <div>
+      <p className="text-[12px] font-bold uppercase tracking-wider text-supranshub-ink-tertiary mb-2">
+        {label}
+      </p>
+      <div className="bg-white rounded-2xl border border-supranshub-border focus-within:border-supranshub-red transition-colors">
+        <input
+          data-testid={testId}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="w-full h-[48px] px-4 outline-none bg-transparent text-[13.5px] text-supranshub-ink placeholder:text-supranshub-ink-tertiary"
+        />
       </div>
     </div>
   );
