@@ -48,7 +48,15 @@ The root `/` route shows an App Launcher page with a live phone-frame preview of
 - Ink / Ink Secondary / Ink Tertiary: same as China Imports
 - Border / Card / Red Light: same as China Imports
 - Font: `Inter Tight`
-- Tab Bar: 72px tall, 4 tabs (Home, Events, My Services, Account), no FAB, active = brand red
+- Tab Bar: 72px tall, 4 tabs (Home, Events, Services, Account) + center "Concierge" FAB (gold gradient), active tab = brand red
+
+### Suprans Concierge (center FAB flow)
+A gold raised FAB sits in the middle of the Suprans Hub tab bar. Tapping it opens a bottom sheet titled "How can we help?" with 4 action cards. Each opens a focused full-screen flow that ends in a shared success state (with a generated SH-XXXXXX reference number).
+- **Talk to an Advisor** — gold theme, optional product context chips + 5 bookable slots
+- **Ask Suprans AI** — red theme, free-text prompt + chip suggestions; on submit, returns up to 3 ranked product matches via keyword scoring (legalnations / usdrop / china-imports / etc.) and offers human handoff
+- **Custom Quote** — blue theme, multi-select product chips + brief textarea
+- **Refer a Business** — green theme, name + contact + note (₹5,000 reward callout)
+- File: `client/src/pages/supranshub/SupransHubConcierge.tsx`
 
 ## File Structure
 ```
@@ -67,6 +75,7 @@ client/src/
 │       ├── SupransHubApp.tsx          ← Tab shell + SupransHubTabBar
 │       ├── SupransHub{Home,Events,Services,Account}Tab.tsx
 │       ├── SupransHubProductDetail.tsx
+│       ├── SupransHubConcierge.tsx    ← Bottom sheet + 4 concierge mini-flows
 │       ├── SupransHubMobileShell.tsx
 │       └── constants.ts               ← SUPRANSHUB_AUTH_KEY + PRODUCTS + EVENTS + SERVICES
 └── index.css                    ← Design tokens for both apps
