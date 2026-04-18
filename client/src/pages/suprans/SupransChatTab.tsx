@@ -134,6 +134,19 @@ const CONVERSATIONS: Conversation[] = [
     unread: 0,
     online: false,
   },
+  {
+    id: "8",
+    name: "Ananya Krishnan",
+    role: "Storage Coordinator",
+    initials: "AK",
+    avatarColor: "#0F766E",
+    lastMessage: "Warehouse slot confirmed for next Tuesday",
+    lastMessageType: "text",
+    timestamp: "Sat",
+    dateGroup: "This week",
+    unread: 0,
+    online: false,
+  },
 ];
 
 const MOCK_MESSAGES: Record<string, Message[]> = {
@@ -168,6 +181,10 @@ const MOCK_MESSAGES: Record<string, Message[]> = {
   "7": [
     { id: "m1", type: "text", content: "Your payment of ₹2,40,000 was confirmed", sent: false, time: "Sun", read: true },
     { id: "m2", type: "text", content: "Thank you! Please share the receipt.", sent: true, time: "Sun", read: true },
+  ],
+  "8": [
+    { id: "m1", type: "text", content: "Hi! We have warehouse space available from 22nd.", sent: false, time: "Sat", read: true },
+    { id: "m2", type: "text", content: "Warehouse slot confirmed for next Tuesday", sent: false, time: "Sat", read: true },
   ],
 };
 
@@ -447,20 +464,21 @@ function ChatDetail({
           className="flex-1 bg-suprans-canvas rounded-2xl px-4 py-2.5 text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none resize-none border border-suprans-border focus:border-suprans-red transition-colors leading-[1.4] max-h-[96px]"
           style={{ overflowY: "auto" }}
         />
-        {inputText.trim() ? (
-          <button
-            data-testid="btn-send"
-            onClick={onSend}
-            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "var(--suprans-red)" }}
-          >
-            <Send size={17} color="white" strokeWidth={2.2} />
-          </button>
-        ) : (
-          <button data-testid="btn-mic" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-suprans-canvas shrink-0">
-            <Mic size={20} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
-          </button>
-        )}
+        <button data-testid="btn-mic" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-suprans-canvas shrink-0">
+          <Mic size={20} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+        </button>
+        <button
+          data-testid="btn-send"
+          onClick={onSend}
+          disabled={!inputText.trim()}
+          className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-opacity"
+          style={{
+            background: inputText.trim() ? "var(--suprans-red)" : "var(--suprans-border)",
+            opacity: inputText.trim() ? 1 : 0.6,
+          }}
+        >
+          <Send size={17} color="white" strokeWidth={2.2} />
+        </button>
       </div>
     </div>
   );
