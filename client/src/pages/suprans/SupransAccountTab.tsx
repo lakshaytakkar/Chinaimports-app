@@ -16,10 +16,15 @@ import {
   CreditCard,
   Edit,
   Check,
+  MessageSquare,
+  PhoneCall,
+  BookOpen,
+  ExternalLink,
+  Shield,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-type AccountView = "home" | "business-details" | "invoices" | "notifications";
+type AccountView = "home" | "business-details" | "invoices" | "notifications" | "help" | "about";
 
 interface Invoice {
   id: string;
@@ -74,8 +79,8 @@ const MENU_ITEMS = [
   { id: "business-details", label: "Business Details", Icon: Building2, view: "business-details" as AccountView },
   { id: "invoices", label: "Invoices", Icon: FileText, view: "invoices" as AccountView },
   { id: "notifications", label: "Notifications", Icon: Bell, view: "notifications" as AccountView },
-  { id: "help", label: "Help & Support", Icon: HelpCircle, view: null },
-  { id: "about", label: "About Suprans", Icon: Info, view: null },
+  { id: "help", label: "Help & Support", Icon: HelpCircle, view: "help" as AccountView },
+  { id: "about", label: "About Suprans", Icon: Info, view: "about" as AccountView },
 ];
 
 const STATUS_STYLES: Record<Invoice["status"], { bg: string; color: string }> = {
@@ -101,6 +106,8 @@ export default function SupransAccountTab() {
   if (view === "business-details") return <BusinessDetails onBack={() => setView("home")} />;
   if (view === "invoices") return <InvoicesList onBack={() => setView("home")} />;
   if (view === "notifications") return <NotificationSettings onBack={() => setView("home")} />;
+  if (view === "help") return <HelpSupport onBack={() => setView("home")} />;
+  if (view === "about") return <AboutSuprans onBack={() => setView("home")} />;
 
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-suprans-canvas">
@@ -342,6 +349,91 @@ function NotificationSettings({ onBack }: { onBack: () => void }) {
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+const HELP_OPTIONS = [
+  { id: "chat", label: "Chat with Support", sub: "Start a conversation with our team", Icon: MessageSquare },
+  { id: "call", label: "Call Us", sub: "+91 22 6900 4200 (Mon–Sat, 9AM–6PM)", Icon: PhoneCall },
+  { id: "email", label: "Email Support", sub: "support@suprans.in", Icon: Mail },
+  { id: "faq", label: "FAQs", sub: "Browse common questions and answers", Icon: BookOpen },
+];
+
+function HelpSupport({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="flex flex-col h-full bg-suprans-canvas">
+      <SubScreenHeader title="Help & Support" onBack={onBack} />
+      <div className="flex-1 overflow-y-auto px-4 py-4">
+        <p className="text-[13px] text-suprans-ink-secondary mb-4 leading-relaxed">
+          Our team is available Monday to Saturday, 9 AM – 6 PM IST. Choose how you'd like to reach us.
+        </p>
+        <div className="bg-white rounded-2xl border border-suprans-border overflow-hidden">
+          {HELP_OPTIONS.map((item, idx) => (
+            <button
+              key={item.id}
+              data-testid={`help-option-${item.id}`}
+              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-suprans-canvas transition-colors text-left"
+              style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+            >
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--suprans-red-light)" }}>
+                <item.Icon size={18} color="var(--suprans-red)" strokeWidth={1.8} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[14px] font-semibold text-suprans-ink">{item.label}</p>
+                <p className="text-[11px] text-suprans-ink-tertiary mt-0.5">{item.sub}</p>
+              </div>
+              <ExternalLink size={14} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AboutSuprans({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="flex flex-col h-full bg-suprans-canvas">
+      <SubScreenHeader title="About Suprans" onBack={onBack} />
+      <div className="flex-1 overflow-y-auto px-4 py-4">
+        <div className="bg-white rounded-2xl border border-suprans-border p-5 mb-4 flex flex-col items-center text-center">
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center text-[22px] font-black text-white mb-3"
+            style={{ background: "var(--suprans-red)" }}
+          >
+            S
+          </div>
+          <h2 className="text-[18px] font-black text-suprans-ink">Suprans</h2>
+          <p className="text-[12px] text-suprans-ink-tertiary mt-0.5">Version 1.0.0 (Build 42)</p>
+          <p className="text-[13px] text-suprans-ink-secondary mt-3 leading-relaxed">
+            Suprans is India's B2B import partner, helping businesses source, ship, and clear goods from China with end-to-end transparency.
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-suprans-border overflow-hidden">
+          {[
+            { label: "Terms of Service", Icon: FileText },
+            { label: "Privacy Policy", Icon: Shield },
+            { label: "Licenses", Icon: BookOpen },
+          ].map((item, idx) => (
+            <button
+              key={item.label}
+              data-testid={`about-link-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-suprans-canvas transition-colors"
+              style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+            >
+              <item.Icon size={16} color="var(--suprans-ink-secondary)" strokeWidth={1.8} />
+              <span className="flex-1 text-[14px] font-medium text-suprans-ink text-left">{item.label}</span>
+              <ExternalLink size={14} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+            </button>
+          ))}
+        </div>
+
+        <p className="text-center text-[11px] text-suprans-ink-tertiary mt-6">
+          © 2026 Suprans Technologies Pvt. Ltd.{"\n"}Made with ❤️ in Mumbai, India
+        </p>
       </div>
     </div>
   );
