@@ -344,7 +344,7 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
         <img
           src={project.thumbnail}
           alt={project.productName}
-          className="w-12 h-12 rounded-xl object-cover border border-suprans-border shrink-0"
+          className="w-20 h-20 rounded-xl object-cover border border-suprans-border shrink-0"
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
