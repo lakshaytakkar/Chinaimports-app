@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import { CHINAIMPORTS_AUTH_KEY } from "./chinaimports/constants";
+import { SUPRANSHUB_AUTH_KEY } from "./supranshub/constants";
 
 const APPS = [
   {
@@ -15,6 +16,20 @@ const APPS = [
     path: "/chinaimports/onboarding",
     iframePath: "/chinaimports/onboarding",
     features: ["Smart Sourcing", "Project Tracking", "Partner Chat"],
+  },
+  {
+    id: "supranshub",
+    name: "Suprans Hub",
+    tagline: "Parent Brand Directory",
+    description:
+      "One Suprans account, every Suprans product. Browse 10 verticals — from US company formation to luxury furniture — manage active services, and unify billing.",
+    color: "#C8A25A",
+    colorLight: "#F5EBD8",
+    gradient: "from-amber-50 to-yellow-50",
+    accentGlow: "rgba(200,162,90,0.22)",
+    path: "/supranshub/onboarding",
+    iframePath: "/supranshub/onboarding",
+    features: ["10 Products", "Unified Billing", "Events Calendar"],
   },
 ];
 
@@ -191,12 +206,12 @@ export default function AppLauncher() {
           style={{ color: "rgba(255,255,255,0.45)" }}
           data-testid="text-subtitle"
         >
-          A purpose-built mobile app for Indian businesses sourcing from China.
-          More Suprans-family apps coming soon.
+          Two purpose-built mobile apps from the Suprans family — a chat-first
+          sourcing partner and a directory for the entire ecosystem.
         </p>
       </section>
 
-      <section className="relative z-10 flex flex-col lg:flex-row items-stretch justify-center gap-8 px-6 pb-20 max-w-2xl mx-auto w-full">
+      <section className="relative z-10 flex flex-col lg:flex-row items-stretch justify-center gap-8 px-6 pb-20 max-w-5xl mx-auto w-full">
         {APPS.map((app) => (
           <div
             key={app.id}
@@ -276,6 +291,9 @@ export default function AppLauncher() {
                   if (app.id === "chinaimports") {
                     const authed = localStorage.getItem(CHINAIMPORTS_AUTH_KEY) === "true";
                     navigate(authed ? "/chinaimports/chat" : "/chinaimports/onboarding");
+                  } else if (app.id === "supranshub") {
+                    const authed = localStorage.getItem(SUPRANSHUB_AUTH_KEY) === "true";
+                    navigate(authed ? "/supranshub/home" : "/supranshub/onboarding");
                   } else {
                     navigate(app.path);
                   }

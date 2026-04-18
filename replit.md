@@ -11,8 +11,18 @@ A chat-first mobile app for Indian businesses sourcing from China. 4 tabs (Chat,
 - Onboarding: 3-slide carousel with auto-advance, sign-in with +91 phone input, 6-digit OTP verification
 - Tabs: `/chinaimports/chat`, `/chinaimports/explore`, `/chinaimports/projects`, `/chinaimports/account`
 
+### Suprans Hub (Parent-Brand Directory App)
+A directory / mini app store for the entire Suprans ecosystem. 4 tabs (Home, Events, My Services, Account) plus per-product detail pages.
+- Entry: `/supranshub` → redirects to `/supranshub/onboarding` (or `/supranshub/home` if already authed)
+- Onboarding: 3-slide carousel ("One Suprans account...", "From US company formation to China sourcing...", "Sign in once. Manage everything."), +91 phone, 6-digit OTP
+- Tabs: `/supranshub/home`, `/supranshub/events`, `/supranshub/services`, `/supranshub/account`
+- Product detail: `/supranshub/product/:id`
+- 10 products listed: Legal Nations, USDrop AI, China Imports, China Products, EazyToSell, Keeraft, La Bella Monte, GoyoTours, Events, Account & Billing
+- CTA behavior: external links open in new tab; the China Imports CTA deep-links into the China Imports app (`/chinaimports/chat` if authed, else onboarding); Events / Account tiles route to their tabs
+- Auth key: `supranshub_authed` in localStorage (separate from China Imports)
+
 ## App Launcher
-The root `/` route shows an App Launcher page that lists all Suprans-family apps with links to their entry points.
+The root `/` route shows an App Launcher page with a live phone-frame preview of each Suprans-family app. The "View App" button is auth-aware and skips onboarding when already signed in.
 
 ## Tech Stack
 - **Frontend**: React 18, TypeScript, Vite, Wouter (routing)
@@ -26,30 +36,47 @@ The root `/` route shows an App Launcher page that lists all Suprans-family apps
 ### China Imports Design Tokens (`--chinaimports-*` CSS variables)
 - Canvas/Background: `#FAF7F2` (warm cream)
 - Brand Red: `#F03B3B`
-- Ink (primary text): `#1A1612`
-- Ink Secondary: `#4A443E`
-- Ink Tertiary: `#8C857D`
-- Border: `#E8E1D2`
-- Card: `#FFFFFF`
-- Red Light (hover/accent bg): `#FEF0F0`
-- Font: `Inter Tight` (loaded from Google Fonts)
-- Tab Bar: 72px tall, 4 tabs, active = brand red
+- Ink: `#1A1612` / Ink Secondary: `#4A443E` / Ink Tertiary: `#8C857D`
+- Border: `#E8E1D2` · Card: `#FFFFFF` · Red Light: `#FEF0F0`
+- Font: `Inter Tight`
+- Tab Bar: 72px tall, 4 tabs + center "Raise" FAB, active = brand red
+
+### Suprans Hub Design Tokens (`--supranshub-*` CSS variables)
+- Same palette as China Imports plus a parent-brand gold accent
+- Gold: `#C8A25A` · Gold Light: `#F5EBD8`
+- Canvas/Background: `#FAF7F2` · Brand Red: `#F03B3B`
+- Ink / Ink Secondary / Ink Tertiary: same as China Imports
+- Border / Card / Red Light: same as China Imports
+- Font: `Inter Tight`
+- Tab Bar: 72px tall, 4 tabs (Home, Events, My Services, Account), no FAB, active = brand red
 
 ## File Structure
 ```
 client/src/
 ├── pages/
-│   ├── AppLauncher.tsx          ← Root "/" landing page
-│   └── chinaimports/
-│       ├── ChinaImportsOnboarding.tsx  ← 3 slides + sign-in + OTP
-│       └── ChinaImportsApp.tsx        ← Tab shell + ChinaImportsTabBar (exported)
-└── index.css                    ← Design tokens
+│   ├── AppLauncher.tsx          ← Root "/" landing page (lists both apps)
+│   ├── chinaimports/
+│   │   ├── ChinaImportsOnboarding.tsx
+│   │   ├── ChinaImportsApp.tsx        ← Tab shell + ChinaImportsTabBar
+│   │   ├── ChinaImports{Chat,Explore,Projects,Account,Requests}Tab.tsx
+│   │   ├── ChinaImportsRequestFlow.tsx
+│   │   ├── ChinaImportsMobileShell.tsx
+│   │   └── constants.ts               ← CHINAIMPORTS_AUTH_KEY
+│   └── supranshub/
+│       ├── SupransHubOnboarding.tsx   ← 3 slides + sign-in + OTP
+│       ├── SupransHubApp.tsx          ← Tab shell + SupransHubTabBar
+│       ├── SupransHub{Home,Events,Services,Account}Tab.tsx
+│       ├── SupransHubProductDetail.tsx
+│       ├── SupransHubMobileShell.tsx
+│       └── constants.ts               ← SUPRANSHUB_AUTH_KEY + PRODUCTS + EVENTS + SERVICES
+└── index.css                    ← Design tokens for both apps
 ```
 
 ## Key Patterns
 - Mobile frames: `div.flex.items-center.justify-center.min-h-screen.bg-gray-100` > `div.relative.w-[375px].h-[812px].overflow-hidden`
-- China Imports tab shell: `ChinaImportsApp` uses `absolute inset-0 bottom-[72px]` for content + `ChinaImportsTabBar` at `absolute bottom-0`
-- `ChinaImportsTabBar` is exported for use by downstream task pages
+- Tab shells: content area `absolute inset-0 bottom-[72px]` + tab bar `absolute bottom-0`
+- Both apps use independent `localStorage` auth keys — no SSO between them
+- No emojis anywhere in Hub UI per brand standard (China Imports has the 🇮🇳 flag on phone input only)
 
 ## Running
 ```bash

@@ -80,6 +80,18 @@
   --chinaimports-red-light: #FEF0F0;
   --chinaimports-font: "Inter Tight", "Plus Jakarta Sans", sans-serif;
 
+  --supranshub-canvas: #FAF7F2;
+  --supranshub-red: #F03B3B;
+  --supranshub-gold: #C8A25A;
+  --supranshub-ink: #1A1612;
+  --supranshub-ink-secondary: #4A443E;
+  --supranshub-ink-tertiary: #8C857D;
+  --supranshub-border: #E8E1D2;
+  --supranshub-card: #FFFFFF;
+  --supranshub-red-light: #FEF0F0;
+  --supranshub-gold-light: #F5EBD8;
+  --supranshub-font: "Inter Tight", "Plus Jakarta Sans", sans-serif;
+
   --animate-spin: spin 1s linear infinite;
 }
 
@@ -270,6 +282,10 @@
 }
 
 .chinaimports-fade-in {
+  animation: chinaimports-fade-in 200ms ease-out both;
+}
+
+.supranshub-fade-in {
   animation: chinaimports-fade-in 200ms ease-out both;
 }
 
