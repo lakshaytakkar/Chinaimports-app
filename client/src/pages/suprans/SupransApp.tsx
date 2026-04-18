@@ -1,6 +1,7 @@
 import { useLocation } from "wouter";
 import { MessageCircle, Compass, FolderOpen, User } from "lucide-react";
 import SupransMobileShell from "./SupransMobileShell";
+import SupransChatTab from "./SupransChatTab";
 
 const TABS = [
   { id: "chat", label: "Chat", Icon: MessageCircle, path: "/suprans/chat" },
@@ -25,10 +26,14 @@ export default function SupransApp() {
   return (
     <SupransMobileShell>
       <div
-        className="absolute inset-0 bottom-[72px] overflow-y-auto"
+        className="absolute inset-0 bottom-[72px] overflow-hidden"
         style={{ background: "var(--suprans-canvas)" }}
       >
-        <PlaceholderScreen tab={activeTab} />
+        {activeTab === "chat" ? (
+          <SupransChatTab />
+        ) : (
+          <PlaceholderScreen tab={activeTab} />
+        )}
       </div>
       <SupransTabBar activeTab={activeTab} onNavigate={navigate} />
     </SupransMobileShell>
