@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { ChevronRight } from "lucide-react";
-import SupransMobileShell from "./SupransMobileShell";
-import { SUPRANS_AUTH_KEY } from "./constants";
+import ChinaImportsMobileShell from "./ChinaImportsMobileShell";
+import { CHINAIMPORTS_AUTH_KEY } from "./constants";
 import heroSourcing from "@assets/suprans/hero/hero-sourcing.png";
 import heroCustoms from "@assets/suprans/hero/hero-customs.png";
 import heroLogistics from "@assets/suprans/hero/hero-logistics.png";
@@ -11,27 +11,27 @@ const SLIDES = [
   {
     gradient: "from-[#F03B3B] to-[#FF8C42]",
     image: heroSourcing,
-    title: "Welcome to Suprans",
+    title: "Source anything from China — without the chaos.",
     description:
-      "Your China sourcing and import partner, all in one app. From factory to your doorstep.",
+      "From quote to delivery, all handled by one team you can talk to inside the app.",
   },
   {
     gradient: "from-[#2C5F9E] to-[#4A9FD4]",
     image: heroCustoms,
-    title: "Talk to your team, anytime",
+    title: "From factory to your doorstep. We handle it all.",
     description:
-      "Stay connected with your dedicated Suprans team through built-in messaging, documents, and voice notes.",
+      "Sourcing, sampling, freight, customs, and GST — all in one place.",
   },
   {
     gradient: "from-[#2D9D78] to-[#6BCB9F]",
     image: heroLogistics,
-    title: "Sourcing, imports, and more",
+    title: "Real humans. Real factories. Real delivery.",
     description:
-      "Track every order, manage documents, handle payments — everything you need is right here.",
+      "Every order tracked end to end, every document a tap away.",
   },
 ];
 
-export default function SupransOnboarding() {
+export default function ChinaImportsOnboarding() {
   const [step, setStep] = useState<"onboarding" | "signin" | "otp">("onboarding");
   const [slide, setSlide] = useState(0);
   const [phone, setPhone] = useState("");
@@ -74,7 +74,7 @@ export default function SupransOnboarding() {
   };
 
   return (
-    <SupransMobileShell>
+    <ChinaImportsMobileShell>
       {step === "onboarding" && (
           <OnboardingSlides
             slide={slide}
@@ -104,13 +104,13 @@ export default function SupransOnboarding() {
             onChange={handleOtpChange}
             onKeyDown={handleOtpKeyDown}
             onVerify={() => {
-              localStorage.setItem(SUPRANS_AUTH_KEY, "true");
-              navigate("/suprans/chat");
+              localStorage.setItem(CHINAIMPORTS_AUTH_KEY, "true");
+              navigate("/chinaimports/chat");
             }}
             onResend={() => setTimer(30)}
           />
         )}
-    </SupransMobileShell>
+    </ChinaImportsMobileShell>
   );
 }
 
@@ -129,7 +129,7 @@ function OnboardingSlides({
   const isLast = slide === SLIDES.length - 1;
 
   return (
-    <div className="relative w-full h-full bg-suprans-canvas flex flex-col">
+    <div className="relative w-full h-full bg-chinaimports-canvas flex flex-col">
       <div
         className={`relative bg-gradient-to-br ${s.gradient} flex-1 overflow-hidden`}
         style={{ minHeight: 0 }}
@@ -151,14 +151,14 @@ function OnboardingSlides({
         </div>
       </div>
 
-      <div className="bg-suprans-canvas px-8 pt-8 pb-10 flex flex-col gap-6">
+      <div className="bg-chinaimports-canvas px-8 pt-8 pb-10 flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <h2
-            className="text-[26px] font-bold leading-tight text-suprans-ink"
+            className="text-[26px] font-bold leading-tight text-chinaimports-ink"
           >
             {s.title}
           </h2>
-          <p className="text-[15px] leading-[1.6] text-suprans-ink-secondary">
+          <p className="text-[15px] leading-[1.6] text-chinaimports-ink-secondary">
             {s.description}
           </p>
         </div>
@@ -171,8 +171,8 @@ function OnboardingSlides({
               onClick={() => setSlide(i)}
               className={`rounded-full transition-all duration-300 ${
                 i === slide
-                  ? "w-6 h-2.5 bg-suprans-red"
-                  : "w-2.5 h-2.5 bg-suprans-border"
+                  ? "w-6 h-2.5 bg-chinaimports-red"
+                  : "w-2.5 h-2.5 bg-chinaimports-border"
               }`}
             />
           ))}
@@ -181,7 +181,7 @@ function OnboardingSlides({
         <button
           data-testid="btn-continue"
           onClick={onContinue}
-          className="w-full h-[52px] rounded-2xl bg-suprans-red text-white font-semibold text-[16px] flex items-center justify-center gap-2 active:opacity-90"
+          className="w-full h-[52px] rounded-2xl bg-chinaimports-red text-white font-semibold text-[16px] flex items-center justify-center gap-2 active:opacity-90"
         >
           {isLast ? "Get Started" : "Continue"}
           <ChevronRight size={18} />
@@ -201,36 +201,36 @@ function SignInScreen({
   onSend: () => void;
 }) {
   return (
-    <div className="w-full h-full bg-suprans-canvas flex flex-col">
+    <div className="w-full h-full bg-chinaimports-canvas flex flex-col">
       <div className="bg-gradient-to-br from-[#F03B3B] to-[#FF6B6B] h-[220px] flex items-end px-8 pb-8">
         <div className="flex flex-col gap-1">
           <div className="text-[32px] font-black text-white tracking-tight leading-tight">
-            Suprans
+            China Imports
           </div>
           <div className="text-white/80 text-[14px] font-medium">
-            B2B Import Partner
+            Sourcing partner in China
           </div>
         </div>
       </div>
 
       <div className="flex-1 px-8 pt-10 flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <h2 className="text-[24px] font-bold text-suprans-ink leading-tight">
+          <h2 className="text-[24px] font-bold text-chinaimports-ink leading-tight">
             Sign in to continue
           </h2>
-          <p className="text-[14px] text-suprans-ink-secondary">
+          <p className="text-[14px] text-chinaimports-ink-secondary">
             Enter your registered mobile number
           </p>
         </div>
 
         <div className="flex flex-col gap-3">
-          <label className="text-[12px] font-semibold text-suprans-ink-secondary uppercase tracking-wider">
+          <label className="text-[12px] font-semibold text-chinaimports-ink-secondary uppercase tracking-wider">
             Mobile Number
           </label>
-          <div className="flex items-center gap-0 border border-suprans-border rounded-2xl overflow-hidden bg-white focus-within:border-suprans-red transition-colors">
-            <div className="h-[52px] px-4 flex items-center gap-2 border-r border-suprans-border bg-suprans-canvas shrink-0">
+          <div className="flex items-center gap-0 border border-chinaimports-border rounded-2xl overflow-hidden bg-white focus-within:border-chinaimports-red transition-colors">
+            <div className="h-[52px] px-4 flex items-center gap-2 border-r border-chinaimports-border bg-chinaimports-canvas shrink-0">
               <span className="text-[18px]">🇮🇳</span>
-              <span className="text-[15px] font-semibold text-suprans-ink">+91</span>
+              <span className="text-[15px] font-semibold text-chinaimports-ink">+91</span>
             </div>
             <input
               data-testid="input-phone"
@@ -240,7 +240,7 @@ function SignInScreen({
               value={phone}
               onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
               placeholder="Enter 10-digit number"
-              className="flex-1 h-[52px] px-4 text-[15px] text-suprans-ink placeholder:text-suprans-ink-tertiary bg-transparent outline-none"
+              className="flex-1 h-[52px] px-4 text-[15px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary bg-transparent outline-none"
             />
           </div>
         </div>
@@ -249,15 +249,15 @@ function SignInScreen({
           data-testid="btn-send-otp"
           onClick={onSend}
           disabled={phone.length < 10}
-          className="w-full h-[52px] rounded-2xl bg-suprans-red text-white font-semibold text-[16px] flex items-center justify-center gap-2 disabled:opacity-40 active:opacity-90 transition-opacity"
+          className="w-full h-[52px] rounded-2xl bg-chinaimports-red text-white font-semibold text-[16px] flex items-center justify-center gap-2 disabled:opacity-40 active:opacity-90 transition-opacity"
         >
           Send OTP
         </button>
 
-        <p className="text-center text-[12px] text-suprans-ink-tertiary leading-relaxed">
-          By continuing, you agree to Suprans'{" "}
-          <span className="text-suprans-red font-medium">Terms of Service</span> and{" "}
-          <span className="text-suprans-red font-medium">Privacy Policy</span>
+        <p className="text-center text-[12px] text-chinaimports-ink-tertiary leading-relaxed">
+          By continuing, you agree to China Imports'{" "}
+          <span className="text-chinaimports-red font-medium">Terms of Service</span> and{" "}
+          <span className="text-chinaimports-red font-medium">Privacy Policy</span>
         </p>
       </div>
     </div>
@@ -286,21 +286,21 @@ function OTPScreen({
   const isFilled = otp.every((d) => d !== "");
 
   return (
-    <div className="w-full h-full bg-suprans-canvas flex flex-col">
+    <div className="w-full h-full bg-chinaimports-canvas flex flex-col">
       <div className="bg-gradient-to-br from-[#F03B3B] to-[#FF6B6B] h-[180px] flex items-end px-8 pb-8">
         <div className="text-[32px] font-black text-white tracking-tight">
-          Suprans
+          China Imports
         </div>
       </div>
 
       <div className="flex-1 px-8 pt-10 flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <h2 className="text-[24px] font-bold text-suprans-ink leading-tight">
+          <h2 className="text-[24px] font-bold text-chinaimports-ink leading-tight">
             Verify your number
           </h2>
-          <p className="text-[14px] text-suprans-ink-secondary">
+          <p className="text-[14px] text-chinaimports-ink-secondary">
             We sent a 6-digit code to{" "}
-            <span className="font-semibold text-suprans-ink">+91 {phone}</span>
+            <span className="font-semibold text-chinaimports-ink">+91 {phone}</span>
           </p>
         </div>
 
@@ -318,18 +318,18 @@ function OTPScreen({
               onKeyDown={(e) => onKeyDown(i, e)}
               className={`w-[46px] h-[56px] text-center text-[22px] font-bold rounded-2xl border-2 bg-white outline-none transition-colors ${
                 digit
-                  ? "border-suprans-red text-suprans-ink"
-                  : "border-suprans-border text-suprans-ink"
-              } focus:border-suprans-red`}
+                  ? "border-chinaimports-red text-chinaimports-ink"
+                  : "border-chinaimports-border text-chinaimports-ink"
+              } focus:border-chinaimports-red`}
             />
           ))}
         </div>
 
         <div className="flex items-center justify-center gap-1 text-[14px]">
           {timer > 0 ? (
-            <span className="text-suprans-ink-tertiary">
+            <span className="text-chinaimports-ink-tertiary">
               Resend code in{" "}
-              <span className="font-semibold text-suprans-red">
+              <span className="font-semibold text-chinaimports-red">
                 0:{timer.toString().padStart(2, "0")}
               </span>
             </span>
@@ -337,7 +337,7 @@ function OTPScreen({
             <button
               data-testid="btn-resend"
               onClick={onResend}
-              className="text-suprans-red font-semibold"
+              className="text-chinaimports-red font-semibold"
             >
               Resend OTP
             </button>
@@ -348,7 +348,7 @@ function OTPScreen({
           data-testid="btn-verify"
           onClick={onVerify}
           disabled={!isFilled}
-          className="w-full h-[52px] rounded-2xl bg-suprans-red text-white font-semibold text-[16px] flex items-center justify-center disabled:opacity-40 active:opacity-90 transition-opacity"
+          className="w-full h-[52px] rounded-2xl bg-chinaimports-red text-white font-semibold text-[16px] flex items-center justify-center disabled:opacity-40 active:opacity-90 transition-opacity"
         >
           Verify & Continue
         </button>

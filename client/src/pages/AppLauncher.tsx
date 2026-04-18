@@ -1,5 +1,5 @@
 import { useLocation } from "wouter";
-import { SUPRANS_AUTH_KEY } from "./suprans/constants";
+import { CHINAIMPORTS_AUTH_KEY } from "./chinaimports/constants";
 
 const APPS = [
   {
@@ -17,17 +17,17 @@ const APPS = [
     features: ["Shipment Tracking", "Document Hub", "Live Notifications"],
   },
   {
-    id: "suprans",
-    name: "Suprans",
-    tagline: "B2B Import Partner App",
+    id: "chinaimports",
+    name: "China Imports",
+    tagline: "Sourcing App",
     description:
-      "A dedicated B2B app for importers and their partners — connecting supply chains with chat, project collaboration, smart sourcing, and account management in one place.",
+      "Your one-stop sourcing partner in China. Submit RFQs, chat with the ops team, track every order, and manage documents — all in one app.",
     color: "#F03B3B",
     colorLight: "#FAF7F2",
     gradient: "from-amber-50 to-orange-50",
     accentGlow: "rgba(240,59,59,0.18)",
-    path: "/suprans/onboarding",
-    iframePath: "/suprans/onboarding",
+    path: "/chinaimports/onboarding",
+    iframePath: "/chinaimports/onboarding",
     features: ["Smart Sourcing", "Project Tracking", "Partner Chat"],
   },
 ];
@@ -287,9 +287,9 @@ export default function AppLauncher() {
 
               <button
                 onClick={() => {
-                  if (app.id === "suprans") {
-                    const authed = localStorage.getItem(SUPRANS_AUTH_KEY) === "true";
-                    navigate(authed ? "/suprans/chat" : "/suprans/onboarding");
+                  if (app.id === "chinaimports") {
+                    const authed = localStorage.getItem(CHINAIMPORTS_AUTH_KEY) === "true";
+                    navigate(authed ? "/chinaimports/chat" : "/chinaimports/onboarding");
                   } else {
                     navigate(app.path);
                   }

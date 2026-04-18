@@ -3,7 +3,7 @@ import avatarPriya from "@assets/suprans/avatars/priya-sharma.png";
 import avatarRaj from "@assets/suprans/avatars/raj-patel.png";
 import avatarMeera from "@assets/suprans/avatars/meera-iyer.png";
 import avatarArjun from "@assets/suprans/avatars/arjun-singh.png";
-import avatarSupransTeam from "@assets/suprans/avatars/suprans-team.png";
+import avatarChinaImportsTeam from "@assets/suprans/avatars/suprans-team.png";
 import avatarDivya from "@assets/suprans/avatars/divya-nair.png";
 import avatarVikram from "@assets/suprans/avatars/vikram-gupta.png";
 import avatarAnanya from "@assets/suprans/avatars/ananya-krishnan.png";
@@ -111,12 +111,12 @@ const CONVERSATIONS: Conversation[] = [
   },
   {
     id: "5",
-    name: "Suprans Team",
+    name: "China Imports Team",
     role: "General Support",
     initials: "ST",
     avatarColor: "#F03B3B",
-    avatar: avatarSupransTeam,
-    lastMessage: "Welcome to Suprans! How can we help today?",
+    avatar: avatarChinaImportsTeam,
+    lastMessage: "Welcome to China Imports! How can we help today?",
     lastMessageType: "text",
     timestamp: "Mon",
     dateGroup: "This week",
@@ -190,7 +190,7 @@ const MOCK_MESSAGES: Record<string, Message[]> = {
     { id: "m1", type: "text", content: "Your shipment has been cleared at customs", sent: false, time: "Yesterday", read: true },
   ],
   "5": [
-    { id: "m1", type: "text", content: "Welcome to Suprans! How can we help today?", sent: false, time: "Mon", read: true },
+    { id: "m1", type: "text", content: "Welcome to China Imports! How can we help today?", sent: false, time: "Mon", read: true },
   ],
   "6": [
     { id: "m1", type: "text", content: "Inspection passed — 98% acceptance rate.", sent: false, time: "Mon", read: true },
@@ -219,7 +219,7 @@ const SERVICE_TILES = [
 
 const DATE_GROUPS: DateGroup[] = ["Today", "Yesterday", "This week"];
 
-export default function SupransChatTab() {
+export default function ChinaImportsChatTab() {
   const [view, setView] = useState<"list" | "chat">("list");
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [messagesMap, setMessagesMap] = useState<Record<string, Message[]>>(MOCK_MESSAGES);
@@ -295,7 +295,7 @@ export default function SupransChatTab() {
         />
       )}
       {(view === "chat" && selectedConv) && (
-        <div className={`absolute inset-0 ${isLeaving ? "suprans-slide-out" : "suprans-slide-in"}`}>
+        <div className={`absolute inset-0 ${isLeaving ? "chinaimports-slide-out" : "chinaimports-slide-in"}`}>
           <ChatDetail
             conv={selectedConv}
             messages={messagesMap[selectedConv.id] ?? []}
@@ -321,26 +321,26 @@ function ConversationList({
   onNewConv: () => void;
 }) {
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
-      <div className="bg-white px-5 pt-5 pb-3 border-b border-suprans-border shrink-0">
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
+      <div className="bg-white px-5 pt-5 pb-3 border-b border-chinaimports-border shrink-0">
         <div className="flex items-center justify-between mb-4">
-          <span className="text-[22px] font-black text-suprans-ink tracking-tight">Suprans</span>
-          <button data-testid="btn-notifications" className="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-suprans-canvas">
-            <Bell size={22} color="var(--suprans-ink)" strokeWidth={1.8} />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-suprans-red" />
+          <span className="text-[22px] font-black text-chinaimports-ink tracking-tight">China Imports</span>
+          <button data-testid="btn-notifications" className="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas">
+            <Bell size={22} color="var(--chinaimports-ink)" strokeWidth={1.8} />
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-chinaimports-red" />
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex-1 flex items-center gap-2 bg-suprans-canvas rounded-xl px-3 h-[38px] border border-suprans-border">
-            <Search size={15} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
+          <div className="flex-1 flex items-center gap-2 bg-chinaimports-canvas rounded-xl px-3 h-[38px] border border-chinaimports-border">
+            <Search size={15} color="var(--chinaimports-ink-tertiary)" strokeWidth={2} />
             <input
               data-testid="input-search"
               type="text"
               placeholder="Search conversations…"
-              className="flex-1 bg-transparent text-[13px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none"
+              className="flex-1 bg-transparent text-[13px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none"
             />
           </div>
-          <div className="h-[38px] px-4 flex items-center rounded-xl text-[12px] font-semibold text-suprans-red border border-suprans-border bg-suprans-red-light shrink-0">
+          <div className="h-[38px] px-4 flex items-center rounded-xl text-[12px] font-semibold text-chinaimports-red border border-chinaimports-border bg-chinaimports-red-light shrink-0">
             All
           </div>
         </div>
@@ -353,7 +353,7 @@ function ConversationList({
           return (
             <div key={group}>
               <div className="px-5 pt-4 pb-1">
-                <span className="text-[11px] font-semibold text-suprans-ink-tertiary uppercase tracking-wider">{group}</span>
+                <span className="text-[11px] font-semibold text-chinaimports-ink-tertiary uppercase tracking-wider">{group}</span>
               </div>
               {items.map((conv, idx) => (
                 <ConversationRow
@@ -373,7 +373,7 @@ function ConversationList({
         data-testid="btn-new-conversation"
         onClick={onNewConv}
         className="absolute bottom-4 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
-        style={{ background: "var(--suprans-red)" }}
+        style={{ background: "var(--chinaimports-red)" }}
       >
         <Plus size={26} color="white" strokeWidth={2.5} />
       </button>
@@ -418,25 +418,25 @@ function ConversationRow({
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-0.5">
-          <span className="text-[14px] font-semibold text-suprans-ink truncate">{conv.name}</span>
-          <span className="text-[11px] text-suprans-ink-tertiary shrink-0 ml-2">{conv.timestamp}</span>
+          <span className="text-[14px] font-semibold text-chinaimports-ink truncate">{conv.name}</span>
+          <span className="text-[11px] text-chinaimports-ink-tertiary shrink-0 ml-2">{conv.timestamp}</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1 min-w-0">
             {conv.lastMessageType === "voice" && (
-              <div className="flex items-center gap-1 text-suprans-ink-tertiary">
+              <div className="flex items-center gap-1 text-chinaimports-ink-tertiary">
                 <Mic size={12} strokeWidth={2} />
               </div>
             )}
             {conv.lastMessageType === "file" && (
-              <FileText size={12} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
+              <FileText size={12} color="var(--chinaimports-ink-tertiary)" strokeWidth={2} />
             )}
-            <span className="text-[13px] text-suprans-ink-secondary truncate">{conv.lastMessage}</span>
+            <span className="text-[13px] text-chinaimports-ink-secondary truncate">{conv.lastMessage}</span>
           </div>
           {conv.unread > 0 && (
             <span
               className="ml-2 min-w-[20px] h-5 px-1.5 rounded-full flex items-center justify-center text-[11px] font-bold text-white shrink-0"
-              style={{ background: "var(--suprans-red)" }}
+              style={{ background: "var(--chinaimports-red)" }}
             >
               {conv.unread}
             </span>
@@ -472,10 +472,10 @@ function ChatDetail({
   };
 
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
-      <div className="bg-white px-4 pt-4 pb-3 border-b border-suprans-border flex items-center gap-3 shrink-0">
-        <button data-testid="btn-back" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-suprans-canvas">
-          <ArrowLeft size={20} color="var(--suprans-ink)" strokeWidth={2} />
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
+      <div className="bg-white px-4 pt-4 pb-3 border-b border-chinaimports-border flex items-center gap-3 shrink-0">
+        <button data-testid="btn-back" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas">
+          <ArrowLeft size={20} color="var(--chinaimports-ink)" strokeWidth={2} />
         </button>
         {conv.avatar ? (
           <img
@@ -493,10 +493,10 @@ function ChatDetail({
         )}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="text-[15px] font-semibold text-suprans-ink truncate">{conv.name}</span>
+            <span className="text-[15px] font-semibold text-chinaimports-ink truncate">{conv.name}</span>
             {conv.online && <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />}
           </div>
-          <span className="text-[11px]" style={{ color: conv.online ? "#059669" : "var(--suprans-ink-tertiary)" }}>
+          <span className="text-[11px]" style={{ color: conv.online ? "#059669" : "var(--chinaimports-ink-tertiary)" }}>
             {conv.online ? "Online" : "Offline"}
           </span>
         </div>
@@ -509,9 +509,9 @@ function ChatDetail({
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="bg-white border-t border-suprans-border px-3 py-3 flex items-end gap-2 shrink-0">
-        <button data-testid="btn-attach" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-suprans-canvas shrink-0">
-          <Paperclip size={20} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+      <div className="bg-white border-t border-chinaimports-border px-3 py-3 flex items-end gap-2 shrink-0">
+        <button data-testid="btn-attach" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas shrink-0">
+          <Paperclip size={20} color="var(--chinaimports-ink-tertiary)" strokeWidth={1.8} />
         </button>
         <textarea
           data-testid="input-message"
@@ -520,11 +520,11 @@ function ChatDetail({
           onKeyDown={handleKeyDown}
           placeholder="Type a message…"
           rows={1}
-          className="flex-1 bg-suprans-canvas rounded-2xl px-4 py-2.5 text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none resize-none border border-suprans-border focus:border-suprans-red transition-colors leading-[1.4] max-h-[96px]"
+          className="flex-1 bg-chinaimports-canvas rounded-2xl px-4 py-2.5 text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none resize-none border border-chinaimports-border focus:border-chinaimports-red transition-colors leading-[1.4] max-h-[96px]"
           style={{ overflowY: "auto" }}
         />
-        <button data-testid="btn-mic" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-suprans-canvas shrink-0">
-          <Mic size={20} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+        <button data-testid="btn-mic" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas shrink-0">
+          <Mic size={20} color="var(--chinaimports-ink-tertiary)" strokeWidth={1.8} />
         </button>
         <button
           data-testid="btn-send"
@@ -532,7 +532,7 @@ function ChatDetail({
           disabled={!inputText.trim()}
           className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-opacity"
           style={{
-            background: inputText.trim() ? "var(--suprans-red)" : "var(--suprans-border)",
+            background: inputText.trim() ? "var(--chinaimports-red)" : "var(--chinaimports-border)",
             opacity: inputText.trim() ? 1 : 0.6,
           }}
         >
@@ -551,15 +551,15 @@ function MessageBubble({ msg }: { msg: Message }) {
       <div className={`flex ${isSent ? "justify-end" : "justify-start"}`}>
         <div
           className={`flex items-center gap-2.5 px-3 py-2.5 rounded-2xl max-w-[72%] ${
-            isSent ? "rounded-br-sm" : "rounded-bl-sm bg-white border border-suprans-border"
+            isSent ? "rounded-br-sm" : "rounded-bl-sm bg-white border border-chinaimports-border"
           }`}
-          style={isSent ? { background: "var(--suprans-red)" } : {}}
+          style={isSent ? { background: "var(--chinaimports-red)" } : {}}
         >
-          <button className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: isSent ? "rgba(255,255,255,0.25)" : "var(--suprans-red-light)" }}>
-            <Play size={14} color={isSent ? "white" : "var(--suprans-red)"} fill={isSent ? "white" : "var(--suprans-red)"} strokeWidth={0} />
+          <button className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: isSent ? "rgba(255,255,255,0.25)" : "var(--chinaimports-red-light)" }}>
+            <Play size={14} color={isSent ? "white" : "var(--chinaimports-red)"} fill={isSent ? "white" : "var(--chinaimports-red)"} strokeWidth={0} />
           </button>
           <Waveform sent={isSent} />
-          <span className={`text-[11px] shrink-0 ${isSent ? "text-white/70" : "text-suprans-ink-tertiary"}`}>{msg.duration}</span>
+          <span className={`text-[11px] shrink-0 ${isSent ? "text-white/70" : "text-chinaimports-ink-tertiary"}`}>{msg.duration}</span>
         </div>
         <MessageTime time={msg.time} sent={isSent} read={msg.read} />
       </div>
@@ -571,18 +571,18 @@ function MessageBubble({ msg }: { msg: Message }) {
       <div className={`flex flex-col ${isSent ? "items-end" : "items-start"}`}>
         <div
           className={`flex items-center gap-3 px-3 py-3 rounded-2xl max-w-[80%] ${
-            isSent ? "rounded-br-sm" : "rounded-bl-sm bg-white border border-suprans-border"
+            isSent ? "rounded-br-sm" : "rounded-bl-sm bg-white border border-chinaimports-border"
           }`}
-          style={isSent ? { background: "var(--suprans-red)" } : {}}
+          style={isSent ? { background: "var(--chinaimports-red)" } : {}}
         >
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: isSent ? "rgba(255,255,255,0.2)" : "var(--suprans-red-light)" }}>
-            <FileText size={18} color={isSent ? "white" : "var(--suprans-red)"} strokeWidth={1.8} />
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: isSent ? "rgba(255,255,255,0.2)" : "var(--chinaimports-red-light)" }}>
+            <FileText size={18} color={isSent ? "white" : "var(--chinaimports-red)"} strokeWidth={1.8} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className={`text-[13px] font-semibold truncate ${isSent ? "text-white" : "text-suprans-ink"}`}>{msg.fileName}</p>
-            <p className={`text-[11px] ${isSent ? "text-white/70" : "text-suprans-ink-tertiary"}`}>{msg.fileSize}</p>
+            <p className={`text-[13px] font-semibold truncate ${isSent ? "text-white" : "text-chinaimports-ink"}`}>{msg.fileName}</p>
+            <p className={`text-[11px] ${isSent ? "text-white/70" : "text-chinaimports-ink-tertiary"}`}>{msg.fileSize}</p>
           </div>
-          <Paperclip size={15} color={isSent ? "rgba(255,255,255,0.7)" : "var(--suprans-ink-tertiary)"} strokeWidth={1.8} />
+          <Paperclip size={15} color={isSent ? "rgba(255,255,255,0.7)" : "var(--chinaimports-ink-tertiary)"} strokeWidth={1.8} />
         </div>
         <MessageTime time={msg.time} sent={isSent} read={msg.read} />
       </div>
@@ -593,11 +593,11 @@ function MessageBubble({ msg }: { msg: Message }) {
     <div className={`flex flex-col ${isSent ? "items-end" : "items-start"}`}>
       <div
         className={`px-4 py-2.5 rounded-2xl max-w-[80%] ${
-          isSent ? "rounded-br-sm" : "rounded-bl-sm bg-white border border-suprans-border"
+          isSent ? "rounded-br-sm" : "rounded-bl-sm bg-white border border-chinaimports-border"
         }`}
-        style={isSent ? { background: "var(--suprans-red)" } : {}}
+        style={isSent ? { background: "var(--chinaimports-red)" } : {}}
       >
-        <p className={`text-[14px] leading-[1.45] ${isSent ? "text-white" : "text-suprans-ink"}`}>{msg.content}</p>
+        <p className={`text-[14px] leading-[1.45] ${isSent ? "text-white" : "text-chinaimports-ink"}`}>{msg.content}</p>
       </div>
       <MessageTime time={msg.time} sent={isSent} read={msg.read} />
     </div>
@@ -607,11 +607,11 @@ function MessageBubble({ msg }: { msg: Message }) {
 function MessageTime({ time, sent, read }: { time: string; sent: boolean; read?: boolean }) {
   return (
     <div className="flex items-center gap-1 mt-0.5 px-1">
-      <span className="text-[10px] text-suprans-ink-tertiary">{time}</span>
+      <span className="text-[10px] text-chinaimports-ink-tertiary">{time}</span>
       {sent && (
         read
-          ? <CheckCheck size={12} color="var(--suprans-red)" strokeWidth={2.2} />
-          : <Check size={12} color="var(--suprans-ink-tertiary)" strokeWidth={2.2} />
+          ? <CheckCheck size={12} color="var(--chinaimports-red)" strokeWidth={2.2} />
+          : <Check size={12} color="var(--chinaimports-ink-tertiary)" strokeWidth={2.2} />
       )}
     </div>
   );
@@ -627,7 +627,7 @@ function Waveform({ sent }: { sent: boolean }) {
           className="w-[2px] rounded-full"
           style={{
             height: h,
-            background: sent ? "rgba(255,255,255,0.7)" : "var(--suprans-red)",
+            background: sent ? "rgba(255,255,255,0.7)" : "var(--chinaimports-red)",
             opacity: i < 8 ? 1 : 0.35,
           }}
         />
@@ -679,15 +679,15 @@ function NewConversationModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 pt-5 pb-3">
-          <span className="text-[16px] font-bold text-suprans-ink">Start a conversation about…</span>
-          <button data-testid="btn-close-modal" onClick={handleClose} className="w-8 h-8 rounded-full flex items-center justify-center bg-suprans-canvas">
-            <X size={18} color="var(--suprans-ink)" strokeWidth={2} />
+          <span className="text-[16px] font-bold text-chinaimports-ink">Start a conversation about…</span>
+          <button data-testid="btn-close-modal" onClick={handleClose} className="w-8 h-8 rounded-full flex items-center justify-center bg-chinaimports-canvas">
+            <X size={18} color="var(--chinaimports-ink)" strokeWidth={2} />
           </button>
         </div>
         {prefillService && (
-          <div className="mx-5 mb-3 px-4 py-2.5 rounded-xl flex items-center gap-2" style={{ background: "var(--suprans-red-light)" }}>
-            <Check size={14} color="var(--suprans-red)" strokeWidth={2.5} />
-            <span className="text-[13px] font-semibold text-suprans-red">{prefillService} selected</span>
+          <div className="mx-5 mb-3 px-4 py-2.5 rounded-xl flex items-center gap-2" style={{ background: "var(--chinaimports-red-light)" }}>
+            <Check size={14} color="var(--chinaimports-red)" strokeWidth={2.5} />
+            <span className="text-[13px] font-semibold text-chinaimports-red">{prefillService} selected</span>
           </div>
         )}
         <div className="px-5 grid grid-cols-4 gap-3">
@@ -703,15 +703,15 @@ function NewConversationModal({
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center text-[28px] transition-all"
                   style={{
-                    background: isHighlighted ? "var(--suprans-red-light)" : "var(--suprans-canvas)",
-                    border: isHighlighted ? "2px solid var(--suprans-red)" : "1.5px solid var(--suprans-border)",
+                    background: isHighlighted ? "var(--chinaimports-red-light)" : "var(--chinaimports-canvas)",
+                    border: isHighlighted ? "2px solid var(--chinaimports-red)" : "1.5px solid var(--chinaimports-border)",
                   }}
                 >
                   {tile.emoji}
                 </div>
                 <span
                   className="text-[11px] font-medium text-center leading-tight"
-                  style={{ color: isHighlighted ? "var(--suprans-red)" : "var(--suprans-ink-secondary)", fontWeight: isHighlighted ? 700 : 500 }}
+                  style={{ color: isHighlighted ? "var(--chinaimports-red)" : "var(--chinaimports-ink-secondary)", fontWeight: isHighlighted ? 700 : 500 }}
                 >
                   {tile.label}
                 </span>

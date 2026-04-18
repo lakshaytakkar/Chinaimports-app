@@ -9,11 +9,11 @@ A web application that showcases two mobile apps in 375×812px frames centered i
 Imported from Figma. 6 static screens rendered pixel-perfect using Figma asset URLs.
 - Routes: `/splash`, `/get-started`, `/home`, `/activity`, `/notifications`, `/successful`
 
-### Suprans (B2B Import Partner App)
+### China Imports (Sourcing App)
 A chat-first mobile app for Indian businesses sourcing from China. 4 tabs (Chat, Explore, Projects, Account) with full onboarding flow.
-- Entry: `/suprans` → redirects to `/suprans/onboarding`
+- Entry: `/chinaimports` → redirects to `/chinaimports/onboarding`
 - Onboarding: 3-slide carousel with auto-advance, sign-in with +91 phone input, 6-digit OTP verification
-- Tabs: `/suprans/chat`, `/suprans/explore`, `/suprans/projects`, `/suprans/account`
+- Tabs: `/chinaimports/chat`, `/chinaimports/explore`, `/chinaimports/projects`, `/chinaimports/account`
 
 ## App Launcher
 The root `/` route shows an App Launcher page that lists both apps with links to their entry points.
@@ -31,7 +31,7 @@ The root `/` route shows an App Launcher page that lists both apps with links to
 - Font: Plus Jakarta Sans
 - Primary: #F34147
 
-### Suprans Design Tokens (`--suprans-*` CSS variables)
+### China Imports Design Tokens (`--chinaimports-*` CSS variables)
 - Canvas/Background: `#FAF7F2` (warm cream)
 - Brand Red: `#F03B3B`
 - Ink (primary text): `#1A1612`
@@ -55,16 +55,16 @@ client/src/
 │   ├── Activity.tsx             ← Flock activity
 │   ├── Notifications.tsx        ← Flock notifications
 │   ├── Successful.tsx           ← Flock success
-│   └── suprans/
-│       ├── SupransOnboarding.tsx  ← 3 slides + sign-in + OTP
-│       └── SupransApp.tsx        ← Tab shell + SupransTabBar (exported)
+│   └── chinaimports/
+│       ├── ChinaImportsOnboarding.tsx  ← 3 slides + sign-in + OTP
+│       └── ChinaImportsApp.tsx        ← Tab shell + ChinaImportsTabBar (exported)
 └── index.css                    ← Design tokens for both apps
 ```
 
 ## Key Patterns
 - Mobile frames: `div.flex.items-center.justify-center.min-h-screen.bg-gray-100` > `div.relative.w-[375px].h-[812px].overflow-hidden`
-- Suprans tab shell: `SupransApp` uses `absolute inset-0 bottom-[72px]` for content + `SupransTabBar` at `absolute bottom-0`
-- `SupransTabBar` is exported for use by downstream task pages
+- China Imports tab shell: `ChinaImportsApp` uses `absolute inset-0 bottom-[72px]` for content + `ChinaImportsTabBar` at `absolute bottom-0`
+- `ChinaImportsTabBar` is exported for use by downstream task pages
 
 ## Running
 ```bash

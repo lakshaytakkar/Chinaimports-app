@@ -70,15 +70,15 @@
   --shadow-xsmall: 0px 1px 2px 0px rgba(13, 13, 18, 0.06);
   --white-900: rgba(255, 255, 255, 1);
 
-  --suprans-canvas: #FAF7F2;
-  --suprans-red: #F03B3B;
-  --suprans-ink: #1A1612;
-  --suprans-ink-secondary: #4A443E;
-  --suprans-ink-tertiary: #8C857D;
-  --suprans-border: #E8E1D2;
-  --suprans-card: #FFFFFF;
-  --suprans-red-light: #FEF0F0;
-  --suprans-font: "Inter Tight", "Plus Jakarta Sans", sans-serif;
+  --chinaimports-canvas: #FAF7F2;
+  --chinaimports-red: #F03B3B;
+  --chinaimports-ink: #1A1612;
+  --chinaimports-ink-secondary: #4A443E;
+  --chinaimports-ink-tertiary: #8C857D;
+  --chinaimports-border: #E8E1D2;
+  --chinaimports-card: #FFFFFF;
+  --chinaimports-red-light: #FEF0F0;
+  --chinaimports-font: "Inter Tight", "Plus Jakarta Sans", sans-serif;
 
   --animate-spin: spin 1s linear infinite;
 }
@@ -254,37 +254,37 @@
   }
 }
 
-@keyframes suprans-fade-in {
+@keyframes chinaimports-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes suprans-slide-in-right {
+@keyframes chinaimports-slide-in-right {
   from { transform: translateX(100%); }
   to   { transform: translateX(0); }
 }
 
-@keyframes suprans-slide-out-right {
+@keyframes chinaimports-slide-out-right {
   from { transform: translateX(0); }
   to   { transform: translateX(100%); }
 }
 
-.suprans-fade-in {
-  animation: suprans-fade-in 200ms ease-out both;
+.chinaimports-fade-in {
+  animation: chinaimports-fade-in 200ms ease-out both;
 }
 
-.suprans-slide-in {
-  animation: suprans-slide-in-right 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+.chinaimports-slide-in {
+  animation: chinaimports-slide-in-right 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.suprans-slide-out {
-  animation: suprans-slide-out-right 220ms cubic-bezier(0.55, 0, 0.1, 1) both;
+.chinaimports-slide-out {
+  animation: chinaimports-slide-out-right 220ms cubic-bezier(0.55, 0, 0.1, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .suprans-fade-in,
-  .suprans-slide-in,
-  .suprans-slide-out {
+  .chinaimports-fade-in,
+  .chinaimports-slide-in,
+  .chinaimports-slide-out {
     animation: none;
   }
 }

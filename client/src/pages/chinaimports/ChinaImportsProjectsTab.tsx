@@ -196,7 +196,7 @@ const COMPLETED_PROJECTS: Project[] = [
   },
 ];
 
-export default function SupransProjectsTab() {
+export default function ChinaImportsProjectsTab() {
   const [view, setView] = useState<ProjectView>("list");
   const [subTab, setSubTab] = useState<SubTab>("active");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -222,11 +222,11 @@ export default function SupransProjectsTab() {
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      <div className="flex flex-col h-full bg-suprans-canvas">
-        <div className="bg-white px-5 pt-5 pb-3 border-b border-suprans-border shrink-0">
-          <span className="text-[22px] font-black text-suprans-ink tracking-tight">Projects</span>
+      <div className="flex flex-col h-full bg-chinaimports-canvas">
+        <div className="bg-white px-5 pt-5 pb-3 border-b border-chinaimports-border shrink-0">
+          <span className="text-[22px] font-black text-chinaimports-ink tracking-tight">Projects</span>
           <div className="flex mt-3">
-            <div className="flex p-1 rounded-full" style={{ background: "var(--suprans-canvas)", border: "1px solid var(--suprans-border)" }}>
+            <div className="flex p-1 rounded-full" style={{ background: "var(--chinaimports-canvas)", border: "1px solid var(--chinaimports-border)" }}>
               {(["active", "completed"] as SubTab[]).map((tab) => (
                 <button
                   key={tab}
@@ -235,8 +235,8 @@ export default function SupransProjectsTab() {
                   className="px-5 py-1.5 rounded-full text-[13px] font-semibold transition-all"
                   style={
                     subTab === tab
-                      ? { background: "var(--suprans-red)", color: "white" }
-                      : { color: "var(--suprans-ink-secondary)" }
+                      ? { background: "var(--chinaimports-red)", color: "white" }
+                      : { color: "var(--chinaimports-ink-secondary)" }
                   }
                 >
                   {tab === "active" ? "Active" : "Completed"}
@@ -255,7 +255,7 @@ export default function SupransProjectsTab() {
       </div>
 
       {(view === "detail" && selectedProject) && (
-        <div className={`absolute inset-0 ${isLeaving ? "suprans-slide-out" : "suprans-slide-in"}`}>
+        <div className={`absolute inset-0 ${isLeaving ? "chinaimports-slide-out" : "chinaimports-slide-in"}`}>
           <ProjectDetail project={selectedProject} onBack={handleBack} />
         </div>
       )}
@@ -271,13 +271,13 @@ function ProjectCard({ project, onTap }: { project: Project; onTap: () => void }
     <button
       data-testid={`project-card-${project.id}`}
       onClick={onTap}
-      className="bg-white rounded-2xl p-4 border border-suprans-border w-full text-left hover:shadow-sm active:scale-[0.99] transition-transform"
+      className="bg-white rounded-2xl p-4 border border-chinaimports-border w-full text-left hover:shadow-sm active:scale-[0.99] transition-transform"
     >
       <div className="flex items-start justify-between mb-2.5">
         <div className="flex items-center gap-2">
           <span
             className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-            style={{ background: "var(--suprans-red-light)", color: "var(--suprans-red)" }}
+            style={{ background: "var(--chinaimports-red-light)", color: "var(--chinaimports-red)" }}
           >
             {project.id}
           </span>
@@ -291,41 +291,41 @@ function ProjectCard({ project, onTap }: { project: Project; onTap: () => void }
           <img
             src={project.thumbnail}
             alt={project.productName}
-            className="w-14 h-14 rounded-xl object-cover border border-suprans-border"
+            className="w-14 h-14 rounded-xl object-cover border border-chinaimports-border"
           />
-          <ChevronRight size={16} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
+          <ChevronRight size={16} color="var(--chinaimports-ink-tertiary)" strokeWidth={2} />
         </div>
       </div>
 
-      <p className="text-[14px] font-bold text-suprans-ink mb-1">{project.productName}</p>
+      <p className="text-[14px] font-bold text-chinaimports-ink mb-1">{project.productName}</p>
 
       <span
         className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-2.5"
-        style={{ background: "var(--suprans-canvas)", border: "1px solid var(--suprans-border)", color: "var(--suprans-ink-secondary)" }}
+        style={{ background: "var(--chinaimports-canvas)", border: "1px solid var(--chinaimports-border)", color: "var(--chinaimports-ink-secondary)" }}
       >
         {project.serviceChip}
       </span>
 
       <div className="flex items-center gap-1.5 mb-3">
-        <span className="text-[12px] font-medium text-suprans-ink-secondary">{project.origin}</span>
+        <span className="text-[12px] font-medium text-chinaimports-ink-secondary">{project.origin}</span>
         <div className="flex-1 flex items-center gap-1">
-          <div className="h-px flex-1 border-t border-dashed" style={{ borderColor: "var(--suprans-border)" }} />
-          <div className="w-1 h-1 rounded-full" style={{ background: "var(--suprans-ink-tertiary)" }} />
-          <div className="h-px flex-1 border-t border-dashed" style={{ borderColor: "var(--suprans-border)" }} />
+          <div className="h-px flex-1 border-t border-dashed" style={{ borderColor: "var(--chinaimports-border)" }} />
+          <div className="w-1 h-1 rounded-full" style={{ background: "var(--chinaimports-ink-tertiary)" }} />
+          <div className="h-px flex-1 border-t border-dashed" style={{ borderColor: "var(--chinaimports-border)" }} />
         </div>
-        <span className="text-[12px] font-medium text-suprans-ink-secondary">{project.destination}</span>
+        <span className="text-[12px] font-medium text-chinaimports-ink-secondary">{project.destination}</span>
       </div>
 
       {!project.completed && (
         <>
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[11px] text-suprans-ink-tertiary">Stage: <span className="font-semibold text-suprans-ink">{project.currentStage}</span></span>
-            <span className="text-[11px] text-suprans-ink-tertiary">ETA {project.expectedDate}</span>
+            <span className="text-[11px] text-chinaimports-ink-tertiary">Stage: <span className="font-semibold text-chinaimports-ink">{project.currentStage}</span></span>
+            <span className="text-[11px] text-chinaimports-ink-tertiary">ETA {project.expectedDate}</span>
           </div>
-          <div className="w-full h-1.5 rounded-full bg-suprans-canvas overflow-hidden">
+          <div className="w-full h-1.5 rounded-full bg-chinaimports-canvas overflow-hidden">
             <div
               className="h-full rounded-full transition-all"
-              style={{ width: `${progress}%`, background: "var(--suprans-red)" }}
+              style={{ width: `${progress}%`, background: "var(--chinaimports-red)" }}
             />
           </div>
         </>
@@ -333,9 +333,9 @@ function ProjectCard({ project, onTap }: { project: Project; onTap: () => void }
 
       {project.completed && (
         <div className="flex items-center justify-between">
-          <span className="text-[11px] text-suprans-ink-tertiary">Completed {project.expectedDate}</span>
+          <span className="text-[11px] text-chinaimports-ink-tertiary">Completed {project.expectedDate}</span>
           <div className="flex items-center gap-1">
-            <div className="w-full h-1.5 w-20 rounded-full overflow-hidden" style={{ background: "var(--suprans-canvas)" }}>
+            <div className="w-full h-1.5 w-20 rounded-full overflow-hidden" style={{ background: "var(--chinaimports-canvas)" }}>
               <div className="h-full rounded-full bg-green-500" style={{ width: `${paidPct}%` }} />
             </div>
           </div>
@@ -350,88 +350,88 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
   const paidPct = project.amountTotalRaw > 0 ? (project.amountPaidRaw / project.amountTotalRaw) * 100 : 100;
 
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
-      <div className="bg-white px-4 pt-4 pb-3 border-b border-suprans-border flex items-center gap-3 shrink-0">
-        <button data-testid="btn-back-project" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-suprans-canvas">
-          <ArrowLeft size={20} color="var(--suprans-ink)" strokeWidth={2} />
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
+      <div className="bg-white px-4 pt-4 pb-3 border-b border-chinaimports-border flex items-center gap-3 shrink-0">
+        <button data-testid="btn-back-project" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas">
+          <ArrowLeft size={20} color="var(--chinaimports-ink)" strokeWidth={2} />
         </button>
         <img
           src={project.thumbnail}
           alt={project.productName}
-          className="w-20 h-20 rounded-xl object-cover border border-suprans-border shrink-0"
+          className="w-20 h-20 rounded-xl object-cover border border-chinaimports-border shrink-0"
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-[15px] font-bold text-suprans-ink">{project.id}</span>
+            <span className="text-[15px] font-bold text-chinaimports-ink">{project.id}</span>
             <span
               className="text-[10px] font-bold px-2 py-0.5 rounded-full"
               style={
                 project.completed
                   ? { background: "#D1FAE5", color: "#059669" }
-                  : { background: "var(--suprans-red-light)", color: "var(--suprans-red)" }
+                  : { background: "var(--chinaimports-red-light)", color: "var(--chinaimports-red)" }
               }
             >
               {project.currentStage}
             </span>
           </div>
-          <p className="text-[12px] text-suprans-ink-secondary mt-0.5 truncate">{project.productName}</p>
+          <p className="text-[12px] text-chinaimports-ink-secondary mt-0.5 truncate">{project.productName}</p>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 py-5 pb-24 flex flex-col gap-5">
-        <div className="bg-white rounded-2xl p-4 border border-suprans-border">
-          <p className="text-[13px] font-bold text-suprans-ink mb-4">Timeline</p>
+        <div className="bg-white rounded-2xl p-4 border border-chinaimports-border">
+          <p className="text-[13px] font-bold text-chinaimports-ink mb-4">Timeline</p>
           <TimelineComponent stageIndex={project.stageIndex} completed={project.completed} />
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-suprans-border">
-          <p className="text-[13px] font-bold text-suprans-ink mb-3">Documents</p>
+        <div className="bg-white rounded-2xl p-4 border border-chinaimports-border">
+          <p className="text-[13px] font-bold text-chinaimports-ink mb-3">Documents</p>
           <div className="flex flex-col gap-2.5">
             {project.documents.map((doc, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "var(--suprans-canvas)" }}>
-                  <FileText size={16} color="var(--suprans-red)" strokeWidth={1.8} />
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "var(--chinaimports-canvas)" }}>
+                  <FileText size={16} color="var(--chinaimports-red)" strokeWidth={1.8} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[12px] font-semibold text-suprans-ink truncate">{doc.name}</p>
-                  <p className="text-[11px] text-suprans-ink-tertiary">{doc.size}</p>
+                  <p className="text-[12px] font-semibold text-chinaimports-ink truncate">{doc.name}</p>
+                  <p className="text-[11px] text-chinaimports-ink-tertiary">{doc.size}</p>
                 </div>
-                <button data-testid={`doc-download-${i}`} className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-suprans-canvas">
-                  <Download size={16} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+                <button data-testid={`doc-download-${i}`} className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-chinaimports-canvas">
+                  <Download size={16} color="var(--chinaimports-ink-tertiary)" strokeWidth={1.8} />
                 </button>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-suprans-border">
-          <p className="text-[13px] font-bold text-suprans-ink mb-3">Payments</p>
+        <div className="bg-white rounded-2xl p-4 border border-chinaimports-border">
+          <p className="text-[13px] font-bold text-chinaimports-ink mb-3">Payments</p>
           <div className="flex items-center justify-between mb-2">
             <div>
-              <p className="text-[11px] text-suprans-ink-tertiary">Total Amount</p>
-              <p className="text-[15px] font-bold text-suprans-ink">{project.totalAmount}</p>
+              <p className="text-[11px] text-chinaimports-ink-tertiary">Total Amount</p>
+              <p className="text-[15px] font-bold text-chinaimports-ink">{project.totalAmount}</p>
             </div>
             <div className="text-right">
-              <p className="text-[11px] text-suprans-ink-tertiary">Amount Paid</p>
+              <p className="text-[11px] text-chinaimports-ink-tertiary">Amount Paid</p>
               <p className="text-[15px] font-bold text-green-600">{project.amountPaid}</p>
             </div>
           </div>
-          <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "var(--suprans-canvas)" }}>
+          <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "var(--chinaimports-canvas)" }}>
             <div
               className="h-full rounded-full transition-all"
-              style={{ width: `${paidPct}%`, background: paidPct === 100 ? "#059669" : "var(--suprans-red)" }}
+              style={{ width: `${paidPct}%`, background: paidPct === 100 ? "#059669" : "var(--chinaimports-red)" }}
             />
           </div>
-          <p className="text-[11px] text-suprans-ink-tertiary mt-1.5 text-right">{Math.round(paidPct)}% paid</p>
+          <p className="text-[11px] text-chinaimports-ink-tertiary mt-1.5 text-right">{Math.round(paidPct)}% paid</p>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-suprans-border px-5 py-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-chinaimports-border px-5 py-4">
         <button
           data-testid="btn-chat-team"
-          onClick={() => navigate("/suprans/chat")}
+          onClick={() => navigate("/chinaimports/chat")}
           className="w-full h-12 rounded-2xl flex items-center justify-center gap-2 text-[15px] font-bold text-white"
-          style={{ background: "var(--suprans-red)" }}
+          style={{ background: "var(--chinaimports-red)" }}
         >
           <MessageCircle size={18} color="white" strokeWidth={2} />
           Chat with your team
@@ -457,7 +457,7 @@ function TimelineComponent({ stageIndex, completed }: { stageIndex: number; comp
               <div
                 className="absolute top-4 left-1/2 right-0 h-0.5"
                 style={{
-                  background: isDone ? "var(--suprans-red)" : "var(--suprans-border)",
+                  background: isDone ? "var(--chinaimports-red)" : "var(--chinaimports-border)",
                   zIndex: 0,
                 }}
               />
@@ -465,22 +465,22 @@ function TimelineComponent({ stageIndex, completed }: { stageIndex: number; comp
             <div
               className="relative z-10 w-8 h-8 rounded-full flex items-center justify-center mb-1.5"
               style={{
-                background: isDone ? "var(--suprans-red)" : isCurrent ? "var(--suprans-red-light)" : "var(--suprans-canvas)",
-                border: isCurrent ? "2px solid var(--suprans-red)" : isDone ? "none" : "1.5px solid var(--suprans-border)",
+                background: isDone ? "var(--chinaimports-red)" : isCurrent ? "var(--chinaimports-red-light)" : "var(--chinaimports-canvas)",
+                border: isCurrent ? "2px solid var(--chinaimports-red)" : isDone ? "none" : "1.5px solid var(--chinaimports-border)",
               }}
             >
               {isDone ? (
                 <CheckCircle size={16} color="white" strokeWidth={0} fill="white" />
               ) : isCurrent ? (
-                <StageIcon size={14} color="var(--suprans-red)" strokeWidth={2} />
+                <StageIcon size={14} color="var(--chinaimports-red)" strokeWidth={2} />
               ) : (
-                <Circle size={14} color="var(--suprans-border)" strokeWidth={2} fill="none" />
+                <Circle size={14} color="var(--chinaimports-border)" strokeWidth={2} fill="none" />
               )}
             </div>
             <span
               className="text-[9px] font-semibold text-center leading-tight px-0.5"
               style={{
-                color: isDone ? "var(--suprans-red)" : isCurrent ? "var(--suprans-ink)" : "var(--suprans-ink-tertiary)",
+                color: isDone ? "var(--chinaimports-red)" : isCurrent ? "var(--chinaimports-ink)" : "var(--chinaimports-ink-tertiary)",
               }}
             >
               {label}

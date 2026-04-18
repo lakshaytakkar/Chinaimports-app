@@ -14,8 +14,8 @@ import Notifications from "@/pages/Notifications";
 import HomeV2 from "@/pages/HomeV2";
 import Successful from "@/pages/Successful";
 
-import SupransOnboarding from "@/pages/suprans/SupransOnboarding";
-import SupransApp from "@/pages/suprans/SupransApp";
+import ChinaImportsOnboarding from "@/pages/chinaimports/ChinaImportsOnboarding";
+import ChinaImportsApp from "@/pages/chinaimports/ChinaImportsApp";
 
 function Router() {
   return (
@@ -30,14 +30,14 @@ function Router() {
       <Route path="/notifications" component={Notifications} />
       <Route path="/successful" component={Successful} />
 
-      <Route path="/suprans" component={SupransApp} />
-      <Route path="/suprans/onboarding" component={SupransOnboarding} />
-      <Route path="/suprans/chat" component={SupransApp} />
-      <Route path="/suprans/explore" component={SupransApp} />
-      <Route path="/suprans/projects" component={SupransApp} />
-      <Route path="/suprans/account" component={SupransApp} />
-      <Route path="/suprans/requests" component={SupransApp} />
-      <Route path="/suprans/requests/:id" component={SupransApp} />
+      <Route path="/chinaimports" component={ChinaImportsApp} />
+      <Route path="/chinaimports/onboarding" component={ChinaImportsOnboarding} />
+      <Route path="/chinaimports/chat" component={ChinaImportsApp} />
+      <Route path="/chinaimports/explore" component={ChinaImportsApp} />
+      <Route path="/chinaimports/projects" component={ChinaImportsApp} />
+      <Route path="/chinaimports/account" component={ChinaImportsApp} />
+      <Route path="/chinaimports/requests" component={ChinaImportsApp} />
+      <Route path="/chinaimports/requests/:id" component={ChinaImportsApp} />
 
       <Route component={NotFound} />
     </Switch>

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { SLIDE_DURATION_MS } from "./transitions";
 import { useLocation } from "wouter";
-import { SUPRANS_AUTH_KEY } from "./constants";
+import { CHINAIMPORTS_AUTH_KEY } from "./constants";
 import {
   ArrowLeft,
   ChevronRight,
@@ -85,7 +85,7 @@ const MENU_ITEMS = [
   { id: "invoices", label: "Invoices", Icon: FileText, view: "invoices" as AccountView },
   { id: "notifications", label: "Notifications", Icon: Bell, view: "notifications" as AccountView },
   { id: "help", label: "Help & Support", Icon: HelpCircle, view: "help" as AccountView },
-  { id: "about", label: "About Suprans", Icon: Info, view: "about" as AccountView },
+  { id: "about", label: "About China Imports", Icon: Info, view: "about" as AccountView },
 ];
 
 const STATUS_STYLES: Record<Invoice["status"], { bg: string; color: string }> = {
@@ -94,7 +94,7 @@ const STATUS_STYLES: Record<Invoice["status"], { bg: string; color: string }> = 
   Overdue: { bg: "#FEE2E2", color: "#DC2626" },
 };
 
-export default function SupransAccountTab() {
+export default function ChinaImportsAccountTab() {
   const [view, setView] = useState<AccountView>("home");
   const [isLeaving, setIsLeaving] = useState(false);
   const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -104,7 +104,7 @@ export default function SupransAccountTab() {
 
   const handleMenu = (item: typeof MENU_ITEMS[0]) => {
     if (item.view === "my-requests") {
-      navigate("/suprans/requests");
+      navigate("/chinaimports/requests");
       return;
     }
     if (item.view) {
@@ -122,8 +122,8 @@ export default function SupransAccountTab() {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem(SUPRANS_AUTH_KEY);
-    navigate("/suprans/onboarding");
+    localStorage.removeItem(CHINAIMPORTS_AUTH_KEY);
+    navigate("/chinaimports/onboarding");
   };
 
   const renderSubScreen = () => {
@@ -131,7 +131,7 @@ export default function SupransAccountTab() {
     if (view === "invoices") return <InvoicesList onBack={handleBack} />;
     if (view === "notifications") return <NotificationSettings onBack={handleBack} />;
     if (view === "help") return <HelpSupport onBack={handleBack} />;
-    if (view === "about") return <AboutSuprans onBack={handleBack} />;
+    if (view === "about") return <AboutChinaImports onBack={handleBack} />;
     return null;
   };
 
@@ -139,25 +139,25 @@ export default function SupransAccountTab() {
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      <div className="flex flex-col h-full overflow-y-auto bg-suprans-canvas">
-        <div className="bg-white px-5 pt-5 pb-4 border-b border-suprans-border shrink-0">
-          <span className="text-[22px] font-black text-suprans-ink tracking-tight">Account</span>
+      <div className="flex flex-col h-full overflow-y-auto bg-chinaimports-canvas">
+        <div className="bg-white px-5 pt-5 pb-4 border-b border-chinaimports-border shrink-0">
+          <span className="text-[22px] font-black text-chinaimports-ink tracking-tight">Account</span>
         </div>
 
-      <div className="bg-white mx-4 mt-4 rounded-2xl p-4 border border-suprans-border">
+      <div className="bg-white mx-4 mt-4 rounded-2xl p-4 border border-chinaimports-border">
         <div className="flex items-center gap-4">
           <img
             src={avatarPriya}
             alt="Profile photo"
             data-testid="img-profile-avatar"
-            className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-suprans-red/20"
+            className="w-16 h-16 rounded-full object-cover shrink-0 ring-2 ring-chinaimports-red/20"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-[16px] font-bold text-suprans-ink leading-tight">{USER_PROFILE.companyName}</p>
-            <p className="text-[11px] text-suprans-ink-tertiary mt-0.5 font-mono">{USER_PROFILE.gstin}</p>
+            <p className="text-[16px] font-bold text-chinaimports-ink leading-tight">{USER_PROFILE.companyName}</p>
+            <p className="text-[11px] text-chinaimports-ink-tertiary mt-0.5 font-mono">{USER_PROFILE.gstin}</p>
             <div className="flex items-center gap-1 mt-1">
-              <MapPin size={11} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
-              <span className="text-[11px] text-suprans-ink-tertiary">{USER_PROFILE.city}</span>
+              <MapPin size={11} color="var(--chinaimports-ink-tertiary)" strokeWidth={2} />
+              <span className="text-[11px] text-chinaimports-ink-tertiary">{USER_PROFILE.city}</span>
             </div>
           </div>
         </div>
@@ -167,48 +167,48 @@ export default function SupransAccountTab() {
         {USER_STATS.map((stat) => (
           <div
             key={stat.label}
-            className="flex-1 bg-white rounded-xl p-3 border border-suprans-border flex flex-col items-center"
+            className="flex-1 bg-white rounded-xl p-3 border border-chinaimports-border flex flex-col items-center"
           >
-            <span className="text-[16px] font-black text-suprans-ink">{stat.value}</span>
-            <span className="text-[10px] text-suprans-ink-tertiary text-center leading-tight mt-0.5">{stat.label}</span>
+            <span className="text-[16px] font-black text-chinaimports-ink">{stat.value}</span>
+            <span className="text-[10px] text-chinaimports-ink-tertiary text-center leading-tight mt-0.5">{stat.label}</span>
           </div>
         ))}
       </div>
 
-      <div className="mx-4 mt-4 bg-white rounded-2xl border border-suprans-border overflow-hidden">
+      <div className="mx-4 mt-4 bg-white rounded-2xl border border-chinaimports-border overflow-hidden">
         {MENU_ITEMS.map((item, idx) => (
           <button
             key={item.id}
             data-testid={`menu-${item.id}`}
             onClick={() => handleMenu(item)}
-            className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-suprans-canvas active:bg-suprans-canvas/70 transition-colors"
-            style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+            className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-chinaimports-canvas active:bg-chinaimports-canvas/70 transition-colors"
+            style={idx > 0 ? { borderTop: "1px solid var(--chinaimports-border)" } : {}}
           >
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--suprans-canvas)" }}>
-              <item.Icon size={16} color="var(--suprans-ink-secondary)" strokeWidth={1.8} />
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--chinaimports-canvas)" }}>
+              <item.Icon size={16} color="var(--chinaimports-ink-secondary)" strokeWidth={1.8} />
             </div>
-            <span className="flex-1 text-[14px] font-medium text-suprans-ink text-left">{item.label}</span>
-            <ChevronRight size={16} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
+            <span className="flex-1 text-[14px] font-medium text-chinaimports-ink text-left">{item.label}</span>
+            <ChevronRight size={16} color="var(--chinaimports-ink-tertiary)" strokeWidth={2} />
           </button>
         ))}
       </div>
 
-      <div className="mx-4 mt-3 mb-6 bg-white rounded-2xl border border-suprans-border overflow-hidden">
+      <div className="mx-4 mt-3 mb-6 bg-white rounded-2xl border border-chinaimports-border overflow-hidden">
         <button
           data-testid="menu-sign-out"
           onClick={handleSignOut}
           className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-red-50 transition-colors"
         >
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--suprans-red-light)" }}>
-            <LogOut size={16} color="var(--suprans-red)" strokeWidth={1.8} />
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--chinaimports-red-light)" }}>
+            <LogOut size={16} color="var(--chinaimports-red)" strokeWidth={1.8} />
           </div>
-          <span className="flex-1 text-[14px] font-medium text-left" style={{ color: "var(--suprans-red)" }}>Sign Out</span>
-          <ChevronRight size={16} color="var(--suprans-red)" strokeWidth={2} />
+          <span className="flex-1 text-[14px] font-medium text-left" style={{ color: "var(--chinaimports-red)" }}>Sign Out</span>
+          <ChevronRight size={16} color="var(--chinaimports-red)" strokeWidth={2} />
         </button>
       </div>
       </div>
       {subScreen && (
-        <div className={`absolute inset-0 ${isLeaving ? "suprans-slide-out" : "suprans-slide-in"}`}>
+        <div className={`absolute inset-0 ${isLeaving ? "chinaimports-slide-out" : "chinaimports-slide-in"}`}>
           {subScreen}
         </div>
       )}
@@ -218,11 +218,11 @@ export default function SupransAccountTab() {
 
 function SubScreenHeader({ title, onBack }: { title: string; onBack: () => void }) {
   return (
-    <div className="bg-white px-4 pt-4 pb-3 border-b border-suprans-border flex items-center gap-3 shrink-0">
-      <button data-testid="btn-back-account" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-suprans-canvas">
-        <ArrowLeft size={20} color="var(--suprans-ink)" strokeWidth={2} />
+    <div className="bg-white px-4 pt-4 pb-3 border-b border-chinaimports-border flex items-center gap-3 shrink-0">
+      <button data-testid="btn-back-account" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas">
+        <ArrowLeft size={20} color="var(--chinaimports-ink)" strokeWidth={2} />
       </button>
-      <span className="text-[16px] font-bold text-suprans-ink">{title}</span>
+      <span className="text-[16px] font-bold text-chinaimports-ink">{title}</span>
     </div>
   );
 }
@@ -234,18 +234,18 @@ function BusinessDetails({ onBack }: { onBack: () => void }) {
   );
 
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
-      <div className="bg-white px-4 pt-4 pb-3 border-b border-suprans-border flex items-center gap-3 shrink-0">
-        <button data-testid="btn-back-account" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-suprans-canvas">
-          <ArrowLeft size={20} color="var(--suprans-ink)" strokeWidth={2} />
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
+      <div className="bg-white px-4 pt-4 pb-3 border-b border-chinaimports-border flex items-center gap-3 shrink-0">
+        <button data-testid="btn-back-account" onClick={onBack} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas">
+          <ArrowLeft size={20} color="var(--chinaimports-ink)" strokeWidth={2} />
         </button>
-        <span className="flex-1 text-[16px] font-bold text-suprans-ink">Business Details</span>
+        <span className="flex-1 text-[16px] font-bold text-chinaimports-ink">Business Details</span>
         {!editing ? (
           <button
             data-testid="btn-edit"
             onClick={() => setEditing(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold"
-            style={{ background: "var(--suprans-red-light)", color: "var(--suprans-red)" }}
+            style={{ background: "var(--chinaimports-red-light)", color: "var(--chinaimports-red)" }}
           >
             <Edit size={12} strokeWidth={2.2} />
             Edit
@@ -255,7 +255,7 @@ function BusinessDetails({ onBack }: { onBack: () => void }) {
             data-testid="btn-save"
             onClick={() => setEditing(false)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold text-white"
-            style={{ background: "var(--suprans-red)" }}
+            style={{ background: "var(--chinaimports-red)" }}
           >
             <Check size={12} strokeWidth={2.5} />
             Save
@@ -264,29 +264,29 @@ function BusinessDetails({ onBack }: { onBack: () => void }) {
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        <div className="bg-white rounded-2xl border border-suprans-border overflow-hidden">
+        <div className="bg-white rounded-2xl border border-chinaimports-border overflow-hidden">
           {BUSINESS_FIELDS.map((field, idx) => {
             const Icon = field.icon;
             return (
               <div
                 key={field.key}
                 className="px-4 py-3.5"
-                style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+                style={idx > 0 ? { borderTop: "1px solid var(--chinaimports-border)" } : {}}
               >
                 <div className="flex items-center gap-1.5 mb-1.5">
-                  <Icon size={12} color="var(--suprans-ink-tertiary)" strokeWidth={2} />
-                  <span className="text-[11px] text-suprans-ink-tertiary font-medium">{field.label}</span>
+                  <Icon size={12} color="var(--chinaimports-ink-tertiary)" strokeWidth={2} />
+                  <span className="text-[11px] text-chinaimports-ink-tertiary font-medium">{field.label}</span>
                 </div>
                 {editing ? (
                   <input
                     data-testid={`field-${field.key}`}
                     value={values[field.key]}
                     onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value }))}
-                    className="w-full text-[14px] font-medium text-suprans-ink bg-suprans-canvas rounded-xl px-3 py-2 outline-none border focus:border-suprans-red transition-colors"
-                    style={{ borderColor: "var(--suprans-border)" }}
+                    className="w-full text-[14px] font-medium text-chinaimports-ink bg-chinaimports-canvas rounded-xl px-3 py-2 outline-none border focus:border-chinaimports-red transition-colors"
+                    style={{ borderColor: "var(--chinaimports-border)" }}
                   />
                 ) : (
-                  <p className="text-[14px] font-medium text-suprans-ink">{values[field.key]}</p>
+                  <p className="text-[14px] font-medium text-chinaimports-ink">{values[field.key]}</p>
                 )}
               </div>
             );
@@ -305,24 +305,24 @@ function InvoicesList({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
       <SubScreenHeader title="Invoices" onBack={onBack} />
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        <div className="bg-white rounded-2xl border border-suprans-border overflow-hidden">
+        <div className="bg-white rounded-2xl border border-chinaimports-border overflow-hidden">
           {INVOICES.map((inv, idx) => {
             const style = STATUS_STYLES[inv.status];
             return (
               <div
                 key={inv.id}
                 className="flex items-center gap-3 px-4 py-3.5"
-                style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+                style={idx > 0 ? { borderTop: "1px solid var(--chinaimports-border)" } : {}}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--suprans-canvas)" }}>
-                  <FileText size={18} color="var(--suprans-ink-secondary)" strokeWidth={1.8} />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--chinaimports-canvas)" }}>
+                  <FileText size={18} color="var(--chinaimports-ink-secondary)" strokeWidth={1.8} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-[13px] font-bold text-suprans-ink">{inv.id}</span>
+                    <span className="text-[13px] font-bold text-chinaimports-ink">{inv.id}</span>
                     <span
                       className="text-[10px] font-bold px-2 py-0.5 rounded-full"
                       style={{ background: style.bg, color: style.color }}
@@ -330,14 +330,14 @@ function InvoicesList({ onBack }: { onBack: () => void }) {
                       {inv.status}
                     </span>
                   </div>
-                  <p className="text-[12px] text-suprans-ink-secondary">{inv.date} · {inv.amount}</p>
+                  <p className="text-[12px] text-chinaimports-ink-secondary">{inv.date} · {inv.amount}</p>
                 </div>
                 <button
                   data-testid={`invoice-download-${inv.id}`}
                   onClick={() => handleDownload(inv)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-suprans-canvas shrink-0"
+                  className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-chinaimports-canvas shrink-0"
                 >
-                  <Download size={16} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+                  <Download size={16} color="var(--chinaimports-ink-tertiary)" strokeWidth={1.8} />
                 </button>
               </div>
             );
@@ -356,25 +356,25 @@ function NotificationSettings({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
       <SubScreenHeader title="Notifications" onBack={onBack} />
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        <div className="bg-white rounded-2xl border border-suprans-border overflow-hidden">
+        <div className="bg-white rounded-2xl border border-chinaimports-border overflow-hidden">
           {prefs.map((pref, idx) => (
             <div
               key={pref.id}
               className="flex items-center gap-3 px-4 py-3.5"
-              style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+              style={idx > 0 ? { borderTop: "1px solid var(--chinaimports-border)" } : {}}
             >
               <div className="flex-1 min-w-0">
-                <p className="text-[14px] font-semibold text-suprans-ink">{pref.label}</p>
-                <p className="text-[11px] text-suprans-ink-tertiary mt-0.5">{pref.sub}</p>
+                <p className="text-[14px] font-semibold text-chinaimports-ink">{pref.label}</p>
+                <p className="text-[11px] text-chinaimports-ink-tertiary mt-0.5">{pref.sub}</p>
               </div>
               <button
                 data-testid={`notif-toggle-${pref.id}`}
                 onClick={() => toggle(pref.id)}
                 className="relative w-12 h-6 rounded-full flex-shrink-0 transition-colors duration-200"
-                style={{ background: pref.enabled ? "var(--suprans-red)" : "var(--suprans-border)" }}
+                style={{ background: pref.enabled ? "var(--chinaimports-red)" : "var(--chinaimports-border)" }}
               >
                 <span
                   className="absolute top-1 w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200"
@@ -392,34 +392,34 @@ function NotificationSettings({ onBack }: { onBack: () => void }) {
 const HELP_OPTIONS = [
   { id: "chat", label: "Chat with Support", sub: "Start a conversation with our team", Icon: MessageSquare },
   { id: "call", label: "Call Us", sub: "+91 22 6900 4200 (Mon–Sat, 9AM–6PM)", Icon: PhoneCall },
-  { id: "email", label: "Email Support", sub: "support@suprans.in", Icon: Mail },
+  { id: "email", label: "Email Support", sub: "support@chinaimports.in", Icon: Mail },
   { id: "faq", label: "FAQs", sub: "Browse common questions and answers", Icon: BookOpen },
 ];
 
 function HelpSupport({ onBack }: { onBack: () => void }) {
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
       <SubScreenHeader title="Help & Support" onBack={onBack} />
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        <p className="text-[13px] text-suprans-ink-secondary mb-4 leading-relaxed">
+        <p className="text-[13px] text-chinaimports-ink-secondary mb-4 leading-relaxed">
           Our team is available Monday to Saturday, 9 AM – 6 PM IST. Choose how you'd like to reach us.
         </p>
-        <div className="bg-white rounded-2xl border border-suprans-border overflow-hidden">
+        <div className="bg-white rounded-2xl border border-chinaimports-border overflow-hidden">
           {HELP_OPTIONS.map((item, idx) => (
             <button
               key={item.id}
               data-testid={`help-option-${item.id}`}
-              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-suprans-canvas transition-colors text-left"
-              style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-chinaimports-canvas transition-colors text-left"
+              style={idx > 0 ? { borderTop: "1px solid var(--chinaimports-border)" } : {}}
             >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--suprans-red-light)" }}>
-                <item.Icon size={18} color="var(--suprans-red)" strokeWidth={1.8} />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--chinaimports-red-light)" }}>
+                <item.Icon size={18} color="var(--chinaimports-red)" strokeWidth={1.8} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[14px] font-semibold text-suprans-ink">{item.label}</p>
-                <p className="text-[11px] text-suprans-ink-tertiary mt-0.5">{item.sub}</p>
+                <p className="text-[14px] font-semibold text-chinaimports-ink">{item.label}</p>
+                <p className="text-[11px] text-chinaimports-ink-tertiary mt-0.5">{item.sub}</p>
               </div>
-              <ExternalLink size={14} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+              <ExternalLink size={14} color="var(--chinaimports-ink-tertiary)" strokeWidth={1.8} />
             </button>
           ))}
         </div>
@@ -428,26 +428,26 @@ function HelpSupport({ onBack }: { onBack: () => void }) {
   );
 }
 
-function AboutSuprans({ onBack }: { onBack: () => void }) {
+function AboutChinaImports({ onBack }: { onBack: () => void }) {
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
-      <SubScreenHeader title="About Suprans" onBack={onBack} />
+    <div className="flex flex-col h-full bg-chinaimports-canvas">
+      <SubScreenHeader title="About China Imports" onBack={onBack} />
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        <div className="bg-white rounded-2xl border border-suprans-border p-5 mb-4 flex flex-col items-center text-center">
+        <div className="bg-white rounded-2xl border border-chinaimports-border p-5 mb-4 flex flex-col items-center text-center">
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center text-[22px] font-black text-white mb-3"
-            style={{ background: "var(--suprans-red)" }}
+            style={{ background: "var(--chinaimports-red)" }}
           >
             S
           </div>
-          <h2 className="text-[18px] font-black text-suprans-ink">Suprans</h2>
-          <p className="text-[12px] text-suprans-ink-tertiary mt-0.5">Version 1.0.0 (Build 42)</p>
-          <p className="text-[13px] text-suprans-ink-secondary mt-3 leading-relaxed">
-            Suprans is India's B2B import partner, helping businesses source, ship, and clear goods from China with end-to-end transparency.
+          <h2 className="text-[18px] font-black text-chinaimports-ink">China Imports</h2>
+          <p className="text-[12px] text-chinaimports-ink-tertiary mt-0.5">Version 1.0.0 (Build 42)</p>
+          <p className="text-[13px] text-chinaimports-ink-secondary mt-3 leading-relaxed">
+            China Imports is India's B2B import partner, helping businesses source, ship, and clear goods from China with end-to-end transparency.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-suprans-border overflow-hidden">
+        <div className="bg-white rounded-2xl border border-chinaimports-border overflow-hidden">
           {[
             { label: "Terms of Service", Icon: FileText },
             { label: "Privacy Policy", Icon: Shield },
@@ -456,18 +456,18 @@ function AboutSuprans({ onBack }: { onBack: () => void }) {
             <button
               key={item.label}
               data-testid={`about-link-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-suprans-canvas transition-colors"
-              style={idx > 0 ? { borderTop: "1px solid var(--suprans-border)" } : {}}
+              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-chinaimports-canvas transition-colors"
+              style={idx > 0 ? { borderTop: "1px solid var(--chinaimports-border)" } : {}}
             >
-              <item.Icon size={16} color="var(--suprans-ink-secondary)" strokeWidth={1.8} />
-              <span className="flex-1 text-[14px] font-medium text-suprans-ink text-left">{item.label}</span>
-              <ExternalLink size={14} color="var(--suprans-ink-tertiary)" strokeWidth={1.8} />
+              <item.Icon size={16} color="var(--chinaimports-ink-secondary)" strokeWidth={1.8} />
+              <span className="flex-1 text-[14px] font-medium text-chinaimports-ink text-left">{item.label}</span>
+              <ExternalLink size={14} color="var(--chinaimports-ink-tertiary)" strokeWidth={1.8} />
             </button>
           ))}
         </div>
 
-        <p className="text-center text-[11px] text-suprans-ink-tertiary mt-6">
-          © 2026 Suprans Technologies Pvt. Ltd.{"\n"}Made with ❤️ in Mumbai, India
+        <p className="text-center text-[11px] text-chinaimports-ink-tertiary mt-6">
+          © 2026 China Imports Technologies Pvt. Ltd.{"\n"}Made with ❤️ in Mumbai, India
         </p>
       </div>
     </div>

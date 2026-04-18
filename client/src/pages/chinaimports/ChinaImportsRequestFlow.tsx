@@ -60,7 +60,7 @@ const STEP_TITLES = [
   "Review & submit",
 ];
 
-export default function SupransRequestFlow({ onClose, onSubmitted }: FlowProps) {
+export default function ChinaImportsRequestFlow({ onClose, onSubmitted }: FlowProps) {
   const [visible, setVisible] = useState(false);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormState>(INITIAL);
@@ -140,7 +140,7 @@ export default function SupransRequestFlow({ onClose, onSubmitted }: FlowProps) 
         onClick={handleClose}
       />
       <div
-        className="absolute inset-0 bg-suprans-canvas transition-transform duration-300 ease-out flex flex-col"
+        className="absolute inset-0 bg-chinaimports-canvas transition-transform duration-300 ease-out flex flex-col"
         style={{ transform: visible ? "translateY(0)" : "translateY(100%)" }}
       >
         {submittedReq ? (
@@ -193,33 +193,33 @@ function FlowHeader({
 }) {
   const pct = (step / total) * 100;
   return (
-    <div className="bg-white px-4 pt-4 pb-3 border-b border-suprans-border shrink-0">
+    <div className="bg-white px-4 pt-4 pb-3 border-b border-chinaimports-border shrink-0">
       <div className="flex items-center gap-3 mb-3">
         <button
           data-testid="btn-flow-back"
           onClick={onBack}
-          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-suprans-canvas active:scale-95 transition-transform"
+          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas active:scale-95 transition-transform"
         >
-          <ArrowLeft size={20} color="var(--suprans-ink)" strokeWidth={2} />
+          <ArrowLeft size={20} color="var(--chinaimports-ink)" strokeWidth={2} />
         </button>
         <div className="flex-1">
-          <p className="text-[11px] font-semibold text-suprans-ink-tertiary uppercase tracking-wider">
+          <p className="text-[11px] font-semibold text-chinaimports-ink-tertiary uppercase tracking-wider">
             Step {step} of {total}
           </p>
-          <p className="text-[15px] font-bold text-suprans-ink leading-tight">{title}</p>
+          <p className="text-[15px] font-bold text-chinaimports-ink leading-tight">{title}</p>
         </div>
         <button
           data-testid="btn-flow-close"
           onClick={onClose}
-          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-suprans-canvas active:scale-95 transition-transform"
+          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-chinaimports-canvas active:scale-95 transition-transform"
         >
-          <X size={20} color="var(--suprans-ink-secondary)" strokeWidth={2} />
+          <X size={20} color="var(--chinaimports-ink-secondary)" strokeWidth={2} />
         </button>
       </div>
-      <div className="h-1.5 rounded-full bg-suprans-canvas overflow-hidden">
+      <div className="h-1.5 rounded-full bg-chinaimports-canvas overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-300 ease-out"
-          style={{ width: `${pct}%`, background: "var(--suprans-red)" }}
+          style={{ width: `${pct}%`, background: "var(--chinaimports-red)" }}
         />
       </div>
     </div>
@@ -245,12 +245,12 @@ function FlowFooter({
 }) {
   const isLast = step === total;
   return (
-    <div className="bg-white border-t border-suprans-border px-5 py-4 shrink-0 flex items-center gap-3">
+    <div className="bg-white border-t border-chinaimports-border px-5 py-4 shrink-0 flex items-center gap-3">
       {onSkip && (
         <button
           data-testid="btn-flow-skip"
           onClick={onSkip}
-          className="h-12 px-5 rounded-2xl text-[14px] font-semibold text-suprans-ink-secondary hover:bg-suprans-canvas active:scale-95 transition-transform"
+          className="h-12 px-5 rounded-2xl text-[14px] font-semibold text-chinaimports-ink-secondary hover:bg-chinaimports-canvas active:scale-95 transition-transform"
         >
           Skip
         </button>
@@ -260,7 +260,7 @@ function FlowFooter({
         onClick={isLast ? onSubmit : onNext}
         disabled={!canProceed || submitting}
         className="flex-1 h-12 rounded-2xl text-[15px] font-bold text-white flex items-center justify-center gap-2 active:scale-[0.98] transition-transform disabled:opacity-40"
-        style={{ background: "var(--suprans-red)" }}
+        style={{ background: "var(--chinaimports-red)" }}
       >
         {submitting ? (
           <span className="inline-block w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
@@ -310,17 +310,17 @@ function Step1Image({
   if (form.image) {
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-[13px] text-suprans-ink-secondary leading-relaxed">
+        <p className="text-[13px] text-chinaimports-ink-secondary leading-relaxed">
           Great. Here's your reference image — we'll use this to brief our sourcing team.
         </p>
         <div
           data-testid="image-preview"
-          className="bg-white rounded-2xl border border-suprans-border overflow-hidden"
+          className="bg-white rounded-2xl border border-chinaimports-border overflow-hidden"
         >
           <img
             src={form.image}
             alt="Reference"
-            className="w-full h-[260px] object-cover bg-suprans-canvas"
+            className="w-full h-[260px] object-cover bg-chinaimports-canvas"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
             }}
@@ -329,11 +329,11 @@ function Step1Image({
             <div className="flex items-center gap-2">
               <span
                 className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: "var(--suprans-red-light)" }}
+                style={{ background: "var(--chinaimports-red-light)" }}
               >
-                <Check size={14} color="var(--suprans-red)" strokeWidth={2.5} />
+                <Check size={14} color="var(--chinaimports-red)" strokeWidth={2.5} />
               </span>
-              <span className="text-[12px] font-semibold text-suprans-ink-secondary">
+              <span className="text-[12px] font-semibold text-chinaimports-ink-secondary">
                 {form.imageSource && sourceLabel[form.imageSource]}
               </span>
             </div>
@@ -344,7 +344,7 @@ function Step1Image({
                 update("imageSource", null);
                 setUrlInput("");
               }}
-              className="text-[12px] font-bold text-suprans-red active:scale-95 transition-transform"
+              className="text-[12px] font-bold text-chinaimports-red active:scale-95 transition-transform"
             >
               Change
             </button>
@@ -356,7 +356,7 @@ function Step1Image({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[13px] text-suprans-ink-secondary leading-relaxed">
+      <p className="text-[13px] text-chinaimports-ink-secondary leading-relaxed">
         Add a clear reference so our sourcing team knows exactly what you need. You can take a photo, pick from your gallery, or paste a link.
       </p>
 
@@ -391,17 +391,17 @@ function Step1Image({
         onClick={() => galleryRef.current?.click()}
       />
 
-      <div className="bg-white rounded-2xl border border-suprans-border p-4">
+      <div className="bg-white rounded-2xl border border-chinaimports-border p-4">
         <div className="flex items-center gap-3 mb-3">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "var(--suprans-red-light)" }}
+            style={{ background: "var(--chinaimports-red-light)" }}
           >
-            <LinkIcon size={18} color="var(--suprans-red)" strokeWidth={2} />
+            <LinkIcon size={18} color="var(--chinaimports-red)" strokeWidth={2} />
           </div>
           <div className="flex-1">
-            <p className="text-[14px] font-bold text-suprans-ink">Paste a reference link</p>
-            <p className="text-[11px] text-suprans-ink-tertiary">From Alibaba, Amazon, Pinterest…</p>
+            <p className="text-[14px] font-bold text-chinaimports-ink">Paste a reference link</p>
+            <p className="text-[11px] text-chinaimports-ink-tertiary">From Alibaba, Amazon, Pinterest…</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -411,14 +411,14 @@ function Step1Image({
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
             placeholder="https://…"
-            className="flex-1 h-11 px-3 rounded-xl bg-suprans-canvas border border-suprans-border text-[13px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors"
+            className="flex-1 h-11 px-3 rounded-xl bg-chinaimports-canvas border border-chinaimports-border text-[13px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors"
           />
           <button
             data-testid="btn-image-url-add"
             onClick={handleUrl}
             disabled={!urlInput.trim()}
             className="h-11 px-4 rounded-xl text-[13px] font-bold text-white active:scale-95 transition-transform disabled:opacity-40"
-            style={{ background: "var(--suprans-red)" }}
+            style={{ background: "var(--chinaimports-red)" }}
           >
             Add
           </button>
@@ -445,17 +445,17 @@ function ImageSourceCard({
     <button
       data-testid={testId}
       onClick={onClick}
-      className="bg-white rounded-2xl border border-suprans-border p-4 flex items-center gap-3 text-left active:scale-[0.98] hover:border-suprans-red/40 transition-all"
+      className="bg-white rounded-2xl border border-chinaimports-border p-4 flex items-center gap-3 text-left active:scale-[0.98] hover:border-chinaimports-red/40 transition-all"
     >
       <div
         className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-        style={{ background: "var(--suprans-red-light)" }}
+        style={{ background: "var(--chinaimports-red-light)" }}
       >
-        <Icon size={18} color="var(--suprans-red)" strokeWidth={2} />
+        <Icon size={18} color="var(--chinaimports-red)" strokeWidth={2} />
       </div>
       <div className="flex-1">
-        <p className="text-[14px] font-bold text-suprans-ink">{title}</p>
-        <p className="text-[11px] text-suprans-ink-tertiary">{sub}</p>
+        <p className="text-[14px] font-bold text-chinaimports-ink">{title}</p>
+        <p className="text-[11px] text-chinaimports-ink-tertiary">{sub}</p>
       </div>
     </button>
   );
@@ -471,11 +471,11 @@ function Step2Name({
   const tooShort = form.productName.trim().length > 0 && form.productName.trim().length < 2;
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[13px] text-suprans-ink-secondary leading-relaxed">
+      <p className="text-[13px] text-chinaimports-ink-secondary leading-relaxed">
         Give your request a name. Be specific so it's easy to find later.
       </p>
       <div>
-        <label className="text-[12px] font-semibold text-suprans-ink-secondary mb-2 block">
+        <label className="text-[12px] font-semibold text-chinaimports-ink-secondary mb-2 block">
           Product name
         </label>
         <input
@@ -484,17 +484,17 @@ function Step2Name({
           value={form.productName}
           onChange={(e) => update("productName", e.target.value)}
           placeholder="e.g. Merino Wool Sweaters — Autumn 2026"
-          className="w-full h-12 px-4 rounded-xl bg-white border border-suprans-border text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors"
+          className="w-full h-12 px-4 rounded-xl bg-white border border-chinaimports-border text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors"
           autoFocus
         />
         <div className="flex items-center justify-between mt-1.5">
-          <span className="text-[11px] text-suprans-ink-tertiary">2–80 characters</span>
-          <span className="text-[11px] text-suprans-ink-tertiary">
+          <span className="text-[11px] text-chinaimports-ink-tertiary">2–80 characters</span>
+          <span className="text-[11px] text-chinaimports-ink-tertiary">
             {form.productName.length}/80
           </span>
         </div>
         {tooShort && (
-          <p data-testid="error-name" className="text-[11px] text-suprans-red mt-1 font-semibold">
+          <p data-testid="error-name" className="text-[11px] text-chinaimports-red mt-1 font-semibold">
             Please enter at least 2 characters.
           </p>
         )}
@@ -514,11 +514,11 @@ function Step3Requirements({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[13px] text-suprans-ink-secondary leading-relaxed">
+      <p className="text-[13px] text-chinaimports-ink-secondary leading-relaxed">
         The more specific you are, the faster we can match the right supplier.
       </p>
       <div>
-        <label className="text-[12px] font-semibold text-suprans-ink-secondary mb-2 block">
+        <label className="text-[12px] font-semibold text-chinaimports-ink-secondary mb-2 block">
           Requirements & specifications
         </label>
         <textarea
@@ -527,11 +527,11 @@ function Step3Requirements({
           onChange={(e) => update("requirements", e.target.value)}
           placeholder="Material, dimensions, colors, certifications, packaging, etc."
           rows={5}
-          className="w-full px-4 py-3 rounded-xl bg-white border border-suprans-border text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors resize-none leading-relaxed"
+          className="w-full px-4 py-3 rounded-xl bg-white border border-chinaimports-border text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors resize-none leading-relaxed"
         />
       </div>
       <div>
-        <label className="text-[12px] font-semibold text-suprans-ink-secondary mb-2 block">
+        <label className="text-[12px] font-semibold text-chinaimports-ink-secondary mb-2 block">
           Quantity
         </label>
         <div className="flex gap-2">
@@ -542,14 +542,14 @@ function Step3Requirements({
             value={form.quantity}
             onChange={(e) => update("quantity", e.target.value)}
             placeholder="e.g. 5000"
-            className="flex-1 h-12 px-4 rounded-xl bg-white border border-suprans-border text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors"
+            className="flex-1 h-12 px-4 rounded-xl bg-white border border-chinaimports-border text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors"
           />
           <div className="relative">
             <select
               data-testid="select-unit"
               value={form.unit}
               onChange={(e) => update("unit", e.target.value)}
-              className="h-12 pl-4 pr-9 rounded-xl bg-white border border-suprans-border text-[14px] font-semibold text-suprans-ink outline-none focus:border-suprans-red appearance-none cursor-pointer"
+              className="h-12 pl-4 pr-9 rounded-xl bg-white border border-chinaimports-border text-[14px] font-semibold text-chinaimports-ink outline-none focus:border-chinaimports-red appearance-none cursor-pointer"
             >
               {UNITS.map((u) => (
                 <option key={u} value={u}>
@@ -559,7 +559,7 @@ function Step3Requirements({
             </select>
             <ChevronDown
               size={16}
-              color="var(--suprans-ink-tertiary)"
+              color="var(--chinaimports-ink-tertiary)"
               className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
               strokeWidth={2}
             />
@@ -600,7 +600,7 @@ function Step4Shipping({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[13px] text-suprans-ink-secondary leading-relaxed">
+      <p className="text-[13px] text-chinaimports-ink-secondary leading-relaxed">
         Pick a shipping speed. You can always change this later when we share quotes.
       </p>
       {options.map((opt) => {
@@ -612,8 +612,8 @@ function Step4Shipping({
             onClick={() => update("shippingSpeed", opt.id)}
             className="bg-white rounded-2xl p-4 flex items-center gap-4 text-left active:scale-[0.98] transition-all"
             style={{
-              border: selected ? "2px solid var(--suprans-red)" : "1px solid var(--suprans-border)",
-              background: selected ? "var(--suprans-red-light)" : "white",
+              border: selected ? "2px solid var(--chinaimports-red)" : "1px solid var(--chinaimports-border)",
+              background: selected ? "var(--chinaimports-red-light)" : "white",
             }}
           >
             <div
@@ -624,16 +624,16 @@ function Step4Shipping({
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <p className="text-[15px] font-bold text-suprans-ink">{opt.title}</p>
-                <span className="text-[11px] font-bold text-suprans-red">{opt.eta}</span>
+                <p className="text-[15px] font-bold text-chinaimports-ink">{opt.title}</p>
+                <span className="text-[11px] font-bold text-chinaimports-red">{opt.eta}</span>
               </div>
-              <p className="text-[12px] text-suprans-ink-secondary mt-0.5 leading-snug">{opt.sub}</p>
+              <p className="text-[12px] text-chinaimports-ink-secondary mt-0.5 leading-snug">{opt.sub}</p>
             </div>
             <span
               className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
               style={{
-                background: selected ? "var(--suprans-red)" : "transparent",
-                border: selected ? "none" : "1.5px solid var(--suprans-border)",
+                background: selected ? "var(--chinaimports-red)" : "transparent",
+                border: selected ? "none" : "1.5px solid var(--chinaimports-border)",
               }}
             >
               {selected && <Check size={14} color="white" strokeWidth={3} />}
@@ -657,10 +657,10 @@ function Step5Optional({
     <div className="flex flex-col gap-4">
       <div
         className="px-4 py-3 rounded-xl flex items-center gap-2"
-        style={{ background: "var(--suprans-red-light)" }}
+        style={{ background: "var(--chinaimports-red-light)" }}
       >
-        <Check size={14} color="var(--suprans-red)" strokeWidth={2.5} />
-        <span className="text-[12px] font-semibold text-suprans-red">
+        <Check size={14} color="var(--chinaimports-red)" strokeWidth={2.5} />
+        <span className="text-[12px] font-semibold text-chinaimports-red">
           All fields below are optional — skip if you'd like.
         </span>
       </div>
@@ -668,20 +668,20 @@ function Step5Optional({
       <button
         data-testid="btn-toggle-optional"
         onClick={() => setOpen((o) => !o)}
-        className="bg-white rounded-2xl border border-suprans-border px-4 py-3 flex items-center justify-between active:scale-[0.99] transition-transform"
+        className="bg-white rounded-2xl border border-chinaimports-border px-4 py-3 flex items-center justify-between active:scale-[0.99] transition-transform"
       >
-        <span className="text-[13px] font-bold text-suprans-ink">Pricing & purpose details</span>
+        <span className="text-[13px] font-bold text-chinaimports-ink">Pricing & purpose details</span>
         {open ? (
-          <ChevronUp size={18} color="var(--suprans-ink-secondary)" strokeWidth={2} />
+          <ChevronUp size={18} color="var(--chinaimports-ink-secondary)" strokeWidth={2} />
         ) : (
-          <ChevronDown size={18} color="var(--suprans-ink-secondary)" strokeWidth={2} />
+          <ChevronDown size={18} color="var(--chinaimports-ink-secondary)" strokeWidth={2} />
         )}
       </button>
 
       {open && (
         <div className="flex flex-col gap-4">
           <div>
-            <label className="text-[12px] font-semibold text-suprans-ink-secondary mb-2 block">
+            <label className="text-[12px] font-semibold text-chinaimports-ink-secondary mb-2 block">
               Target price
             </label>
             <input
@@ -690,11 +690,11 @@ function Step5Optional({
               value={form.targetPrice}
               onChange={(e) => update("targetPrice", e.target.value)}
               placeholder="e.g. ₹500/pc"
-              className="w-full h-12 px-4 rounded-xl bg-white border border-suprans-border text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors"
+              className="w-full h-12 px-4 rounded-xl bg-white border border-chinaimports-border text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors"
             />
           </div>
           <div>
-            <label className="text-[12px] font-semibold text-suprans-ink-secondary mb-2 block">
+            <label className="text-[12px] font-semibold text-chinaimports-ink-secondary mb-2 block">
               Current buying price
             </label>
             <input
@@ -703,7 +703,7 @@ function Step5Optional({
               value={form.currentPrice}
               onChange={(e) => update("currentPrice", e.target.value)}
               placeholder="e.g. ₹620/pc"
-              className="w-full h-12 px-4 rounded-xl bg-white border border-suprans-border text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors mb-2"
+              className="w-full h-12 px-4 rounded-xl bg-white border border-chinaimports-border text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors mb-2"
             />
             <input
               data-testid="input-current-price-link"
@@ -711,11 +711,11 @@ function Step5Optional({
               value={form.currentPriceLink}
               onChange={(e) => update("currentPriceLink", e.target.value)}
               placeholder="Reference link (optional)"
-              className="w-full h-12 px-4 rounded-xl bg-white border border-suprans-border text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors"
+              className="w-full h-12 px-4 rounded-xl bg-white border border-chinaimports-border text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors"
             />
           </div>
           <div>
-            <label className="text-[12px] font-semibold text-suprans-ink-secondary mb-2 block">
+            <label className="text-[12px] font-semibold text-chinaimports-ink-secondary mb-2 block">
               Purpose / notes
             </label>
             <textarea
@@ -724,7 +724,7 @@ function Step5Optional({
               onChange={(e) => update("purpose", e.target.value)}
               placeholder="Why are you sourcing this? Any deadlines or context?"
               rows={4}
-              className="w-full px-4 py-3 rounded-xl bg-white border border-suprans-border text-[14px] text-suprans-ink placeholder:text-suprans-ink-tertiary outline-none focus:border-suprans-red transition-colors resize-none leading-relaxed"
+              className="w-full px-4 py-3 rounded-xl bg-white border border-chinaimports-border text-[14px] text-chinaimports-ink placeholder:text-chinaimports-ink-tertiary outline-none focus:border-chinaimports-red transition-colors resize-none leading-relaxed"
             />
           </div>
         </div>
@@ -784,16 +784,16 @@ function Step6Review({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[13px] text-suprans-ink-secondary leading-relaxed">
+      <p className="text-[13px] text-chinaimports-ink-secondary leading-relaxed">
         Take one last look. You can edit any section before submitting.
       </p>
 
       {form.image && (
-        <div className="bg-white rounded-2xl overflow-hidden border border-suprans-border">
+        <div className="bg-white rounded-2xl overflow-hidden border border-chinaimports-border">
           <img
             src={form.image}
             alt="Reference"
-            className="w-full h-[180px] object-cover bg-suprans-canvas"
+            className="w-full h-[180px] object-cover bg-chinaimports-canvas"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
             }}
@@ -802,13 +802,13 @@ function Step6Review({
       )}
 
       {sections.map((sec) => (
-        <div key={sec.step} className="bg-white rounded-2xl border border-suprans-border p-4">
+        <div key={sec.step} className="bg-white rounded-2xl border border-chinaimports-border p-4">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-[13px] font-bold text-suprans-ink">{sec.title}</p>
+            <p className="text-[13px] font-bold text-chinaimports-ink">{sec.title}</p>
             <button
               data-testid={`btn-edit-step-${sec.step}`}
               onClick={() => jumpTo(sec.step)}
-              className="flex items-center gap-1 text-[12px] font-bold text-suprans-red active:scale-95 transition-transform"
+              className="flex items-center gap-1 text-[12px] font-bold text-chinaimports-red active:scale-95 transition-transform"
             >
               <Pencil size={12} strokeWidth={2.5} />
               Edit
@@ -817,10 +817,10 @@ function Step6Review({
           <div className="flex flex-col gap-1.5">
             {sec.rows.map((row, i) => (
               <div key={i} className="flex flex-col gap-0.5">
-                <span className="text-[11px] font-semibold text-suprans-ink-tertiary uppercase tracking-wider">
+                <span className="text-[11px] font-semibold text-chinaimports-ink-tertiary uppercase tracking-wider">
                   {row.label}
                 </span>
-                <span className="text-[13px] text-suprans-ink leading-snug whitespace-pre-wrap">
+                <span className="text-[13px] text-chinaimports-ink leading-snug whitespace-pre-wrap">
                   {row.value}
                 </span>
               </div>
@@ -834,35 +834,35 @@ function Step6Review({
 
 function SuccessState({ req, onContinue }: { req: SourcingRequest; onContinue: () => void }) {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-8 bg-suprans-canvas">
+    <div className="flex-1 flex flex-col items-center justify-center px-8 bg-chinaimports-canvas">
       <div
         data-testid="success-tick"
         className="w-24 h-24 rounded-full flex items-center justify-center mb-6 animate-success-pop"
-        style={{ background: "var(--suprans-red-light)" }}
+        style={{ background: "var(--chinaimports-red-light)" }}
       >
         <CheckCircle2
           size={56}
-          color="var(--suprans-red)"
+          color="var(--chinaimports-red)"
           strokeWidth={2}
-          fill="var(--suprans-red)"
+          fill="var(--chinaimports-red)"
           stroke="white"
         />
       </div>
-      <h2 className="text-[22px] font-black text-suprans-ink text-center mb-2">
+      <h2 className="text-[22px] font-black text-chinaimports-ink text-center mb-2">
         Request submitted
       </h2>
-      <p className="text-[13px] text-suprans-ink-secondary text-center leading-relaxed mb-1 max-w-[300px]">
+      <p className="text-[13px] text-chinaimports-ink-secondary text-center leading-relaxed mb-1 max-w-[300px]">
         Your sourcing request{" "}
-        <span className="font-bold text-suprans-ink">{req.id}</span> has been received.
+        <span className="font-bold text-chinaimports-ink">{req.id}</span> has been received.
       </p>
-      <p className="text-[12px] text-suprans-ink-tertiary text-center leading-relaxed mb-8 max-w-[300px]">
+      <p className="text-[12px] text-chinaimports-ink-tertiary text-center leading-relaxed mb-8 max-w-[300px]">
         A sourcing specialist will be assigned within the next few hours and will reach out via chat.
       </p>
       <button
         data-testid="btn-success-continue"
         onClick={onContinue}
         className="h-12 px-8 rounded-2xl text-[14px] font-bold text-white active:scale-95 transition-transform"
-        style={{ background: "var(--suprans-red)" }}
+        style={{ background: "var(--chinaimports-red)" }}
       >
         See request details
       </button>

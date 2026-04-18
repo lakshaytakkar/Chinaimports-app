@@ -1,37 +1,37 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { MessageCircle, Compass, FolderOpen, User, Plus } from "lucide-react";
-import SupransMobileShell from "./SupransMobileShell";
-import SupransChatTab from "./SupransChatTab";
-import SupransExploreTab from "./SupransExploreTab";
-import SupransProjectsTab from "./SupransProjectsTab";
-import SupransAccountTab from "./SupransAccountTab";
-import SupransRequestsTab from "./SupransRequestsTab";
-import SupransRequestFlow from "./SupransRequestFlow";
+import ChinaImportsMobileShell from "./ChinaImportsMobileShell";
+import ChinaImportsChatTab from "./ChinaImportsChatTab";
+import ChinaImportsExploreTab from "./ChinaImportsExploreTab";
+import ChinaImportsProjectsTab from "./ChinaImportsProjectsTab";
+import ChinaImportsAccountTab from "./ChinaImportsAccountTab";
+import ChinaImportsRequestsTab from "./ChinaImportsRequestsTab";
+import ChinaImportsRequestFlow from "./ChinaImportsRequestFlow";
 
 const TABS = [
-  { id: "chat", label: "Chat", Icon: MessageCircle, path: "/suprans/chat" },
-  { id: "explore", label: "Explore", Icon: Compass, path: "/suprans/explore" },
-  { id: "projects", label: "Projects", Icon: FolderOpen, path: "/suprans/projects" },
-  { id: "account", label: "Account", Icon: User, path: "/suprans/account" },
+  { id: "chat", label: "Chat", Icon: MessageCircle, path: "/chinaimports/chat" },
+  { id: "explore", label: "Explore", Icon: Compass, path: "/chinaimports/explore" },
+  { id: "projects", label: "Projects", Icon: FolderOpen, path: "/chinaimports/projects" },
+  { id: "account", label: "Account", Icon: User, path: "/chinaimports/account" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"] | "requests";
 
 function getActiveTab(pathname: string): TabId {
-  if (pathname.startsWith("/suprans/explore")) return "explore";
-  if (pathname.startsWith("/suprans/projects")) return "projects";
-  if (pathname.startsWith("/suprans/account")) return "account";
-  if (pathname.startsWith("/suprans/requests")) return "requests";
+  if (pathname.startsWith("/chinaimports/explore")) return "explore";
+  if (pathname.startsWith("/chinaimports/projects")) return "projects";
+  if (pathname.startsWith("/chinaimports/account")) return "account";
+  if (pathname.startsWith("/chinaimports/requests")) return "requests";
   return "chat";
 }
 
 function getRequestDetailId(pathname: string): string | null {
-  const m = pathname.match(/^\/suprans\/requests\/([^/]+)$/);
+  const m = pathname.match(/^\/chinaimports\/requests\/([^/]+)$/);
   return m ? decodeURIComponent(m[1]) : null;
 }
 
-export default function SupransApp() {
+export default function ChinaImportsApp() {
   const [location, navigate] = useLocation();
   const activeTab = getActiveTab(location);
   const detailId = getRequestDetailId(location);
@@ -42,34 +42,34 @@ export default function SupransApp() {
 
   const handleSubmitted = (req: { id: string }) => {
     setShowFlow(false);
-    navigate(`/suprans/requests/${req.id}`);
+    navigate(`/chinaimports/requests/${req.id}`);
   };
 
   const handleOpenRequest = (id: string) => {
-    navigate(`/suprans/requests/${id}`);
+    navigate(`/chinaimports/requests/${id}`);
   };
 
   const handleBackToList = () => {
-    navigate("/suprans/requests");
+    navigate("/chinaimports/requests");
   };
 
   return (
-    <SupransMobileShell>
+    <ChinaImportsMobileShell>
       <div
         className="absolute inset-0 bottom-[72px] overflow-hidden"
-        style={{ background: "var(--suprans-canvas)" }}
+        style={{ background: "var(--chinaimports-canvas)" }}
       >
-        <div key={activeTab} className="suprans-fade-in absolute inset-0">
+        <div key={activeTab} className="chinaimports-fade-in absolute inset-0">
           {activeTab === "chat" ? (
-            <SupransChatTab />
+            <ChinaImportsChatTab />
           ) : activeTab === "explore" ? (
-            <SupransExploreTab />
+            <ChinaImportsExploreTab />
           ) : activeTab === "projects" ? (
-            <SupransProjectsTab />
+            <ChinaImportsProjectsTab />
           ) : activeTab === "account" ? (
-            <SupransAccountTab />
+            <ChinaImportsAccountTab />
           ) : activeTab === "requests" ? (
-            <SupransRequestsTab
+            <ChinaImportsRequestsTab
               detailId={detailId}
               onOpenRequest={handleOpenRequest}
               onBackToList={handleBackToList}
@@ -78,13 +78,13 @@ export default function SupransApp() {
           ) : null}
         </div>
       </div>
-      <SupransTabBar activeTab={activeTab} onNavigate={navigate} onRaiseRequest={openFlow} />
-      {showFlow && <SupransRequestFlow onClose={closeFlow} onSubmitted={handleSubmitted} />}
-    </SupransMobileShell>
+      <ChinaImportsTabBar activeTab={activeTab} onNavigate={navigate} onRaiseRequest={openFlow} />
+      {showFlow && <ChinaImportsRequestFlow onClose={closeFlow} onSubmitted={handleSubmitted} />}
+    </ChinaImportsMobileShell>
   );
 }
 
-export function SupransTabBar({
+export function ChinaImportsTabBar({
   activeTab,
   onNavigate,
   onRaiseRequest,
@@ -99,7 +99,7 @@ export function SupransTabBar({
   return (
     <div
       className="absolute bottom-0 left-0 right-0 h-[72px] flex items-start pt-1 bg-white border-t"
-      style={{ borderColor: "var(--suprans-border)" }}
+      style={{ borderColor: "var(--chinaimports-border)" }}
     >
       {left.map((tab) => (
         <TabButton key={tab.id} tab={tab} active={tab.id === activeTab} onNavigate={onNavigate} />
@@ -111,7 +111,7 @@ export function SupransTabBar({
           onClick={onRaiseRequest}
           className="absolute -top-5 w-14 h-14 rounded-full flex items-center justify-center active:scale-95 transition-transform"
           style={{
-            background: "var(--suprans-red)",
+            background: "var(--chinaimports-red)",
             boxShadow:
               "0 8px 20px -4px rgba(240, 59, 59, 0.45), 0 4px 8px -2px rgba(240, 59, 59, 0.25), 0 0 0 4px white",
           }}
@@ -120,7 +120,7 @@ export function SupransTabBar({
         </button>
         <span
           className="absolute top-[42px] text-[10px] font-bold leading-none"
-          style={{ color: "var(--suprans-red)" }}
+          style={{ color: "var(--chinaimports-red)" }}
         >
           Raise
         </span>
@@ -153,7 +153,7 @@ function TabButton({
         <span
           className="absolute rounded-full"
           style={{
-            background: "var(--suprans-red-light)",
+            background: "var(--chinaimports-red-light)",
             width: 48,
             height: 30,
             top: 6,
@@ -163,13 +163,13 @@ function TabButton({
       <Icon
         size={26}
         strokeWidth={active ? 2.2 : 1.6}
-        color={active ? "var(--suprans-red)" : "var(--suprans-ink-tertiary)"}
+        color={active ? "var(--chinaimports-red)" : "var(--chinaimports-ink-tertiary)"}
         className="relative z-10"
       />
       <span
         className="text-[11px] font-semibold relative z-10 leading-none mt-0.5"
         style={{
-          color: active ? "var(--suprans-red)" : "var(--suprans-ink-tertiary)",
+          color: active ? "var(--chinaimports-red)" : "var(--chinaimports-ink-tertiary)",
         }}
       >
         {label}

@@ -7,14 +7,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "suprans-canvas": "var(--suprans-canvas)",
-        "suprans-red": "var(--suprans-red)",
-        "suprans-ink": "var(--suprans-ink)",
-        "suprans-ink-secondary": "var(--suprans-ink-secondary)",
-        "suprans-ink-tertiary": "var(--suprans-ink-tertiary)",
-        "suprans-border": "var(--suprans-border)",
-        "suprans-card": "var(--suprans-card)",
-        "suprans-red-light": "var(--suprans-red-light)",
+        "chinaimports-canvas": "var(--chinaimports-canvas)",
+        "chinaimports-red": "var(--chinaimports-red)",
+        "chinaimports-ink": "var(--chinaimports-ink)",
+        "chinaimports-ink-secondary": "var(--chinaimports-ink-secondary)",
+        "chinaimports-ink-tertiary": "var(--chinaimports-ink-tertiary)",
+        "chinaimports-border": "var(--chinaimports-border)",
+        "chinaimports-card": "var(--chinaimports-card)",
+        "chinaimports-red-light": "var(--chinaimports-red-light)",
         "app-primary": "var(--app-primary)",
         "greyscale-0": "var(--greyscale-0)",
         "greyscale-100": "var(--greyscale-100)",
