@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import heroSourcingImg from "@assets/suprans/hero/hero-sourcing.png";
 import heroLogisticsImg from "@assets/suprans/hero/hero-logistics.png";
 import heroCustomsImg from "@assets/suprans/hero/hero-customs.png";
+import { SLIDE_DURATION_MS } from "./transitions";
 import { useLocation } from "wouter";
 import {
   Search,
@@ -329,22 +330,36 @@ const UPDATE_CARDS: UpdateCard[] = [
 export default function SupransExploreTab() {
   const [view, setView] = useState<"home" | "detail">("home");
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [isLeaving, setIsLeaving] = useState(false);
+  const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current); }, []);
 
   const handleOpenService = (svc: Service) => {
     setSelectedService(svc);
+    setIsLeaving(false);
     setView("detail");
   };
 
   const handleBack = () => {
-    setView("home");
-    setSelectedService(null);
+    setIsLeaving(true);
+    leaveTimerRef.current = setTimeout(() => {
+      setView("home");
+      setSelectedService(null);
+      setIsLeaving(false);
+    }, SLIDE_DURATION_MS);
   };
 
-  if (view === "detail" && selectedService) {
-    return <ServiceDetail service={selectedService} onBack={handleBack} />;
-  }
-
-  return <ExploreHome onOpenService={handleOpenService} />;
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      <ExploreHome onOpenService={handleOpenService} />
+      {(view === "detail" && selectedService) && (
+        <div className={`absolute inset-0 ${isLeaving ? "suprans-slide-out" : "suprans-slide-in"}`}>
+          <ServiceDetail service={selectedService} onBack={handleBack} />
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ExploreHome({ onOpenService }: { onOpenService: (s: Service) => void }) {

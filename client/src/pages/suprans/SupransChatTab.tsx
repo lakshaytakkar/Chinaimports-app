@@ -7,6 +7,7 @@ import avatarSupransTeam from "@assets/suprans/avatars/suprans-team.png";
 import avatarDivya from "@assets/suprans/avatars/divya-nair.png";
 import avatarVikram from "@assets/suprans/avatars/vikram-gupta.png";
 import avatarAnanya from "@assets/suprans/avatars/ananya-krishnan.png";
+import { SLIDE_DURATION_MS } from "./transitions";
 import {
   Bell,
   Search,
@@ -225,7 +226,11 @@ export default function SupransChatTab() {
   const [showNewConv, setShowNewConv] = useState(false);
   const [prefillService, setPrefillService] = useState<string | null>(null);
   const [inputText, setInputText] = useState("");
+  const [isLeaving, setIsLeaving] = useState(false);
+  const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => () => { if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current); }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -245,13 +250,18 @@ export default function SupransChatTab() {
 
   const handleOpenChat = (conv: Conversation) => {
     setSelectedConv(conv);
+    setIsLeaving(false);
     setView("chat");
   };
 
   const handleBack = () => {
-    setView("list");
-    setSelectedConv(null);
-    setInputText("");
+    setIsLeaving(true);
+    leaveTimerRef.current = setTimeout(() => {
+      setView("list");
+      setSelectedConv(null);
+      setInputText("");
+      setIsLeaving(false);
+    }, SLIDE_DURATION_MS);
   };
 
   const handleSend = () => {
@@ -271,23 +281,8 @@ export default function SupransChatTab() {
     setInputText("");
   };
 
-  if (view === "chat" && selectedConv) {
-    const messages = messagesMap[selectedConv.id] ?? [];
-    return (
-      <ChatDetail
-        conv={selectedConv}
-        messages={messages}
-        inputText={inputText}
-        setInputText={setInputText}
-        onBack={handleBack}
-        onSend={handleSend}
-        messagesEndRef={messagesEndRef}
-      />
-    );
-  }
-
   return (
-    <>
+    <div className="relative w-full h-full overflow-hidden">
       <ConversationList
         conversations={CONVERSATIONS}
         onOpenChat={handleOpenChat}
@@ -299,7 +294,20 @@ export default function SupransChatTab() {
           onClose={() => { setShowNewConv(false); setPrefillService(null); }}
         />
       )}
-    </>
+      {(view === "chat" && selectedConv) && (
+        <div className={`absolute inset-0 ${isLeaving ? "suprans-slide-out" : "suprans-slide-in"}`}>
+          <ChatDetail
+            conv={selectedConv}
+            messages={messagesMap[selectedConv.id] ?? []}
+            inputText={inputText}
+            setInputText={setInputText}
+            onBack={handleBack}
+            onSend={handleSend}
+            messagesEndRef={messagesEndRef}
+          />
+        </div>
+      )}
+    </div>
   );
 }
 

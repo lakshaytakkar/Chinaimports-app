@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import thumbMerinoWool from "@assets/suprans/products/merino-wool-sweaters.png";
 import thumbCeramicMugs from "@assets/suprans/products/ceramic-coffee-mugs.png";
-import thumbLedLights from "@assets/suprans/products/led-strip-lights.png";
+import thumbLedLights from "@assets/suprans/products/strip-lights.png";
 import thumbCookware from "@assets/suprans/products/stainless-steel-cookware.png";
 import thumbCottonTotes from "@assets/suprans/products/cotton-tote-bags.png";
 import thumbGloves from "@assets/suprans/products/industrial-gloves.png";
 import thumbBamboo from "@assets/suprans/products/bamboo-kitchenware-set.png";
+import { SLIDE_DURATION_MS } from "./transitions";
 import { useLocation } from "wouter";
 import {
   ArrowLeft,
@@ -199,52 +200,65 @@ export default function SupransProjectsTab() {
   const [view, setView] = useState<ProjectView>("list");
   const [subTab, setSubTab] = useState<SubTab>("active");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isLeaving, setIsLeaving] = useState(false);
+  const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current); }, []);
 
   const handleOpenProject = (p: Project) => {
     setSelectedProject(p);
+    setIsLeaving(false);
     setView("detail");
   };
 
   const handleBack = () => {
-    setView("list");
-    setSelectedProject(null);
+    setIsLeaving(true);
+    leaveTimerRef.current = setTimeout(() => {
+      setView("list");
+      setSelectedProject(null);
+      setIsLeaving(false);
+    }, SLIDE_DURATION_MS);
   };
 
-  if (view === "detail" && selectedProject) {
-    return <ProjectDetail project={selectedProject} onBack={handleBack} />;
-  }
-
   return (
-    <div className="flex flex-col h-full bg-suprans-canvas">
-      <div className="bg-white px-5 pt-5 pb-3 border-b border-suprans-border shrink-0">
-        <span className="text-[22px] font-black text-suprans-ink tracking-tight">Projects</span>
-        <div className="flex mt-3">
-          <div className="flex p-1 rounded-full" style={{ background: "var(--suprans-canvas)", border: "1px solid var(--suprans-border)" }}>
-            {(["active", "completed"] as SubTab[]).map((tab) => (
-              <button
-                key={tab}
-                data-testid={`subtab-${tab}`}
-                onClick={() => setSubTab(tab)}
-                className="px-5 py-1.5 rounded-full text-[13px] font-semibold transition-all"
-                style={
-                  subTab === tab
-                    ? { background: "var(--suprans-red)", color: "white" }
-                    : { color: "var(--suprans-ink-secondary)" }
-                }
-              >
-                {tab === "active" ? "Active" : "Completed"}
-              </button>
-            ))}
+    <div className="relative w-full h-full overflow-hidden">
+      <div className="flex flex-col h-full bg-suprans-canvas">
+        <div className="bg-white px-5 pt-5 pb-3 border-b border-suprans-border shrink-0">
+          <span className="text-[22px] font-black text-suprans-ink tracking-tight">Projects</span>
+          <div className="flex mt-3">
+            <div className="flex p-1 rounded-full" style={{ background: "var(--suprans-canvas)", border: "1px solid var(--suprans-border)" }}>
+              {(["active", "completed"] as SubTab[]).map((tab) => (
+                <button
+                  key={tab}
+                  data-testid={`subtab-${tab}`}
+                  onClick={() => setSubTab(tab)}
+                  className="px-5 py-1.5 rounded-full text-[13px] font-semibold transition-all"
+                  style={
+                    subTab === tab
+                      ? { background: "var(--suprans-red)", color: "white" }
+                      : { color: "var(--suprans-ink-secondary)" }
+                  }
+                >
+                  {tab === "active" ? "Active" : "Completed"}
+                </button>
+              ))}
+            </div>
           </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3">
+          {(subTab === "active" ? ACTIVE_PROJECTS : COMPLETED_PROJECTS).map((p) => (
+            <ProjectCard key={p.id} project={p} onTap={() => handleOpenProject(p)} />
+          ))}
+          <div className="h-2" />
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3">
-        {(subTab === "active" ? ACTIVE_PROJECTS : COMPLETED_PROJECTS).map((p) => (
-          <ProjectCard key={p.id} project={p} onTap={() => handleOpenProject(p)} />
-        ))}
-        <div className="h-2" />
-      </div>
+      {(view === "detail" && selectedProject) && (
+        <div className={`absolute inset-0 ${isLeaving ? "suprans-slide-out" : "suprans-slide-in"}`}>
+          <ProjectDetail project={selectedProject} onBack={handleBack} />
+        </div>
+      )}
     </div>
   );
 }

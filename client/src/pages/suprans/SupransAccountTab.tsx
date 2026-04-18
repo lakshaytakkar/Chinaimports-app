@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { SLIDE_DURATION_MS } from "./transitions";
 import { useLocation } from "wouter";
 import {
   ArrowLeft,
@@ -93,7 +94,11 @@ const STATUS_STYLES: Record<Invoice["status"], { bg: string; color: string }> = 
 
 export default function SupransAccountTab() {
   const [view, setView] = useState<AccountView>("home");
+  const [isLeaving, setIsLeaving] = useState(false);
+  const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [, navigate] = useLocation();
+
+  useEffect(() => () => { if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current); }, []);
 
   const handleMenu = (item: typeof MENU_ITEMS[0]) => {
     if (item.view === "my-requests") {
@@ -101,25 +106,40 @@ export default function SupransAccountTab() {
       return;
     }
     if (item.view) {
+      setIsLeaving(false);
       setView(item.view);
     }
+  };
+
+  const handleBack = () => {
+    setIsLeaving(true);
+    leaveTimerRef.current = setTimeout(() => {
+      setView("home");
+      setIsLeaving(false);
+    }, SLIDE_DURATION_MS);
   };
 
   const handleSignOut = () => {
     navigate("/suprans/onboarding");
   };
 
-  if (view === "business-details") return <BusinessDetails onBack={() => setView("home")} />;
-  if (view === "invoices") return <InvoicesList onBack={() => setView("home")} />;
-  if (view === "notifications") return <NotificationSettings onBack={() => setView("home")} />;
-  if (view === "help") return <HelpSupport onBack={() => setView("home")} />;
-  if (view === "about") return <AboutSuprans onBack={() => setView("home")} />;
+  const renderSubScreen = () => {
+    if (view === "business-details") return <BusinessDetails onBack={handleBack} />;
+    if (view === "invoices") return <InvoicesList onBack={handleBack} />;
+    if (view === "notifications") return <NotificationSettings onBack={handleBack} />;
+    if (view === "help") return <HelpSupport onBack={handleBack} />;
+    if (view === "about") return <AboutSuprans onBack={handleBack} />;
+    return null;
+  };
+
+  const subScreen = renderSubScreen();
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto bg-suprans-canvas">
-      <div className="bg-white px-5 pt-5 pb-4 border-b border-suprans-border shrink-0">
-        <span className="text-[22px] font-black text-suprans-ink tracking-tight">Account</span>
-      </div>
+    <div className="relative w-full h-full overflow-hidden">
+      <div className="flex flex-col h-full overflow-y-auto bg-suprans-canvas">
+        <div className="bg-white px-5 pt-5 pb-4 border-b border-suprans-border shrink-0">
+          <span className="text-[22px] font-black text-suprans-ink tracking-tight">Account</span>
+        </div>
 
       <div className="bg-white mx-4 mt-4 rounded-2xl p-4 border border-suprans-border">
         <div className="flex items-center gap-4">
@@ -183,6 +203,12 @@ export default function SupransAccountTab() {
           <ChevronRight size={16} color="var(--suprans-red)" strokeWidth={2} />
         </button>
       </div>
+      </div>
+      {subScreen && (
+        <div className={`absolute inset-0 ${isLeaving ? "suprans-slide-out" : "suprans-slide-in"}`}>
+          {subScreen}
+        </div>
+      )}
     </div>
   );
 }

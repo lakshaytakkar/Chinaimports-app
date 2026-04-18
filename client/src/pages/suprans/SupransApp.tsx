@@ -59,22 +59,24 @@ export default function SupransApp() {
         className="absolute inset-0 bottom-[72px] overflow-hidden"
         style={{ background: "var(--suprans-canvas)" }}
       >
-        {activeTab === "chat" ? (
-          <SupransChatTab />
-        ) : activeTab === "explore" ? (
-          <SupransExploreTab />
-        ) : activeTab === "projects" ? (
-          <SupransProjectsTab />
-        ) : activeTab === "account" ? (
-          <SupransAccountTab />
-        ) : activeTab === "requests" ? (
-          <SupransRequestsTab
-            detailId={detailId}
-            onOpenRequest={handleOpenRequest}
-            onBackToList={handleBackToList}
-            onRaiseRequest={openFlow}
-          />
-        ) : null}
+        <div key={activeTab} className="suprans-fade-in absolute inset-0">
+          {activeTab === "chat" ? (
+            <SupransChatTab />
+          ) : activeTab === "explore" ? (
+            <SupransExploreTab />
+          ) : activeTab === "projects" ? (
+            <SupransProjectsTab />
+          ) : activeTab === "account" ? (
+            <SupransAccountTab />
+          ) : activeTab === "requests" ? (
+            <SupransRequestsTab
+              detailId={detailId}
+              onOpenRequest={handleOpenRequest}
+              onBackToList={handleBackToList}
+              onRaiseRequest={openFlow}
+            />
+          ) : null}
+        </div>
       </div>
       <SupransTabBar activeTab={activeTab} onNavigate={navigate} onRaiseRequest={openFlow} />
       {showFlow && <SupransRequestFlow onClose={closeFlow} onSubmitted={handleSubmitted} />}
