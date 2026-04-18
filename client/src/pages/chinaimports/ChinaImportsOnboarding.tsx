@@ -13,21 +13,21 @@ const SLIDES = [
     image: heroSourcing,
     title: "Source anything from China — without the chaos.",
     description:
-      "From quote to delivery, all handled by one team you can talk to inside the app.",
+      "From quote to delivery, all handled by one team.",
   },
   {
     gradient: "from-[#2C5F9E] to-[#4A9FD4]",
     image: heroCustoms,
     title: "From factory to your doorstep. We handle it all.",
     description:
-      "Sourcing, sampling, freight, customs, and GST — all in one place.",
+      "Sourcing, sampling, freight, customs, GST — one app.",
   },
   {
     gradient: "from-[#2D9D78] to-[#6BCB9F]",
     image: heroLogistics,
     title: "Real humans. Real factories. Real delivery.",
     description:
-      "Every order tracked end to end, every document a tap away.",
+      "Every order tracked end to end inside the app.",
   },
 ];
 
