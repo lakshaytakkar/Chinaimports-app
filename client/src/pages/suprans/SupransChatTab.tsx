@@ -439,7 +439,9 @@ function ChatDetail({
             <span className="text-[15px] font-semibold text-suprans-ink truncate">{conv.name}</span>
             {conv.online && <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />}
           </div>
-          <span className="text-[11px] text-suprans-ink-tertiary">{conv.online ? "Online" : conv.role}</span>
+          <span className="text-[11px]" style={{ color: conv.online ? "#059669" : "var(--suprans-ink-tertiary)" }}>
+            {conv.online ? "Online" : "Offline"}
+          </span>
         </div>
       </div>
 
@@ -578,17 +580,31 @@ function Waveform({ sent }: { sent: boolean }) {
 }
 
 function NewConversationModal({ onClose }: { onClose: () => void }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const t = requestAnimationFrame(() => setVisible(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
+
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(onClose, 220);
+  };
+
   return (
-    <div className="absolute inset-0 z-50" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/40" />
+    <div className="absolute inset-0 z-50" onClick={handleClose}>
       <div
-        className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl"
+        className="absolute inset-0 bg-black/40 transition-opacity duration-200"
+        style={{ opacity: visible ? 1 : 0 }}
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl transition-transform duration-200 ease-out"
+        style={{ transform: visible ? "translateY(0)" : "translateY(100%)", paddingBottom: 24 }}
         onClick={(e) => e.stopPropagation()}
-        style={{ paddingBottom: 24 }}
       >
         <div className="flex items-center justify-between px-5 pt-5 pb-4">
           <span className="text-[16px] font-bold text-suprans-ink">Start a conversation about…</span>
-          <button data-testid="btn-close-modal" onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center bg-suprans-canvas">
+          <button data-testid="btn-close-modal" onClick={handleClose} className="w-8 h-8 rounded-full flex items-center justify-center bg-suprans-canvas">
             <X size={18} color="var(--suprans-ink)" strokeWidth={2} />
           </button>
         </div>
