@@ -372,8 +372,17 @@ function HeroBannerCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pointerStartX = useRef<number | null>(null);
+
+  const goTo = (idx: number) => {
+    setCurrent(idx);
+    setPaused(true);
+    setTimeout(() => setPaused(false), 6000);
+  };
 
   const advance = () => setCurrent((c) => (c + 1) % HERO_SLIDES.length);
+  const goNext = () => goTo((current + 1) % HERO_SLIDES.length);
+  const goPrev = () => goTo((current - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
 
   useEffect(() => {
     if (paused) return;
@@ -381,10 +390,21 @@ function HeroBannerCarousel() {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [paused, current]);
 
-  const handleTap = () => {
-    setPaused(true);
-    advance();
-    setTimeout(() => setPaused(false), 6000);
+  const handlePointerDown = (e: React.PointerEvent) => {
+    pointerStartX.current = e.clientX;
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (pointerStartX.current === null) return;
+    const delta = e.clientX - pointerStartX.current;
+    pointerStartX.current = null;
+    if (Math.abs(delta) < 20) {
+      goNext();
+    } else if (delta < -30) {
+      goNext();
+    } else if (delta > 30) {
+      goPrev();
+    }
   };
 
   const slide = HERO_SLIDES[current];
@@ -398,7 +418,8 @@ function HeroBannerCarousel() {
           background: `linear-gradient(135deg, ${slide.gradientFrom} 0%, ${slide.gradientTo} 100%)`,
           transition: "background 0.4s ease",
         }}
-        onClick={handleTap}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
       >
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div>
@@ -419,7 +440,7 @@ function HeroBannerCarousel() {
             <button
               key={i}
               data-testid={`hero-dot-${i}`}
-              onClick={(e) => { e.stopPropagation(); setCurrent(i); setPaused(true); setTimeout(() => setPaused(false), 6000); }}
+              onClick={(e) => { e.stopPropagation(); goTo(i); }}
               className="rounded-full transition-all duration-200"
               style={{
                 width: i === current ? 20 : 6,
@@ -589,7 +610,7 @@ function ServiceDetail({ service, onBack }: { service: Service; onBack: () => vo
       <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-suprans-border px-5 py-4">
         <button
           data-testid="btn-chat-cta"
-          onClick={() => navigate("/suprans/chat")}
+          onClick={() => navigate(`/suprans/chat?service=${encodeURIComponent(service.name)}`)}
           className="w-full h-12 rounded-2xl flex items-center justify-center gap-2 text-[15px] font-bold text-white"
           style={{ background: "var(--suprans-red)" }}
         >

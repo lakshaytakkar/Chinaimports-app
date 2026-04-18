@@ -206,8 +206,19 @@ export default function SupransChatTab() {
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [messagesMap, setMessagesMap] = useState<Record<string, Message[]>>(MOCK_MESSAGES);
   const [showNewConv, setShowNewConv] = useState(false);
+  const [prefillService, setPrefillService] = useState<string | null>(null);
   const [inputText, setInputText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const service = params.get("service");
+    if (service) {
+      setPrefillService(service);
+      setShowNewConv(true);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
 
   useEffect(() => {
     if (view === "chat") {
@@ -265,7 +276,12 @@ export default function SupransChatTab() {
         onOpenChat={handleOpenChat}
         onNewConv={() => setShowNewConv(true)}
       />
-      {showNewConv && <NewConversationModal onClose={() => setShowNewConv(false)} />}
+      {showNewConv && (
+        <NewConversationModal
+          prefillService={prefillService}
+          onClose={() => { setShowNewConv(false); setPrefillService(null); }}
+        />
+      )}
     </>
   );
 }
@@ -579,7 +595,24 @@ function Waveform({ sent }: { sent: boolean }) {
   );
 }
 
-function NewConversationModal({ onClose }: { onClose: () => void }) {
+const SERVICE_TILE_MAP: Record<string, string> = {
+  "Sourcing": "sourcing",
+  "Shipping": "shipping",
+  "Customs Clearance": "customs",
+  "Quality Inspection": "quality",
+  "Warehousing": "storage",
+  "Door-to-Door": "other",
+  "Payments & FX": "payments",
+  "Documentation": "documents",
+};
+
+function NewConversationModal({
+  onClose,
+  prefillService,
+}: {
+  onClose: () => void;
+  prefillService?: string | null;
+}) {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const t = requestAnimationFrame(() => setVisible(true));
@@ -590,6 +623,8 @@ function NewConversationModal({ onClose }: { onClose: () => void }) {
     setVisible(false);
     setTimeout(onClose, 220);
   };
+
+  const highlightedTileId = prefillService ? SERVICE_TILE_MAP[prefillService] ?? null : null;
 
   return (
     <div className="absolute inset-0 z-50" onClick={handleClose}>
@@ -602,29 +637,46 @@ function NewConversationModal({ onClose }: { onClose: () => void }) {
         style={{ transform: visible ? "translateY(0)" : "translateY(100%)", paddingBottom: 24 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-5 pt-5 pb-4">
+        <div className="flex items-center justify-between px-5 pt-5 pb-3">
           <span className="text-[16px] font-bold text-suprans-ink">Start a conversation about…</span>
           <button data-testid="btn-close-modal" onClick={handleClose} className="w-8 h-8 rounded-full flex items-center justify-center bg-suprans-canvas">
             <X size={18} color="var(--suprans-ink)" strokeWidth={2} />
           </button>
         </div>
+        {prefillService && (
+          <div className="mx-5 mb-3 px-4 py-2.5 rounded-xl flex items-center gap-2" style={{ background: "var(--suprans-red-light)" }}>
+            <Check size={14} color="var(--suprans-red)" strokeWidth={2.5} />
+            <span className="text-[13px] font-semibold text-suprans-red">{prefillService} selected</span>
+          </div>
+        )}
         <div className="px-5 grid grid-cols-4 gap-3">
-          {SERVICE_TILES.map((tile) => (
-            <button
-              key={tile.id}
-              data-testid={`service-tile-${tile.id}`}
-              onClick={onClose}
-              className="flex flex-col items-center gap-2 py-3"
-            >
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center text-[28px]"
-                style={{ background: "var(--suprans-canvas)", border: "1.5px solid var(--suprans-border)" }}
+          {SERVICE_TILES.map((tile) => {
+            const isHighlighted = tile.id === highlightedTileId;
+            return (
+              <button
+                key={tile.id}
+                data-testid={`service-tile-${tile.id}`}
+                onClick={handleClose}
+                className="flex flex-col items-center gap-2 py-3"
               >
-                {tile.emoji}
-              </div>
-              <span className="text-[11px] font-medium text-suprans-ink-secondary text-center leading-tight">{tile.label}</span>
-            </button>
-          ))}
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-[28px] transition-all"
+                  style={{
+                    background: isHighlighted ? "var(--suprans-red-light)" : "var(--suprans-canvas)",
+                    border: isHighlighted ? "2px solid var(--suprans-red)" : "1.5px solid var(--suprans-border)",
+                  }}
+                >
+                  {tile.emoji}
+                </div>
+                <span
+                  className="text-[11px] font-medium text-center leading-tight"
+                  style={{ color: isHighlighted ? "var(--suprans-red)" : "var(--suprans-ink-secondary)", fontWeight: isHighlighted ? 700 : 500 }}
+                >
+                  {tile.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
